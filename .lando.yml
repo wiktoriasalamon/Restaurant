@@ -1,0 +1,15 @@
+name: restaurant
+recipe: laravel
+config:
+  webroot: public
+  database: postgres
+  xdebug: true
+  services:
+    node:
+      type: node
+      build:
+        - npm install
+
+  tooling:
+    npm:
+      service: node
