@@ -39,6 +39,5 @@ window.Echo = new Echo({
     wsHost: window.location.hostname,
     wsPort: process.env.WEBSOCKET_BROADCAST_PORT,
     wssPort: process.env.WEBSOCKET_BROADCAST_PORT,
-    enabledTransports: ['ws', 'wss'],
-    disableStats: true,
+    disableStats: true
 });

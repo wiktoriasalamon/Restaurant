@@ -42,6 +42,7 @@ return [
                 'port'=>env('WEBSOCKET_BROADCAST_PORT'),
                 'scheme'=>'http',
 
+
             ],
         ],
 

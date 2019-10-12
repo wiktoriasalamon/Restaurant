@@ -16,11 +16,13 @@
 
 <script>
 
+
+
     export default {
         mounted() {
-            // Echo.channel('home').listen('NewMessage',(e)=>{
-            //     console.log('aaaaaaa')
-            // })
+            window.Echo.channel('home').listen('.NewMessage',(e)=>{
+                console.log('aaaaaaa')
+            })
         }
     }
 </script>

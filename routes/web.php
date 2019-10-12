@@ -12,6 +12,7 @@
 */
 
 Route::get('/', function () {
+    event(new \App\Events\NewMessage("Hello world"));
     return view('welcome');
 });
 
