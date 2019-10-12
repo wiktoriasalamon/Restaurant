@@ -38,6 +38,10 @@ return [
             'options' => [
                 'cluster' => env('PUSHER_APP_CLUSTER'),
                 'useTLS' => true,
+                'host' => env('WEBSOCKET_BROADCAST_HOST'),
+                'port'=>env('WEBSOCKET_BROADCAST_PORT'),
+                'scheme'=>'http',
+
             ],
         ],
 
