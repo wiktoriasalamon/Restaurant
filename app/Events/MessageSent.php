@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Events;
-use App\User;
-use App\Message;
+use App\Models\User;
+use App\Models\Message;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;

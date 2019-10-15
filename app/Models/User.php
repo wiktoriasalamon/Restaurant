@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -9,6 +9,8 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     use Notifiable;
+
+//    protected $table = 'users';
 
     /**
      * The attributes that are mass assignable.
@@ -44,5 +46,16 @@ class User extends Authenticatable
     public function messages()
     {
         return $this->hasMany(Message::class);
+    }
+
+
+    public function orderWorker()
+    {
+        return $this->hasMany(Order::class, 'id', 'worker_id' );
+    }
+
+    public function orderCustomer()
+    {
+        return $this->hasMany(Order::class, 'id', 'customer_id');
     }
 }
