@@ -21,3 +21,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/', 'ChatsController@index');
 Route::get('messages', 'ChatsController@fetchMessages');
 Route::post('messages', 'ChatsController@sendMessage');
+Route::get('/table', 'TableController@index')->name('table.index');
+Route::get('/dish', 'DishController@index')->name('dish.index');
+Route::get('/dishCategory', 'DishCategoryController@index')->name('dishCategory.index');
