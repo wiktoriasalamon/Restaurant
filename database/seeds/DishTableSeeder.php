@@ -14,7 +14,7 @@ class DishTableSeeder extends Seeder
         $categories = \App\Models\DishCategory::all();
         foreach ($categories as $category) {
             try {
-                for ($i = 0; $i < random_int(1, 5); $i++) {
+                for ($i = 1; $i < random_int(4, 8); $i++) {
                     $dish = new \App\Models\Dish();
                     $dish->name = "Danie " . $i;
                     $dish->price = random_int(500,5000) / 100;
