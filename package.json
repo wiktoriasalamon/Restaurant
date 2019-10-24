@@ -18,5 +18,15 @@
         "sass": "^1.15.2",
         "sass-loader": "^7.1.0",
         "vue-template-compiler": "^2.6.10"
+    },
+    "dependencies": {
+        "bootstrap": "^4.3.1",
+        "jquery": "^3.4.1",
+        "laravel-echo": "^1.6.1",
+        "popper.js": "^1.15.0",
+        "pusher": "^3.0.0",
+        "pusher-js": "^5.0.2",
+        "vue": "^2.6.10",
+        "vuetify": "^1.5.19"
     }
 }
