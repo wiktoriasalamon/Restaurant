@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\MessageSent;
 use Illuminate\Http\Request;
-use App\Message;
+use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
 
 
