@@ -1,13 +1,17 @@
 <template>
-  <div class="input-group">
-    <input id="btn-input" type="text" name="message" class="form-control input-sm" placeholder="Type your message here..." v-model="newMessage" @keyup.enter="sendMessage">
+    <div class="input-group">
+        <input id="btn-input" type="text" name="message" class="form-control input-sm"
+               placeholder="Type your message here..." v-model="newMessage" @keyup.enter="sendMessage">
 
-    <span class="input-group-btn">
+        <span class="input-group-btn">
             <button class="btn btn-primary btn-sm" id="btn-chat" @click="sendMessage">
                 Send
             </button>
+        <button class="btn btn-primary btn-sm"  @click="test">
+                Test
+            </button>
         </span>
-  </div>
+    </div>
 </template>
 
 <script>
@@ -28,6 +32,14 @@
         });
 
         this.newMessage = ''
+      },
+      test() {
+        axios.get(route('api.table.index'))
+          .then(function (response) {
+            console.log(response.data)
+          }).catch(function (error) {
+            console.log(error)
+        })
       }
     }
   }

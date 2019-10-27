@@ -12,10 +12,10 @@ class ApiDishCategoryController extends Controller
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\View\View
+     * @return DishCategory[]|\Illuminate\Database\Eloquent\Collection
      */
     public function index()
     {
-        dd(DishCategory::all());
+        return response()->json(DishCategory::all());
     }
 }
