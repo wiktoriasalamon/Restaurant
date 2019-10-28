@@ -1,15 +1,17 @@
 name: restaurant
 recipe: laravel
 config:
+  php: '7.3'
   webroot: public
+  via: nginx
   database: postgres
   xdebug: true
-  services:
-    node:
-      type: node
-      build:
-        - npm install
+services:
+  node:
+    type: node
+    build:
+      - npm install
 
-  tooling:
-    npm:
-      service: node
+tooling:
+  npm:
+    service: node
