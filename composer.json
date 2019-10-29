@@ -16,7 +16,7 @@
         "nesbot/carbon": "2.25.3 as 1.9.0",
         "pusher/pusher-php-server": "^4.0",
         "tightenco/ziggy": "^0.8.1",
-        "tymon/jwt-auth": "^0.5.12"
+        "tymon/jwt-auth": "dev-develop"
     },
     "require-dev": {
         "facade/ignition": "^1.4",
