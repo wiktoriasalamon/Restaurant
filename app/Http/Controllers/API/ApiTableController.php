@@ -12,10 +12,10 @@ class ApiTableController extends Controller
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\View\View
+     * @return Table[]|\Illuminate\Database\Eloquent\Collection
      */
     public function index()
     {
-        dd(Table::all()->load(['reservation', 'order']));
+        return response()->json(Table::all()->load(['reservation', 'order']));
     }
 }
