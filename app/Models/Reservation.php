@@ -21,4 +21,22 @@ class Reservation extends Model
     {
         return $this->belongsTo(Table::class);
     }
+
+    public function findTable(string $size):bool
+    {
+
+    }
+    public function setCustomer(string $email, string $phone)
+    {
+        if($email){
+            $this->email=$email;
+        }else{
+
+        }
+        if($phone){
+            $this->phone=$phone;
+        }
+
+
+    }
 }
