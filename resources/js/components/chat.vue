@@ -34,10 +34,7 @@
         this.newMessage = ''
       },
       test() {
-        axios.get(route('table2.index'))
-        // axios.get(route('api.table.index'))
-        // axios.get(route('api.dish.index'))
-        // axios.get(route('jwt.user'))
+        axios.get(route('api.dish.index'))
           .then(function (response) {
             console.log(response.data)
           }).catch(function (error) {

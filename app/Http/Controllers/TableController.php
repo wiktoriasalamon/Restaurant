@@ -26,15 +26,6 @@ class TableController extends Controller
      */
     public function index()
     {
-//        dd(Auth::user());
-//        dd(Illuminate\Support\Facades\Auth::user());
-//        dd(Auth::id());
-//        dd(auth()->tAuth::id());
-//        $token = auth()->login(Illuminate\Support\Facades\Auth::user());
-        $newToken = auth()->tokenById(1);
-        dd($newToken);
-        dd($user = auth()->user());
-//        dd(JWT::fromUser(User::find(Auth::id())));
         dd(Table::all()->load(['reservation', 'order']));
         return view('home');
     }
