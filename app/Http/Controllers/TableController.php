@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Table;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\JWT;
 
 class TableController extends Controller
 {

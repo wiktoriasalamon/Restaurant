@@ -16,9 +16,13 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-Route::middleware('auth:api')->name('api.')->group(function () {
+//todo middleware
+Route::name('api.')->group(function () {
     Route::get('/table', 'API\ApiTableController@index')->name('table.index');
     Route::get('/dish', 'API\ApiDishController@index')->name('dish.index');
     Route::get('/dishCategory', 'API\ApiDishCategoryController@index')->name('dishCategory.index');
+});
+
+Route::middleware('jwt.verify')->name('api.')->group(function () {
+
 });
