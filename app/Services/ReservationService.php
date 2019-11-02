@@ -20,29 +20,23 @@ class ReservationService
 
     }
 
-    public function fetchAvailableTables(string $date, int $size)
+    /**
+     * @param string $date
+     * @param string $time
+     * @param int $size
+     * @return mixed
+     */
+    public function fetchAvailableTable(string $date, string $time,int $size)
     {
-        $tables=[];
         if(Carbon::now()->format('Y-m-d')==$date){
-           $table=Table::where('size',$size)->where('occupied_since',null)->whereDoesntHave('reservation', function ($query) use ($date) {
-                $query->where('date', 'like', $date)->where('start_time','>=','21:00:00');
+           return Table::where('size',$size)->where('occupied_since',null)->whereDoesntHave('reservation', function ($query) use ($date, $time) {
+                $query->where('date', 'like', $date)->where('start_time','>=',$time);
             })->first();
-           dd($table);
-           for($i=9; $i<=24; $i++)
-           {
-             array_push($tables,['time'=>$i.':00', 'table'=>$table]);
-           }
-           return $tables;
 
         }else{
-            $table=Table::where('size',$size)->whereDoesntHave('reservation', function ($query) use ($date) {
+            return Table::where('size',$size)->whereDoesntHave('reservation', function ($query) use ($date) {
                 $query->where('date', 'like', $date);
             })->first()->id;
-            for($i=9; $i<=24; $i++)
-            {
-                array_push($tables,['time'=>$i.':00', 'table'=>$table]);
-            }
-            return $tables;
         }
 
     }

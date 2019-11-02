@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Reservation extends Model
@@ -22,9 +23,23 @@ class Reservation extends Model
         return $this->belongsTo(Table::class);
     }
 
-    public function findTable(string $size):bool
+    public function findTable(int $size):bool
     {
+        if(Carbon::now()->format('Y-m-d')==$this->start_time){
+            $table= Table::where('size',$size)->where('occupied_since',null)->whereDoesntHave('reservation', function ($query)  {
+                $query->where('date', 'like', $this->date)->where('start_time','>=',$this->start_time);
+            })->first();
 
+        }else{
+            $table= Table::where('size',$size)->whereDoesntHave('reservation', function ($query)  {
+                $query->where('date', 'like', $this->date);
+            })->first();
+        }
+        if($table){
+            $this->table()->associate($table);
+            return true;
+        }
+        return false;
     }
     public function setCustomer(string $email, string $phone)
     {

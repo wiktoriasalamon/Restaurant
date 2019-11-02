@@ -28,12 +28,7 @@ class ApiReservationController extends Controller
 
     }
 
-    public function fetchAvailableTables(string $date, int $tableSize)
-    {
-        return response()->json(['tables' => (new ReservationService())->fetchAvailableTables($date, $tableSize)]);
-        dd((new ReservationService())->fetchAvailableTables($date, $tableSize));
-    }
-
+   
     public function fetchResevationToEdit(int $id)
     {
 
