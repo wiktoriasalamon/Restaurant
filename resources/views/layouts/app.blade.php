@@ -29,7 +29,7 @@
         <ui-header :user="{{ json_encode( Auth::user()) ?? ""}}"></ui-header>
     @show
     <v-container class="main_content">
-        <main class="px-4" id="main_page">
+        <main id="main_page">
             @yield('content')
         </main>
     </v-container>

@@ -51,6 +51,7 @@ Vue.use(Vuetify);
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('chat', require('./components/chat.vue').default);
+Vue.component('homepage', require('./components/homepage.vue').default);
 
 //PARTIALS
 Vue.component('ui-header', require('./components/partials/ui-header').default);
