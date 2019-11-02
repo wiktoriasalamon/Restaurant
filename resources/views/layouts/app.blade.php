@@ -26,7 +26,7 @@
 <v-app id="app" data-app="true">
     @section('header')
         @yield('notification')
-        <ui-header></ui-header>
+        <ui-header :user="{{ json_encode( Auth::user()) ?? ""}}"></ui-header>
     @show
     <v-container class="main_content">
         <main class="px-4" id="main_page">

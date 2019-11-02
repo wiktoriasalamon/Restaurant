@@ -27,4 +27,15 @@ class DishController extends Controller
         dd(Dish::all()->load('category'));
         return view('home');
     }
+
+    /**
+     * Show the restaurant menu for customer
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function menu()
+    {
+        return view('menu');
+    }
+
 }
