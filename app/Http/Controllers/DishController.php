@@ -29,13 +29,13 @@ class DishController extends Controller
     }
 
     /**
-     * Show the restaurant menu for customer
+     * Show the restaurant menuLayouts for customer
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function menu()
     {
-        return view('menu');
+        return view('menuLayouts/menu');
     }
 
 }
