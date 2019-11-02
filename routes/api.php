@@ -21,8 +21,8 @@ Route::name('api.')->group(function () {
     Route::get('/table', 'API\ApiTableController@index')->name('table.index');
     Route::get('/dish', 'API\ApiDishController@index')->name('dish.index');
     Route::get('/dishCategory', 'API\ApiDishCategoryController@index')->name('dishCategory.index');
-    Route::post('/reservation', 'API\ApiReservationController@store')->name('reservation.store');
-    Route::get('/reservation/fetch-available-tables/{date}/{time}/{size}', 'API\ApiReservationController@fetchAvailableTables')->name('reservation.fetchAvailableTables');
+    Route::post('/reservation', 'API\ApiReservationController@storeAsCitizen')->name('reservation.store');
+
 });
 
 Route::middleware('jwt.verify')->name('api.')->group(function () {

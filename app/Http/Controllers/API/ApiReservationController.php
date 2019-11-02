@@ -19,7 +19,9 @@ class ApiReservationController extends Controller
         $reservation->setCustomer($request->email, $request->phone);
         if ($reservation->findTable($request->tableSize)) {
             $reservation->save();
+            return response()->json(['message' => "Rezerwacja została pomyślnie zapisana."], 200);
         }
+        return response()->json(['message' => "Brak dostępnego stolika w podanym terminie.", 500]);
     }
 
 
@@ -28,7 +30,7 @@ class ApiReservationController extends Controller
 
     }
 
-   
+
     public function fetchResevationToEdit(int $id)
     {
 
