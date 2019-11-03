@@ -34,6 +34,16 @@ Route::name('api.')->namespace('API')->group(function () {
 
 });
 
+Route::post('/register', 'API\ApiAuthController@register')->name('api.register');
+Route::post('/login', 'API\ApiAuthController@login')->name('api.login');
+
+
+Route::middleware('auth:api')->name('api.')->namespace('API')->group(function() {
+    Route::post('/logout', 'ApiAuthController@logout')->name('logout');
+});
+
+
+
 Route::middleware('jwt.verify')->name('api.')->group(function () {
 
 });
