@@ -24,6 +24,7 @@ Route::name('api.')->group(function () {
     Route::post('/reservation', 'API\ApiReservationController@storeAsCitizen')->name('reservation.store');
     Route::get('/reservation/show/{id}', 'API\ApiReservationController@fetchReservation')->name('reservation.show');
     Route::get('/reservation', 'API\ApiReservationController@customerIndex')->name('reservation.customerIndex');
+    Route::delete('/reservation/{id}', 'API\ApiReservationController@delete')->name('reservation.delete');
 
 });
 

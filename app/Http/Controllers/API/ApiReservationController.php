@@ -19,15 +19,19 @@ class ApiReservationController extends Controller
      */
     public function storeAsCitizen(CustomerReservationRequest $request)
     {
-        $reservation = new Reservation();
-        $reservation->date = $request->date;
-        $reservation->start_time = $request->startTime;
-        $reservation->setCustomer($request->email, $request->phone);
-        if ($reservation->findTable($request->tableSize)) {
-            $reservation->save();
-            return response()->json(['message' => "Rezerwacja została pomyślnie zapisana."], 200);
+        try {
+            $reservation = new Reservation();
+            $reservation->date = $request->date;
+            $reservation->start_time = $request->startTime;
+            $reservation->setCustomer($request->email, $request->phone);
+            if ($reservation->findTable($request->tableSize)) {
+                $reservation->save();
+                return response()->json(['message' => "Rezerwacja została pomyślnie zapisana."], 200);
+            }
+            return response()->json(['message' => "Brak dostępnego stolika w podanym terminie.", 500]);
+        } catch (\Exception $exception) {
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
         }
-        return response()->json(['message' => "Brak dostępnego stolika w podanym terminie.", 500]);
     }
 
     /**
@@ -35,7 +39,11 @@ class ApiReservationController extends Controller
      */
     public function customerIndex()
     {
-        return response()->json(['reservations' =>  (new ReservationService())->reservationWithStatus()], 200);
+        try {
+            return response()->json(['reservations' => (new ReservationService())->reservationWithStatus()], 200);
+        } catch (\Exception $exception) {
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        }
     }
 
     /**
@@ -47,8 +55,17 @@ class ApiReservationController extends Controller
         return response()->json(['reservation' => Reservation::with('table')->findOrFail($id)], 200);
     }
 
+    /**
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function delete(int $id)
     {
-
+        try {
+            Reservation::findOrFail($id)->delete();
+            return response()->json("Rezerwacja została anulowana", 201);
+        } catch (\Exception $e) {
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        }
     }
 }
