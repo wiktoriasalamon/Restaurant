@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Reservation\CustomerReservationRequest;
+use App\Http\Requests\Reservation\WorkerReservationRequest;
 use App\Models\Reservation;
 use App\Models\Table;
 use App\Services\ReservationService;
@@ -30,6 +31,28 @@ class ApiReservationController extends Controller
             }
             return response()->json(['message' => "Brak dostępnego stolika w podanym terminie.", 500]);
         } catch (\Exception $exception) {
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        }
+    }
+
+    /**
+     * @param WorkerReservationRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function storeAsWorker(WorkerReservationRequest $request)
+    {
+        try {
+            $reservation = new Reservation();
+            $reservation->date = $request->date;
+            $reservation->start_time = $request->startTime;
+            $reservation->phone = $request->phone;
+            $reservation->email = $request->email;
+            $reservation->table()->associate(Table::findOrFail($request->tableId));
+            $reservation->save();
+            return response()->json(['message' => "Rezerwacja została pomyślnie zapisana."], 200);
+
+        } catch (\Exception $exception) {
+            dd($exception);
             return response()->json('Wystąpił nieoczekiwany błąd', 500);
         }
     }
