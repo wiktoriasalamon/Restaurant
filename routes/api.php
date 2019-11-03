@@ -17,14 +17,20 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 //todo middleware
-Route::name('api.')->group(function () {
-    Route::get('/table', 'API\ApiTableController@index')->name('table.index');
-    Route::get('/dish', 'API\ApiDishController@index')->name('dish.index');
-    Route::get('/dishCategory', 'API\ApiDishCategoryController@index')->name('dishCategory.index');
-    Route::post('/reservation', 'API\ApiReservationController@storeAsCitizen')->name('reservation.store');
-    Route::get('/reservation/show/{id}', 'API\ApiReservationController@fetchReservation')->name('reservation.show');
-    Route::get('/reservation', 'API\ApiReservationController@customerIndex')->name('reservation.customerIndex');
-    Route::delete('/reservation/{id}', 'API\ApiReservationController@delete')->name('reservation.delete');
+Route::name('api.')->namespace('API')->group(function () {
+    Route::get('/table', 'ApiTableController@index')->name('table.index');
+    Route::get('/dish', 'ApiDishController@index')->name('dish.index');
+    Route::get('/dishCategory', 'ApiDishCategoryController@index')->name('dishCategory.index');
+
+
+    Route::name('reservation.')->prefix('reservation')->group(function () {
+
+        Route::post('/store-as-citizen', 'ApiReservationController@storeAsCitizen')->name('storeAsCitizen');
+        Route::post('/store-as-worker', 'ApiReservationController@storeAsWorker')->name('storeAsWorker');
+        Route::get('/show/{id}', 'ApiReservationController@fetchReservation')->name('show');
+        Route::get('', 'ApiReservationController@customerIndex')->name('customerIndex');
+        Route::delete('/{id}', 'ApiReservationController@delete')->name('delete');
+    });
 
 });
 

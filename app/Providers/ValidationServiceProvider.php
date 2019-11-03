@@ -40,7 +40,13 @@ class ValidationServiceProvider extends ServiceProvider {
             }
             return false;
         });
-
+        $this->app['validator']->extend('tableAvailable', function ($attribute, $value, $parameters)
+        {
+            if ((new ReservationService())->isTableAvailable($value, $parameters[0], $parameters[1])) {
+                return true;
+            }
+            return false;
+        });
 
     }
 
