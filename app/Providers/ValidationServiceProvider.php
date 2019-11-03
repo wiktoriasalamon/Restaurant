@@ -1,6 +1,6 @@
 <?php namespace App\Providers;
 
-use App\Services\LDAPUserService;
+
 use App\Services\ReservationService;
 use Illuminate\Support\ServiceProvider;
 
@@ -32,6 +32,15 @@ class ValidationServiceProvider extends ServiceProvider {
             }
             return false;
         });
+
+        $this->app['validator']->extend('openHours', function ($attribute, $value, $parameters)
+        {
+            if ((new ReservationService())->openHours($value)) {
+                return true;
+            }
+            return false;
+        });
+
 
     }
 

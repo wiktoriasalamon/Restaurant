@@ -22,6 +22,8 @@ Route::name('api.')->group(function () {
     Route::get('/dish', 'API\ApiDishController@index')->name('dish.index');
     Route::get('/dishCategory', 'API\ApiDishCategoryController@index')->name('dishCategory.index');
     Route::post('/reservation', 'API\ApiReservationController@storeAsCitizen')->name('reservation.store');
+    Route::get('/reservation/show/{id}', 'API\ApiReservationController@fetchReservation')->name('reservation.show');
+    Route::get('/reservation', 'API\ApiReservationController@customerIndex')->name('reservation.customerIndex');
 
 });
 
