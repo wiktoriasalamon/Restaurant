@@ -13,6 +13,7 @@ class ApiReservationController extends Controller
 {
     public function storeAsCitizen(Request $request)
     {
+        dd(date('H:i:s', strtotime( config('reservation.timeForSameDay'))));
         $reservation = new Reservation();
         $reservation->date = $request->date;
         $reservation->start_time = $request->startTime;

@@ -14,15 +14,13 @@ class CustomerReservationRequest extends FormRequest
     public function rules(): array
     {
         $rules=[
-            'startTime'=>'required|enough_time_before:'.$this->request->get('date'),
-            'date'=>'required|one_a_day:'.$this->request->get('email'), //customer can have one reservation per day
+            'startTime'=>'required|time_for_same_day_reservation',
+            'date'=>'required|one_a_day_reservation|date|after:yesterday:'.$this->request->get('email'), //customer can have one reservation per day
             'tableSize'=>'required'
         ];
-        //phone is not obligatory
         if($this->request->get('phone')){
             $rules['phone'] = array('max:12','regex:/^[+]{1}(48)[0-9]{9}$|^[0-9]{9}$/');
         }
-        //if worker adds reservation for a bigger group
         if($this->request->get('email')){
             $rules['email'] = 'required|e-mail|max:50';
         }
