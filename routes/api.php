@@ -21,6 +21,11 @@ Route::name('api.')->group(function () {
     Route::get('/table', 'API\ApiTableController@index')->name('table.index');
     Route::get('/dish', 'API\ApiDishController@index')->name('dish.index');
     Route::get('/dishCategory', 'API\ApiDishCategoryController@index')->name('dishCategory.index');
+    Route::post('/reservation', 'API\ApiReservationController@storeAsCitizen')->name('reservation.store');
+    Route::get('/reservation/show/{id}', 'API\ApiReservationController@fetchReservation')->name('reservation.show');
+    Route::get('/reservation', 'API\ApiReservationController@customerIndex')->name('reservation.customerIndex');
+    Route::delete('/reservation/{id}', 'API\ApiReservationController@delete')->name('reservation.delete');
+
 });
 
 Route::middleware('jwt.verify')->name('api.')->group(function () {
