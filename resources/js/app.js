@@ -59,6 +59,7 @@ Vue.component('ui-footer', require('./components/partials/ui-footer').default);
 
 //AUTH
 Vue.component('login-form', require('./components/auth/login-form').default);
+Vue.component('login-test-component', require('./components/auth/login-test-component').default);
 
 
 const app = new Vue({

@@ -15,6 +15,9 @@
 //    return view('welcome');
 //});
 
+Route::get('/loginTest', 'TestController@showLogin')->name('loginTest');
+
+
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
@@ -25,3 +28,4 @@ Route::get('/table', 'TableController@index')->name('table.index');
 Route::get('/dish', 'DishController@index')->name('dish.index');
 Route::get('/menu', 'DishController@menu')->name('menu');
 Route::get('/dishCategory', 'DishCategoryController@index')->name('dishCategory.index');
+Route::get('/homeTest', 'TestController@showHome')->name('homeTest');
