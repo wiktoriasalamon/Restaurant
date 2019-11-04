@@ -16,9 +16,15 @@
 			:rules="[rules.required]"
 			@click:append="showPassword = !showPassword"
 		></v-text-field>
-		<a class="a-forgot-password"> Nie pamiętam hasła </a>
+		<v-btn 
+			text 
+			small
+			class="btn-forgot-password"
+			@click="handlePressForgetPassword()"> 
+			Nie pamiętam hasła 
+		</v-btn>
 		<div class="login-button">
-			<v-btn large @click="login()">Zaloguj się</v-btn>
+			<v-btn large @click="handlePressLogin()">Zaloguj się</v-btn>
 		</div>
 		<v-snackbar
 			v-model="snackbar.show"
@@ -32,7 +38,12 @@
 			Zamknij
 		</v-btn>
 		</v-snackbar>
-		<a class="a-register">Zarejestruj się</a>
+		<v-btn 
+			text  
+			@click="handlePressRegister()"
+			class="btn-register">
+			Zarejestruj się
+		</v-btn>
 	</div>
 </template>
 
@@ -66,18 +77,34 @@ export default {
 		}
 	},
 	methods: {
-		login() {
+		handlePressLogin() {
 			if(this.input.email == "" || this.input.password == "") {
-				this.text='Pola nie mogą być puste';
-				this.snackbar.show = true;
+				this.showAlert('Pola nie mogą być puste');
 			} else if (!isEmail(this.input.email)) {
-				this.text='Wprowadzono nieprawidłowe dane';
-				this.snackbar.show = true;
+				this.showAlert('Wprowadzono nieprawidłowe dane');
 			} else {
-				this.text='Wszystko ok';
-				this.snackbar.show = true;
+				this.showAlert('Tu będzie logowanie');
 			}
 		},
+		login() {
+			axios.post('', {
+
+			})
+			.then((response)=> {
+
+			})
+			.catch();
+		},
+		handlePressRegister() {
+			window.location.href = route('register');
+		},
+		handlePressForgetPassword() {
+			this.showAlert('Tu będzie przypominanie hasła');
+		},
+		showAlert(alert) {
+			this.text=alert;
+			this.snackbar.show = true;
+		}
 	}
   }
 </script>
@@ -91,8 +118,10 @@ export default {
 		background: rgba(255,255,255,0.5);
 		padding: 2vw 5vw;
 	}
-	.a-forgot-password {
+	.btn-forgot-password {
 		align-self: flex-end;
+		text-transform: none;
+		font-weight: normal;
 	}
 	.login-button {
 		margin: 2vw 3vw;
@@ -100,7 +129,7 @@ export default {
 		flex-direction: column;
 		float: center;
 	}
-	.a-register {
+	.btn-register {
 		align-self: center
 	}
 </style>
