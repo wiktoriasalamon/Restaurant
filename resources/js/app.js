@@ -9,8 +9,7 @@ import Vue from 'vue'
 import Vuetify from 'vuetify';
 import vuetifyPL from 'vuetify/lib/locale/pl';
 import vuetifyEn from 'vuetify/lib/locale/en';
-import 'vuetify/dist/vuetify.min.css'
-
+import 'vuetify/dist/vuetify.min.css';
 
 require('./bootstrap');
 

@@ -37,7 +37,9 @@
 </template>
 
 <script>
-  export default {
+import {isEmail, isPassword, isPhoneNumber, isPostalCode } from '../../validator/DataValidator.js';
+
+export default {
 	name: "loginPage",
 
 	data() {
@@ -58,19 +60,17 @@
 					return !!value || 'Pole nie może być puste.';
 				},
 				email: value => {
-					const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-					return pattern.test(value) || 'Nieprawidłowy e-mail.';
+					return isEmail(value) || 'Nieprawidłowy e-mail.';
           		},
 			   },
 		}
 	},
 	methods: {
 		login() {
-			const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 			if(this.input.email == "" || this.input.password == "") {
 				this.text='Pola nie mogą być puste';
 				this.snackbar.show = true;
-			} else if (!pattern.test(this.input.email)) {
+			} else if (!isEmail(this.input.email)) {
 				this.text='Wprowadzono nieprawidłowe dane';
 				this.snackbar.show = true;
 			} else {
