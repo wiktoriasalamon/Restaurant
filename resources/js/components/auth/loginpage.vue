@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import {isEmail, isPassword, isPhoneNumber, isPostalCode } from '../../validator/DataValidator.js';
+import {isEmail} from '../../validator/DataValidator.js';
 
 export default {
 	name: "loginPage",
