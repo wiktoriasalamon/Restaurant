@@ -61,6 +61,12 @@ Vue.component('ui-footer', require('./components/partials/ui-footer').default);
 Vue.component('login-form', require('./components/auth/login-form').default);
 
 
+//RESERVATION
+
+Vue.component('user-create-reservation', require('./components/reservation/user-create-reservation').default);
+Vue.component('user-index-reservation', require('./components/reservation/user-index-reservation').default);
+
+
 const app = new Vue({
     el: '#app',
     data: {
