@@ -90,8 +90,7 @@ class ReservationService
      */
     public function reservationWithStatus(): array
     {
-        //$auth=Auth::user(); todo: odkomentować jak będzie autoryzacja
-        $auth = User::findOrFail(1);
+        $auth=Auth::user();
         $reservations = Reservation::where('email', $auth->email)->get();
         $reservationWithStatus = [];
         foreach ($reservations as $reservation) {
