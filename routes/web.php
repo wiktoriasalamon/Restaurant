@@ -15,6 +15,9 @@
 //    return view('welcome');
 //});
 
+
+
+
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
@@ -27,3 +30,20 @@ Route::get('/menu', 'DishController@menu')->name('menu');
 Route::get('/dishCategory', 'DishCategoryController@index')->name('dishCategory.index');
 Route::resource('reservation', 'ReservationController');
 Route::get('/reservation-user', 'ReservationController@indexUser')->name('reservation.indexUser');
+
+Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(function () {
+    Route::get('/table', 'ApiTableController@index')->name('table.index');
+    Route::get('/dish', 'ApiDishController@index')->name('dish.index');
+    Route::get('/dishCategory', 'ApiDishCategoryController@index')->name('dishCategory.index');
+
+
+    Route::name('reservation.')->prefix('reservation')->group(function () {
+
+        Route::post('/store-as-citizen', 'ApiReservationController@storeAsCitizen')->name('storeAsCitizen');
+        Route::post('/store-as-worker', 'ApiReservationController@storeAsWorker')->name('storeAsWorker');
+        Route::get('/show/{id}', 'ApiReservationController@fetchReservation')->name('show');
+        Route::get('', 'ApiReservationController@customerIndex')->name('customerIndex');
+        Route::delete('/{id}', 'ApiReservationController@delete')->name('delete');
+    });
+
+});
