@@ -154,7 +154,6 @@
 							tableSize: this.tableSize,
 					}).then(
             response => {
-              console.log(response.data)
               Vue.toasted.success(response.data.message).goAway(5000);
               setTimeout(function(){window.location.href=route('home')} , 5000);
             },
