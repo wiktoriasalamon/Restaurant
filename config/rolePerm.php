@@ -1,0 +1,46 @@
+<?php
+return[
+    //admin has admin and worker permissions
+    "admin"=>[
+        "dishCreate",
+        "dishShow",
+        "dishEdit",
+        "dishDelete",
+        "dishIndex",
+        "userCreate",
+        "userShow",
+        "userEdit",
+        "userDelete",
+        "userIndex",
+        "tableCreate",
+        "tableShow",
+        "tableEdit",
+        "tableDelete",
+        "tableIndex",
+        "dishCategoryCreate",
+        "dishCategoryShow",
+        "dishCategoryEdit",
+        "dishCategoryDelete",
+        "dishCategoryIndex"
+    ],
+    "waiter"=>[
+        "reservationCreate",
+        "reservationShow",
+        "reservationEdit",
+        "reservationDelete",
+        "reservationIndex",
+        "orderCreate",
+        "orderShow",
+        "orderEdit",
+        "orderDelete",
+        "orderIndex"
+
+    ],
+    "customer"=>[
+        "onlineReservationCreate",
+        "onlineReservationShow",
+        "onlineReservationEdit",
+        "onlineReservationDelete",
+        "onlineReservationIndex"
+    ]
+];
