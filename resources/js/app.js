@@ -59,6 +59,7 @@ Vue.component('ui-footer', require('./components/partials/ui-footer').default);
 
 //AUTH
 Vue.component('login-form', require('./components/auth/login-form').default);
+Vue.component('reset-password-form', require('./components/auth/reset-password-form').default);
 
 
 //RESERVATION
