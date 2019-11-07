@@ -70,6 +70,20 @@ class ApiReservationController extends Controller
     }
 
     /**
+     * @param string $date
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function fetchTablesByDate(string $date)
+    {
+        try {
+            return response()->json(['tables' => (new ReservationService())->tablesByDate($date)], 200);
+        } catch (\Exception $exception) {
+            dd($exception);
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        }
+    }
+
+    /**
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
