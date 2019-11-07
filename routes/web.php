@@ -16,8 +16,6 @@
 //});
 
 
-
-
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
@@ -46,8 +44,10 @@ Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(
 
         Route::post('/store-as-citizen', 'ApiReservationController@storeAsCitizen')->name('storeAsCitizen');
         Route::post('/store-as-worker', 'ApiReservationController@storeAsWorker')->name('storeAsWorker');
+        Route::put('/update-as-worker', 'ApiReservationController@updateAsWorker')->name('updateAsWorker');
         Route::get('/show/{id}', 'ApiReservationController@fetchReservation')->name('show');
         Route::get('', 'ApiReservationController@customerIndex')->name('customerIndex');
+        Route::get('/tables/{date}', 'ApiReservationController@fetchTablesByDate')->name('fetchTablesByDate');
         Route::delete('/{id}', 'ApiReservationController@delete')->name('delete');
     });
 

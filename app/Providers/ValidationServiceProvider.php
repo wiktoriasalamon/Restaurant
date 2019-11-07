@@ -2,6 +2,7 @@
 
 
 use App\Services\ReservationService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 
 class ValidationServiceProvider extends ServiceProvider {
@@ -27,7 +28,11 @@ class ValidationServiceProvider extends ServiceProvider {
 
         $this->app['validator']->extend('oneADayReservation', function ($attribute, $value, $parameters)
         {
-            if ((new ReservationService())->oneADay($value, $parameters[0])) {
+            $email=$parameters[0];
+            if(!$parameters[0]){
+                $email=Auth::user()->email;
+            }
+            if ((new ReservationService())->oneADay($value, $email)) {
                 return true;
             }
             return false;
