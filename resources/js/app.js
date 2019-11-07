@@ -72,6 +72,13 @@ Vue.component('user-create-reservation', require('./components/reservation/user-
 Vue.component('user-index-reservation', require('./components/reservation/user-index-reservation').default);
 
 
+//MENU
+
+Vue.component('user-menu', require('./components/menu/user-menu').default);
+Vue.component('admin-menu', require('./components/menu/admin-menu').default);
+
+
+
 const app = new Vue({
     el: '#app',
     data: {

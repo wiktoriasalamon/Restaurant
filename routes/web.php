@@ -25,6 +25,8 @@ Route::post('messages', 'ChatsController@sendMessage');
 Route::get('/table', 'TableController@index')->name('table.index');
 Route::get('/dish', 'DishController@index')->name('dish.index');
 Route::get('/menu', 'DishController@menu')->name('menu');
+Route::get('/menu-admin', 'DishController@adminMenu')->name('menu.admin');
+Route::get('/dish/edit/{id}', 'DishController@edit')->name('dish.edit');
 Route::get('/dishCategory', 'DishCategoryController@index')->name('dishCategory.index');
 Route::resource('reservation', 'ReservationController');
 Route::get('/reservation-user', 'ReservationController@indexUser')->name('reservation.indexUser');
