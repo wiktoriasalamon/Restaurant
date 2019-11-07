@@ -28,9 +28,8 @@ Route::get('/table', 'TableController@index')->name('table.index');
 Route::get('/dish', 'DishController@index')->name('dish.index');
 Route::get('/menu', 'DishController@menu')->name('menu');
 Route::get('/dishCategory', 'DishCategoryController@index')->name('dishCategory.index');
-//Route::resource('reservation', 'ReservationController');
-//Route::get('/reservation-user', 'ReservationController@indexUser')->name('reservation.indexUser');
-Route::get('resetPasswordTest', 'Auth\ResetPasswordController@resetPasswordTest')->name('reset.password');
+Route::resource('reservation', 'ReservationController');
+Route::get('/reservation-user', 'ReservationController@indexUser')->name('reservation.indexUser');
 
 Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(function () {
     Route::get('/table', 'ApiTableController@index')->name('table.index');
