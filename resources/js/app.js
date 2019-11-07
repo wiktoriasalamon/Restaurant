@@ -4,12 +4,13 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-import './bootstrap';
+import 'bootstrap';
 import Vue from 'vue'
 import Vuetify from 'vuetify';
 import vuetifyPL from 'vuetify/lib/locale/pl';
 import vuetifyEn from 'vuetify/lib/locale/en';
 import 'vuetify/dist/vuetify.min.css'
+import Toasted from 'vue-toasted';
 
 
 require('./bootstrap');
@@ -36,6 +37,10 @@ const opts = {
 };
 
 Vue.use(Vuetify);
+const Options = {
+    position: 'top-center'
+}
+Vue.use(Toasted, Options)
 
 
 /**
