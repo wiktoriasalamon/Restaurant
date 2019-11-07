@@ -33,8 +33,11 @@ Route::get('/reservation-user', 'ReservationController@indexUser')->name('reserv
 
 Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(function () {
     Route::get('/table', 'ApiTableController@index')->name('table.index');
+    Route::delete('/table/{tableId}', 'ApiTableController@delete')->name('table.delete');
     Route::get('/dish', 'ApiDishController@index')->name('dish.index');
+    Route::delete('/dish/{dishId}', 'ApiDishController@delete')->name('dish.delete');
     Route::get('/dishCategory', 'ApiDishCategoryController@index')->name('dishCategory.index');
+    Route::delete('/dishCategory/{dishCategoryId}', 'ApiDishCategoryController@delete')->name('dishCategory.delete');
 
 
     Route::name('reservation.')->prefix('reservation')->group(function () {
