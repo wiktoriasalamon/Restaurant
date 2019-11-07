@@ -43,11 +43,7 @@ class ApiReservationController extends Controller
     {
         try {
             $reservation = new Reservation();
-            $reservation->date = $request->date;
-            $reservation->start_time = $request->startTime;
-            $reservation->phone = $request->phone;
-            $reservation->email = $request->email;
-            $reservation->table()->associate(Table::findOrFail($request->tableId));
+            $reservation->setWorkerReservation($request);
             $reservation->save();
             return response()->json(['message' => "Rezerwacja została pomyślnie zapisana."], 200);
 
@@ -56,6 +52,25 @@ class ApiReservationController extends Controller
             return response()->json('Wystąpił nieoczekiwany błąd', 500);
         }
     }
+
+    /**
+     * @param WorkerReservationRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateAsWorker(WorkerReservationRequest $request)
+    {
+        try {
+            $reservation = Reservation::findOrFail($request->id);
+            $reservation->setWorkerReservation($request);
+            $reservation->update();
+            return response()->json(['message' => "Rezerwacja została pomyślnie zapisana."], 200);
+
+        } catch (\Exception $exception) {
+            dd($exception);
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        }
+    }
+
 
     /**
      * @return \Illuminate\Http\JsonResponse
