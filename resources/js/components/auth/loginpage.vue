@@ -2,13 +2,13 @@
 	<div class="login-form">
 		
 		<v-text-field 
-			label="e-mail" 
+			label="E-mail" 
 			outlined
 			v-model="input.email"
 			:rules="[rules.required, rules.email]"
 		></v-text-field>
 		<v-text-field 
-			label="hasło" 
+			label="Hasło" 
 			outlined
 			v-model="input.password"
 			:append-icon="showPassword ? 'visibility' : 'visibility_off'"
@@ -27,13 +27,13 @@
 			<v-btn large @click="handlePressLogin()">Zaloguj się</v-btn>
 		</div>
 		<v-snackbar
-			v-model="snackbar.show"
+			v-model="snackbarShow"
 		>
 		{{ text }}
 		<v-btn
 			color="pink"
 			text
-			@click="snackbar.show = false"
+			@click="snackbarShow = false"
 		>
 			Zamknij
 		</v-btn>
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import {isEmail, isPassword, isPhoneNumber, isPostalCode } from '../../validator/DataValidator.js';
+import {isEmail} from '../../validator/DataValidator.js';
 
 export default {
 	name: "loginPage",
@@ -56,15 +56,11 @@ export default {
 	data() {
 		return {
 			showPassword: false,
-			formIsEmpty: true,
-			formHasErrors: false,
 			input: {
 				email: "",
 				password: "",
 			},
-			snackbar: {
-				show: false,
-			},
+			snackbarShow: false,
 			text: 'Hello, I\'m a snackbar',
 			rules: {
 				required: value => {
