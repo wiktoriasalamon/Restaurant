@@ -18,8 +18,8 @@ class ReservationTableSeeder extends Seeder
                 for ($i = 1; $i < sizeof($emails) && $i < \App\Models\Table::all()->count(); $i++) {
                     if (random_int(0, 1)) {
                         $reservation = new \App\Models\Reservation();
-                        $reservation->date = \Carbon\Carbon::today()->addDays($day);
-                        $reservation->start_time = "17:00";
+                        $reservation->date = \Carbon\Carbon::today();
+                        $reservation->start_time = rand(9,24).':00';
                         $reservation->table()->associate(\App\Models\Table::find($i));
                         $reservation->email = $emails[$i];
                         $reservation->save();

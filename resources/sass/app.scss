@@ -6,3 +6,19 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+.v-application.v-application--is-ltr.theme--light{
+    background: url('/background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.main_content, main{
+    height: 100%;
+}
+.homepage_title{
+    height: 100%;
+}
+.homepage_title h1{
+    font-size: 10rem;
+    color: #724e40;
+}
