@@ -17,7 +17,7 @@
 
 
 Auth::routes();
-//Route::middleware('auth')->group(function () {
+Route::middleware('auth')->group(function () {
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('/chat', 'ChatsController@index');
     Route::get('messages', 'ChatsController@fetchMessages');
@@ -30,13 +30,17 @@ Auth::routes();
     Route::get('/dishCategory', 'DishCategoryController@index')->name('dishCategory.index')->middleware('permission:dishCategoryIndex');
     Route::get('/reservation/create', 'ReservationController@create')->name('reservation.create')->middleware('permission:reservationCreate|onlineReservationCreate');
     Route::get('/reservation-user', 'ReservationController@indexUser')->name('reservation.indexUser')->middleware('permission:onlineReservationIndex');
-//});
+});
 
 Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(function () {
     Route::get('/table', 'ApiTableController@index')->name('table.index')->middleware('permission:tableIndex');
+    Route::delete('/table/{table}', 'ApiTableController@delete')->name('table.delete')->middleware('permission:tableDelete');
     Route::get('/dish', 'ApiDishController@index')->name('dish.index')->middleware('permission:dishIndex');
+    Route::delete('/dish/{dish}', 'ApiDishController@delete')->name('dish.delete')->middleware('permission:dishDelete');
     Route::get('/dishCategory', 'ApiDishCategoryController@index')->name('dishCategory.index')->middleware('permission:dishCategoryIndex');
-
+    Route::get('/menu-admin', 'DishController@adminMenu')->name('menu.admin')->middleware('permission:tableIndex');
+    Route::get('/dish/edit/{id}', 'DishController@edit')->name('dish.edit')->middleware('permission:dishEdit');
+    Route::delete('/dishCategory/{dishCategory}', 'ApiDishCategoryController@delete')->name('dishCategory.delete')->middleware('permission:dishCategoryDelete');
 
     Route::name('reservation.')->prefix('reservation')->group(function () {
 
