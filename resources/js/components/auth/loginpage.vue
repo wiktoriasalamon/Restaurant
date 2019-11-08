@@ -49,6 +49,7 @@
 
 <script>
 import {isEmail} from '../../validator/DataValidator.js';
+import alertStrings from '../../strings/AlertStrings.js';
 
 export default {
 	name: "loginPage",
@@ -61,13 +62,13 @@ export default {
 				password: "",
 			},
 			snackbarShow: false,
-			text: 'Hello, I\'m a snackbar',
+			text: "",
 			rules: {
 				required: value => {
-					return !!value || 'Pole nie może być puste.';
+					return !!value || alertStrings.emptyField;
 				},
 				email: value => {
-					return isEmail(value) || 'Nieprawidłowy e-mail.';
+					return isEmail(value) || alertStrings.invalidEmail;
           		},
 			   },
 		}
@@ -75,9 +76,9 @@ export default {
 	methods: {
 		handlePressLogin() {
 			if(this.input.email == "" || this.input.password == "") {
-				this.showAlert('Pola nie mogą być puste');
+				this.showAlert(alertStrings.emptyField);
 			} else if (!isEmail(this.input.email)) {
-				this.showAlert('Wprowadzono nieprawidłowe dane');
+				this.showAlert(alertStrings.invalidData);
 			} else {
 				this.showAlert('Tu będzie logowanie');
 			}
