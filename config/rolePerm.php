@@ -1,6 +1,5 @@
 <?php
 return[
-    //admin has admin and worker permissions
     "admin"=>[
         "dishCreate",
         "dishShow",
@@ -21,9 +20,19 @@ return[
         "dishCategoryShow",
         "dishCategoryEdit",
         "dishCategoryDelete",
-        "dishCategoryIndex"
+        "dishCategoryIndex",
+        "reservationCreate",
+        "reservationShow",
+        "reservationEdit",
+        "reservationDelete",
+        "reservationIndex",
+        "orderCreate",
+        "orderShow",
+        "orderEdit",
+        "orderDelete",
+        "orderIndex"
     ],
-    "waiter"=>[
+    "worker"=>[
         "reservationCreate",
         "reservationShow",
         "reservationEdit",

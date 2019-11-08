@@ -18,7 +18,7 @@ class ApiReservationController extends Controller
      * @param CustomerReservationRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function storeAsCitizen(CustomerReservationRequest $request)
+    public function storeAsCustomer(CustomerReservationRequest $request)
     {
         try {
             $reservation = new Reservation();
