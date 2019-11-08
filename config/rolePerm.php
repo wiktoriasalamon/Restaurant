@@ -1,0 +1,55 @@
+<?php
+return[
+    "admin"=>[
+        "dishCreate",
+        "dishShow",
+        "dishEdit",
+        "dishDelete",
+        "dishIndex",
+        "userCreate",
+        "userShow",
+        "userEdit",
+        "userDelete",
+        "userIndex",
+        "tableCreate",
+        "tableShow",
+        "tableEdit",
+        "tableDelete",
+        "tableIndex",
+        "dishCategoryCreate",
+        "dishCategoryShow",
+        "dishCategoryEdit",
+        "dishCategoryDelete",
+        "dishCategoryIndex",
+        "reservationCreate",
+        "reservationShow",
+        "reservationEdit",
+        "reservationDelete",
+        "reservationIndex",
+        "orderCreate",
+        "orderShow",
+        "orderEdit",
+        "orderDelete",
+        "orderIndex"
+    ],
+    "worker"=>[
+        "reservationCreate",
+        "reservationShow",
+        "reservationEdit",
+        "reservationDelete",
+        "reservationIndex",
+        "orderCreate",
+        "orderShow",
+        "orderEdit",
+        "orderDelete",
+        "orderIndex"
+
+    ],
+    "customer"=>[
+        "onlineReservationCreate",
+        "onlineReservationShow",
+        "onlineReservationEdit",
+        "onlineReservationDelete",
+        "onlineReservationIndex"
+    ]
+];

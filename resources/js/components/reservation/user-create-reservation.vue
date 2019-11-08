@@ -146,7 +146,7 @@
         if(this.date === null || this.time === null || this.tableSize === null){
           Vue.toasted.error("Musisz wypełnić wszystkie dane!!!").goAway(7000);
 				}else{
-          axios.post(route('api.reservation.storeAsCitizen'),{
+          axios.post(route('api.reservation.storeAsCustomer'),{
 							date: this.date,
 							startTime: this.time,
 							email: this.email,

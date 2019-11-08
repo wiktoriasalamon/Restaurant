@@ -84,14 +84,14 @@
           {id: 1, text: "Strona główna", link: route('home')},
           {id: 2, text: "Menu", link: route('menu.admin')},
           {id: 3, text: "Kelnerzy", link: route('menu')},
-          {id: 4, text: "Rezerwacje", link: route('reservation.index')},
+          {id: 4, text: "Rezerwacje", link: route('reservation.indexUser')},
           {id: 5, text: "Zamowienia", link: route('home')},
 				],
 				waiterMenu:[
           {id: 1, text: "Stoliki", link: route('menu')},
           {id: 2, text: "Zamówienia", link: route('menu')},
           {id: 3, text: "Zamówienia online", link: route('menu')},
-          {id: 4, text: "Rezerwacje", link: route('reservation.index')},
+          {id: 4, text: "Rezerwacje", link: route('reservation.indexUser')},
 				],
 				userMenu:[
           {id: 1, text: "moje zamówienia", link: route('home')},
