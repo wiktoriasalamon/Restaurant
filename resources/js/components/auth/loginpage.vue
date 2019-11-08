@@ -99,7 +99,7 @@ export default {
 		},
 		showAlert(alert) {
 			this.text=alert;
-			this.snackbar.show = true;
+			this.snackbarShow = true;
 		}
 	}
   }
