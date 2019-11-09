@@ -24,6 +24,7 @@
 			outlined
 			v-model="input.phoneNumber"
 			:rules="[rules.required, rules.phoneNumber]"
+			prefix="+48"
 		></v-text-field>
 		<v-text-field 
 			label="Ulica" 
@@ -191,9 +192,12 @@ export default {
 		display: flex;
 		flex-direction: column;
 		float: center;
-		margin: 10vh 30vw;
+		/*margin: 10vh 30vw;*/
+		width: 500px;
+		padding: 50px;
 		background: rgba(255,255,255,0.5);
-		padding: 2vw 5vw;
+		
+		align-self: center;
 	}
 	.btn-forgot-password {
 		align-self: flex-end;

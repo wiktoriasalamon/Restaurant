@@ -5,7 +5,7 @@ function isEmail(email) {
 }
 
 function isPassword(password) {
-    if (password.length<5) return false
+    if (password.length<6) return false
     else return true
 }
 

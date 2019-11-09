@@ -111,7 +111,9 @@ export default {
 		display: flex;
 		flex-direction: column;
 		float: center;
-		margin: 20vh 30vw;
+		/*margin: 20vh 30vw;*/
+		width: 500px;
+		padding: 50px;
 		background: rgba(255,255,255,0.5);
 		padding: 2vw 5vw;
 	}
