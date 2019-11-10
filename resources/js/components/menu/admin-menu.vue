@@ -2,7 +2,7 @@
 	<v-row class="justify-center align-center">
 		<v-data-table
 			:headers="headers"
-			:items="dishes"
+			:items="menuItems"
 			:items-per-page="-1"
 			class="elevation-1"
 		>
@@ -27,7 +27,6 @@
 <script>
   export default {
     name: "admin-menu",
-		props: ['dishes'],
     data() {
       return {
         menuItems:[],
@@ -39,15 +38,24 @@
       }
     },
     beforeMount(){
-      this.menuItems = this.dishes
+     	this.getData()
     },
 		methods:{
       //TODO jak będzie api
       deleteItem(id){
         // axios.delete('api/users', {params: {'id': this.checkedNames})
+				this.getData()
 			},
 			editItem(id){
 				window.location.href = route('dish.edit',  [id])
+			},
+			getData(){
+        axios.get(route('api.dish.index'))
+          .then(response => {
+            this.menuItems = response.data
+          }).catch(function (error) {
+          	console.error(error)
+        })
 			}
 		}
   }

@@ -105,7 +105,7 @@
       }
     },
 		beforeMount(){
-      this.menu = this.questMenu
+      this.menu = this.adminMenu
 			if(this.user !== null){
 			  this.notLogged = false
 				this.loggedUser = this.user
