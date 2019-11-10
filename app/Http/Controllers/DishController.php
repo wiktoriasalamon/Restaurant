@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dish;
+use App\Models\DishCategory;
 use Illuminate\Http\Request;
 
 class DishController extends Controller
@@ -26,7 +27,9 @@ class DishController extends Controller
      */
     public function menu()
     {
-        return view('menuLayouts/menu');
+        $categories = DishCategory::all();
+        $dishes = Dish::all()->load('category');
+        return view('menuLayouts/menu', compact('dishes', 'categories'));
     }
 
 
@@ -37,8 +40,7 @@ class DishController extends Controller
      */
     public function adminMenu()
     {
-        $dishes = Dish::all()->load('category');
-        return view('menuLayouts/adminMenu', compact('dishes'));
+        return view('menuLayouts/adminMenu');
     }
 
     /**
