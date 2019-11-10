@@ -67,18 +67,17 @@ class ReservationService
     public function isTableAvailable($id, $date, $time): bool
     {
         try {
-            if(Carbon::now()->format('Y-m-d')==$date){
-                $table= Table::where('id',$id)->where('occupied_since',null)->whereDoesntHave('reservation', function ($query) use ($date,$time) {
-                    $query->where('date', 'like', $date)->where('start_time','>=',$time);
+            if (Carbon::now()->format('Y-m-d') == $date) {
+                $table = Table::where('id', $id)->where('occupied_since', null)->whereDoesntHave('reservation', function ($query) use ($date, $time) {
+                    $query->where('date', 'like', $date)->where('start_time', '>=', $time);
                 })->first();
 
-            }else{
-                $table= Table::where('id',$id)->whereDoesntHave('reservation', function ($query) use ($date) {
+            } else {
+                $table = Table::where('id', $id)->whereDoesntHave('reservation', function ($query) use ($date) {
                     $query->where('date', 'like', $date);
                 })->first();
             }
-            if($table)
-            {
+            if ($table) {
                 return true;
             }
         } catch (\Exception$exception) {
@@ -91,8 +90,7 @@ class ReservationService
      */
     public function reservationWithStatus(): array
     {
-        //$auth=Auth::user(); todo: odkomentować jak będzie autoryzacja
-        $auth = User::findOrFail(1);
+        $auth=Auth::user();
         $reservations = Reservation::where('email', $auth->email)->get();
         $reservationWithStatus = [];
         foreach ($reservations as $reservation) {
@@ -107,6 +105,30 @@ class ReservationService
             array_push($reservationWithStatus, ['reservation' => $reservation, 'status' => $status]);
         }
         return $reservationWithStatus;
+    }
+
+    /**
+     * @param string $date
+     * @return array
+     */
+    public function tablesByDate(string $date): array
+    {
+        $tables = Table::all();
+        $tableArray = [];
+        foreach ($tables as $table) {
+            $reservationSince = null;
+            $reservations=Reservation::where('table_id',$table->id)->get();
+            foreach ($reservations as $reservation) {
+                if ($reservation->date == $date) {
+                    $reservationSince = $reservation->start_time;
+                }
+            }
+            array_push($tableArray, [
+                'table' => $table,
+                'reservation_since' => $reservationSince
+            ]);
+        }
+        return $tableArray;
     }
 
 }

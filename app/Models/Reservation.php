@@ -49,20 +49,31 @@ class Reservation extends Model
     }
 
     /**
-     * @param string $email
-     * @param string $phone
+     * @param  $email
+     * @param  $phone
      */
-    public function setCustomer(string $email, string $phone)
+    public function setCustomer($email,$phone)
     {
-//        todo: odkomentować jak dodamy autoryzację
-//        $auth=Auth::user();
-//        $this->email=$auth->email;
-//        $this->phone=$auth->phone;
+        $auth=Auth::user();
+        $this->email=$auth->email;
+        $this->phone=$auth->phone;
         if($email){
             $this->email=$email;
         }
         if($phone){
             $this->phone=$phone;
         }
+    }
+
+    /**
+     * @param $request
+     */
+    public function setWorkerReservation($request):void
+    {
+        $this->date = $request->date;
+        $this->start_time = $request->startTime;
+        $this->phone = $request->phone;
+        $this->email = $request->email;
+        $this->table()->associate(Table::findOrFail($request->tableId));
     }
 }

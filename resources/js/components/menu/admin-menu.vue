@@ -40,6 +40,21 @@
     beforeMount(){
      	this.getData()
     },
+    methods: {
+      deleteItem(item) {
+        axios.delete(route('api.dish.delete', item.id))
+          .then(function (response) {
+            console.log(response.data)
+			  //todo przeładownie
+          }).catch(function (error) {
+          console.log(error)
+        })
+
+      },
+      editItem(id) {
+        window.location.href = route('dish.edit', [id])
+      }
+    }
 		methods:{
       //TODO jak będzie api
       deleteItem(id){
