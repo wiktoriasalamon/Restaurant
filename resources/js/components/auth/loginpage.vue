@@ -75,22 +75,29 @@ export default {
 	},
 	methods: {
 		handlePressLogin() {
-			if(this.input.email == "" || this.input.password == "") {
-				this.showAlert(alertStrings.emptyField);
+			if(this.input.email === "" || this.input.password === "") {
+        Vue.toasted.error(alertStrings.emptyField);
 			} else if (!isEmail(this.input.email)) {
-				this.showAlert(alertStrings.invalidData);
+        Vue.toasted.error(alertStrings.invalidData);
 			} else {
-				this.showAlert('Tu będzie logowanie');
+				this.login()
 			}
 		},
 		login() {
-			axios.post('', {
-
+			axios.post('/login', {
+        'email': this.input.email,
+        'password': this.input.password,
 			})
 			.then((response)=> {
-
+        Vue.toasted.success("Zostałeś pomyślnie zalogowany do systemu").goAway(5000);
+        setTimeout(function(){window.location.href="/"} , 5000);
 			})
-			.catch();
+			.catch(error => {
+        if(error.response.status === 422){
+          Vue.toasted.error("Podano niepoprawne dane, spróbuj jeszcze raz").goAway(3000);
+        }else{
+          Vue.toasted.error(error.response.data).goAway(3000);
+        }});
 		},
 		handlePressRegister() {
 			window.location.href = route('register');

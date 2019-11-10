@@ -43,32 +43,23 @@
     methods: {
       deleteItem(item) {
         axios.delete(route('api.dish.delete', item.id))
-          .then(function (response) {
-            console.log(response.data)
-			  //todo przeładownie
-          }).catch(function (error) {
-          console.log(error)
+          .then(response => {
+            Vue.toasted.success(response.data).goAway(5000);
+            this.getData()
+          }).catch( error => {
+          Vue.toasted.error(error.response.data).goAway(3000);
+          console.error(error)
         })
 
       },
       editItem(id) {
         window.location.href = route('dish.edit', [id])
-      }
-    }
-		methods:{
-      //TODO jak będzie api
-      deleteItem(id){
-        // axios.delete('api/users', {params: {'id': this.checkedNames})
-				this.getData()
-			},
-			editItem(id){
-				window.location.href = route('dish.edit',  [id])
-			},
+      },
 			getData(){
         axios.get(route('api.dish.index'))
           .then(response => {
             this.menuItems = response.data
-          }).catch(function (error) {
+          }).catch(error => {
           	console.error(error)
         })
 			}
