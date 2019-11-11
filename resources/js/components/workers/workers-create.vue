@@ -6,26 +6,27 @@
         <v-form
             ref="form"
         >
-          <v-text-field :rules="[rules.required]" error-messages="errors.name" label="Imię"
+          <v-text-field :rules="[rules.required]" label="Imię" v-bind:error-messages="errors.name"
                         v-model="form.name"></v-text-field>
-          <v-text-field :rules="[rules.required]" error-messages="errors.surname" label="Nazwisko"
+          <v-text-field :rules="[rules.required]" label="Nazwisko" v-bind:error-messages="errors.surname"
                         v-model="form.surname"></v-text-field>
-          <v-text-field :rules="[rules.required, rules.emailRules]" error-messages="errors.email" label="Email"
+          <v-text-field :rules="[rules.required, rules.emailRules]" label="Email" v-bind:error-messages="errors.email"
                         v-model="form.email"></v-text-field>
-          <v-text-field :rules="[rules.required]" error-messages="errors.address.street" label="Ulica"
+          <v-text-field :rules="[rules.required]" label="Ulica" v-bind:error-messages="errors.address.street"
                         v-model="form.address.street"></v-text-field>
           <v-text-field label="Numer domu" :rules="[rules.required]"
-                        error-messages="errors.address.houseNumber" v-model="form.address.houseNumber"></v-text-field>
+                        v-bind:error-messages="errors.address.houseNumber" v-model="form.address.houseNumber"></v-text-field>
           <v-text-field label="Numer apartamentu" :rules="[rules.required]"
-                        error-messages="errors.address.apartmentNumber"
+                        v-bind:error-messages="errors.address.apartmentNumber"
                         v-model="form.address.apartmentNumber"></v-text-field>
-          <v-text-field :rules="[rules.required]" error-messages="errors.address.city" label="Miasto"
+          <v-text-field :rules="[rules.required]" label="Miasto" v-bind:error-messages="errors.address.city"
                         v-model="form.address.city"></v-text-field>
           <v-text-field label="Kod pocztowy" :rules="[rules.required, rules.postCodeFormat]"
-                        error-messages="errors.address.postCode" v-model="form.address.postCode"></v-text-field>
-          <v-text-field :rules="[rules.phoneMax12]" error-messages="errors.phone"
+                        v-bind:error-messages="errors.address.postCode" v-model="form.address.postCode"></v-text-field>
+          <v-text-field :rules="[rules.phoneMax12]" v-bind:error-messages="errors.phone"
                         label="Telefon" v-model="form.phone"></v-text-field>
-          <v-text-field :rules="[rules.required, rules.passwordMax6]" error-messages="errors.password" label="Hasło"
+          <v-text-field :rules="[rules.required, rules.passwordMax6]" label="Hasło"
+                        v-bind:error-messages="errors.password"
                         v-model="form.name"></v-text-field>
         </v-form>
       </v-container>
