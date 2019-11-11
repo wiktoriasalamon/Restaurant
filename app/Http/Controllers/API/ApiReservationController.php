@@ -8,6 +8,7 @@ use App\Http\Requests\Reservation\WorkerReservationRequest;
 use App\Models\Reservation;
 use App\Models\Table;
 use App\Services\ReservationService;
+use App\Services\TableService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -42,9 +43,11 @@ class ApiReservationController extends Controller
     public function storeAsWorker(WorkerReservationRequest $request)
     {
         try {
-            $reservation = new Reservation();
-            $reservation->setWorkerReservation($request);
-            $reservation->save();
+            foreach ($request->tables as $tableId) {
+                $reservation = new Reservation();
+                $reservation->setWorkerReservation($request, $tableId);
+                $reservation->save();
+            }
             return response()->json(['message' => "Rezerwacja została pomyślnie zapisana."], 200);
 
         } catch (\Exception $exception) {
@@ -91,7 +94,7 @@ class ApiReservationController extends Controller
     public function fetchTablesByDate(string $date)
     {
         try {
-            return response()->json(['tables' => (new ReservationService())->tablesByDate($date)], 200);
+            return response()->json(['tables' => (new ReservationService())->freeTablesByDate($date)], 200);
         } catch (\Exception $exception) {
             dd($exception);
             return response()->json('Wystąpił nieoczekiwany błąd', 500);
