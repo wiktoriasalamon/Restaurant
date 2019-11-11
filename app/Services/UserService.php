@@ -30,7 +30,7 @@ class UserService
                return Auth::user()->roles[0]->name;
            }
        }catch (\Exception $exception){}
-       return null;
+       return "guest";
    }
 
 }
