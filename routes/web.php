@@ -15,6 +15,7 @@
 //    return view('welcome');
 //});
 
+Route::get('/forgot-password', 'UserController@resetPassword')->name('forgotPassword.mail');
 
 Auth::routes();
 Route::middleware('auth')->group(function () {
