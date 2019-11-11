@@ -39,8 +39,8 @@ const opts = {
 Vue.use(Vuetify);
 const Options = {
     position: 'top-center'
-}
-Vue.use(Toasted, Options)
+};
+Vue.use(Toasted, Options);
 
 
 /**
@@ -64,8 +64,10 @@ Vue.component('ui-footer', require('./components/partials/ui-footer').default);
 
 //AUTH
 Vue.component('login-form', require('./components/auth/login-form').default);
+Vue.component('reset-password-form', require('./components/auth/reset-password-form').default);
 Vue.component('loginpage', require('./components/auth/loginpage').default);
 Vue.component('registerpage', require('./components/auth/registerpage').default);
+Vue.component('forgot-password-mail', require('./components/auth/forgot-password-mail').default);
 
 
 //RESERVATION
@@ -81,6 +83,10 @@ Vue.component('admin-menu', require('./components/menu/admin-menu').default);
 
 //TABLES
 Vue.component('admin-tables-index', require('./components/tables/admin-tables-index').default);
+
+//USERS
+Vue.component('my-account', require('./components/users/myAccount').default);
+
 
 
 

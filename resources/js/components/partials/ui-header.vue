@@ -69,7 +69,7 @@
 <script>
   export default {
     name: "ui-header",
-		props:['user'],
+		props:['user','role'],
     data() {
       return {
         questMenu: [
@@ -97,7 +97,7 @@
 				userMenu:[
           {id: 1, text: "moje zamówienia", link: route('home')},
           {id: 2, text: "moje rezerwacje", link: route('reservation.indexUser')},
-          {id: 3, text: "moje konto", link: route('home')},
+          {id: 3, text: "moje konto", link: route('user.myAccount')},
           {id: 4, text: "wyloguj", link: "logout"},
 				],
 				menu:[],
@@ -106,9 +106,9 @@
       }
     },
 		beforeMount(){
-      this.menu = this.adminMenu
+      this.menu = this.adminMenu;
 			if(this.user !== null){
-			  this.notLogged = false
+			  this.notLogged = false;
 				this.loggedUser = this.user
 			}
 		},
