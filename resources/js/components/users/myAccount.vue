@@ -109,18 +109,17 @@
         axios.get(route('api.authenticatedUser'))
           .then(response => {
             const entries = Object.entries(response.data);
-            console.log(response);
             if (response.data) {
               for (let [key, value] of entries) {
                 	if(key === 'address'){
                 	  let address = Object.entries(JSON.parse(value));
                 	  for(let [addressKey, addressValue] of address){
-                	    console.log(addressValue);
-											console.log(addressKey);
                       this.form.address[addressKey] = addressValue
 										}
+									}else{
+                    this.form[key] = value;
 									}
-                  this.form[key] = value;
+
               }
             }
           }).catch(error => {
@@ -128,7 +127,6 @@
         })
       },
 			save(){
-        console.log(this.form.city);
 				let formAddress = this.form.address;
         formAddress = JSON.stringify(formAddress);
         axios.put(route('api.user.update', this.form.id),{
