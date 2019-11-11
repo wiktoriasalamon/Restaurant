@@ -34,6 +34,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/reservation-user', 'ReservationController@indexUser')->name('reservation.indexUser')->middleware('permission:onlineReservationIndex');
     Route::get('/menu-admin', 'DishController@adminMenu')->name('menu.admin')->middleware('permission:tableIndex');
     Route::get('/dish/edit/{id}', 'DishController@edit')->name('dish.edit')->middleware('permission:dishEdit');
+    Route::name('worker.')->prefix('worker')->group(function () {
+        Route::get('/create','WorkerController@create')->name('create')->middleware('permission:userCreate');
+        Route::get('edit/{id}','WorkerController@edit')->middleware('permission:userEdit');
+        Route::get('index','WorkerController@index')->middleware('permission:userIndex');
+    });
 });
 
 Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(function () {

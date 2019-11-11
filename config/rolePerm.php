@@ -7,7 +7,6 @@ return[
         "dishDelete",
         "dishIndex",
         "userCreate",
-        "userShow",
         "userEdit",
         "userDelete",
         "userIndex",

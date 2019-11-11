@@ -82,6 +82,12 @@ Vue.component('admin-menu', require('./components/menu/admin-menu').default);
 //TABLES
 Vue.component('admin-tables-index', require('./components/tables/admin-tables-index').default);
 
+//WORKERS
+Vue.component('workers-index', require('./components/workers/workers-index').default);
+Vue.component('workers-create', require('./components/workers/workers-create').default);
+Vue.component('workers-edit', require('./components/workers/workers-edit').default);
+
+
 
 
 
