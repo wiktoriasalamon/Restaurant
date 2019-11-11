@@ -17,7 +17,7 @@ class UserChangePasswordRequest extends FormRequest
     {
         $rules = [
             'oldPassword' => 'required',
-            'newPassword' => 'required|min:8',
+            'newPassword' => 'required|min:6',
             'newPasswordRepeated' => 'required|same:newPassword'
         ];
         return $rules;
@@ -32,7 +32,7 @@ class UserChangePasswordRequest extends FormRequest
         return [
             'oldPassword.required' => 'To pole jest wymagane',
             'newPassword.required' => 'To pole jest wymagane',
-            'newPassword.min' => 'Hasło musi mieć przynajmniej 8 znaków',
+            'newPassword.min' => 'Hasło musi mieć przynajmniej 6 znaków',
             'newPasswordRepeated.required' => 'To pole jest wymagane',
             'newPasswordRepeated.same' => 'Hasła muszą być takie same',
         ];

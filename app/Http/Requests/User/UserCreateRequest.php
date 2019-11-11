@@ -14,7 +14,7 @@ class UserCreateRequest extends UserRequest
     public function rules(): array
     {
         $rules = parent::rules();
-        $rules['password'] = 'required|min:8';
+        $rules['password'] = 'required|min:6';
         return $rules;
 
     }
@@ -25,7 +25,7 @@ class UserCreateRequest extends UserRequest
     public function messages(): array
     {
         $messages = parent::messages();
-        $messages['password.min'] = 'Hasło musi mieć przynajmniej 8 znaków';
+        $messages['password.min'] = 'Hasło musi mieć przynajmniej 6 znaków';
         return $messages;
     }
 }
