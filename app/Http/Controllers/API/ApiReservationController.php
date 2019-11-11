@@ -81,11 +81,25 @@ class ApiReservationController extends Controller
     public function customerIndex()
     {
         try {
-            return response()->json(['reservations' => (new ReservationService())->reservationWithStatus()], 200);
+            return response()->json(['reservations' => (new ReservationService())->customerReservations()], 200);
         } catch (\Exception $exception) {
             return response()->json('Wystąpił nieoczekiwany błąd', 500);
         }
     }
+
+    /**
+     * @param string $date
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function workerIndex(string $date)
+    {
+        try {
+            return response()->json(['reservations' => (new ReservationService())->workerReservations($date)], 200);
+        } catch (\Exception $exception) {
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        }
+    }
+
 
     /**
      * @param string $date

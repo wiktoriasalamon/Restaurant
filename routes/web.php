@@ -55,6 +55,7 @@ Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(
         Route::put('/update-as-worker', 'ApiReservationController@updateAsWorker')->name('updateAsWorker')->middleware('permission:reservationEdit');
         Route::get('/show/{id}', 'ApiReservationController@fetchReservation')->name('show')->middleware('permission:reservationShow|onlineReservationShow');
         Route::get('', 'ApiReservationController@customerIndex')->name('customerIndex')->middleware('permission:onlineReservationIndex');
+        Route::get('worker-index/{date}', 'ApiReservationController@workerIndex')->name('workerIndex')->middleware('permission:reservationIndex');
         Route::get('/tables/{date}', 'ApiReservationController@fetchTablesByDate')->name('fetchTablesByDate')->middleware('permission:reservationIndex');
         Route::delete('/{id}', 'ApiReservationController@delete')->name('delete')->middleware('permission:reservationDelete|onlineReservationDelete');
     });
@@ -65,18 +66,18 @@ Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(
 
 
     Route::name('user.')->prefix('user')->group(function () {
-        Route::get('/fetch-user/{user}', 'ApiUserController@fetchUser')->middleware('permission:userEdit');
-        Route::get('/fetch-customers', 'ApiUserController@fetchCustomers')->middleware('permission:customerIndex');
-        Route::get('/fetch-workers', 'ApiUserController@fetchWorkers')->middleware('permission:userIndex');
-        Route::get('/fetch-user-my-account/{user}', 'ApiUserController@changePassword')->middleware('myAccount');
-        Route::put('/change-password/{user}', 'ApiUserController@changePassword')->middleware('permission:userEdit');
-        Route::put('/change-password-my-account/{user}', 'ApiUserController@changePassword')->middleware('myAccount');
-        Route::put('/update-my-account/{user}', 'ApiUserController@update')->middleware('myAccount');
-        Route::put('/update-worker/{user}', 'ApiUserController@update')->middleware('permission:userEdit');
-        Route::put('/update-customer/{user}', 'ApiUserController@update')->middleware('permission:customerEdit');
-        Route::post('/store-worker', 'ApiUserController@storeWorker')->middleware('permission:createUser');
-        Route::post('/store-customer', 'ApiUserController@storeCustomer');
-        Route::delete('/{id}', 'ApiUserController@destroy')->middleware('permission:userDelete');
+        Route::get('/fetch-user/{user}', 'ApiUserController@fetchUser')->name('fetchUser')->middleware('permission:userEdit');
+        Route::get('/fetch-customers', 'ApiUserController@fetchCustomers')->name('fetchCustomers')->middleware('permission:customerIndex');
+        Route::get('/fetch-workers', 'ApiUserController@fetchWorkers')->name('fetchWorkers')->middleware('permission:userIndex');
+        Route::get('/fetch-user-my-account/{user}', 'ApiUserController@changePassword')->name('fetchUserMyAccount')->middleware('myAccount');
+        Route::put('/change-password/{user}', 'ApiUserController@changePassword')->name('changePassword')->middleware('permission:userEdit');
+        Route::put('/change-password-my-account/{user}', 'ApiUserController@changePassword')->name('changePasswordMyAccount')->middleware('myAccount');
+        Route::put('/update-my-account/{user}', 'ApiUserController@update')->name('updateUserMyAccount')->middleware('myAccount');
+        Route::put('/update-worker/{user}', 'ApiUserController@update')->name('updateWorker')->middleware('permission:userEdit');
+        Route::put('/update-customer/{user}', 'ApiUserController@update')->name('updateCustomer')->middleware('permission:customerEdit');
+        Route::post('/store-worker', 'ApiUserController@storeWorker')->name('storeWorker')->middleware('permission:createUser');
+        Route::post('/store-customer', 'ApiUserController@storeCustomer')->name('storeCustomer');
+        Route::delete('/{id}', 'ApiUserController@destroy')->name('delete')->middleware('permission:userDelete');
         Route::get('/auth-user', 'ApiUserController@myAccount')->name('authenticatedUser');
     });
 });
