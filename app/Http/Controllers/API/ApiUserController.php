@@ -3,20 +3,25 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\UserChangePasswordRequest;
+use App\Http\Requests\User\UserCreateRequest;
+use App\Http\Requests\User\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class ApiUserController extends Controller
 {
 
     /**
      * Store a newly created resource in storage.
+     * require: name, surname, email, address, phone, password
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserCreateRequest $request)
     {
         try {
             $user = new User();
@@ -26,7 +31,7 @@ class ApiUserController extends Controller
         } catch (\Exception $e) {
             return response()->json([ 'message' => 'Wystąpił błąd w trakcie dodawania użytkownika'], 500);
         }
-        return response()->json(null, 201);
+        return response()->json(['message' => "Pomyślnie dodano użytkownika"], 200);
     }
 
     /**
@@ -42,21 +47,26 @@ class ApiUserController extends Controller
         $user->email = $request->email;
         $user->address = $request->address;
         $user->phone = $request->phone;
+        if (!$user->remember_token) {
+            $user->remember_token = Str::random(10);
+        }
         return $user;
     }
 
     /**
      * Change users password
+     * require: oldPassword, newPassword, newPasswordRepeated
      *
      * @param Request $request
      * @param User $user
      * @return \Illuminate\Http\JsonResponse
      */
-    public function changePassword(Request $request, User $user)
+    public function changePassword(UserChangePasswordRequest $request, User $user)
     {
         if (Hash::check($request->oldPassword, $user->password)) {
             $user->password = Hash::make($request->newPassword);
-            return response()->json(null, 201);
+            $user->save();
+            return response()->json(['message' => "Pomyślnie zmieniono hasło"], 200);
         }
         return response()->json([ 'message' => 'Wystąpił błąd w trakcie zmiany hasła'], 500);
     }
@@ -81,20 +91,21 @@ class ApiUserController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * require: name, surname, email, address, phone
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(UserRequest $request, User $user)
     {
         try {
             $user = $this->fillUser($user, $request);
             $user->save();
         } catch (\Exception $e) {
-            return response()->json([ 'message' => 'Wystąpił błąd w trakcie dodawania użytkownika'], 500);
+            return response()->json([ 'message' => 'Wystąpił błąd w trakcie edycji użytkownika'], 500);
         }
-        return response()->json(null, 201);
+        return response()->json(['message' => "Pomyślnie zmieniono dane użytkownika"], 201);
     }
 
     /**

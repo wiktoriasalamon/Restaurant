@@ -32,9 +32,9 @@ class UserChangePasswordRequest extends FormRequest
         return [
             'oldPassword.required' => 'To pole jest wymagane',
             'newPassword.required' => 'To pole jest wymagane',
-            'oldPassword.min' => 'Hasło musi mieć przynajmniej 8 znaków',
+            'newPassword.min' => 'Hasło musi mieć przynajmniej 8 znaków',
             'newPasswordRepeated.required' => 'To pole jest wymagane',
-            'oldPassword.same' => 'Hasła muszą być takie same',
+            'newPasswordRepeated.same' => 'Hasła muszą być takie same',
         ];
     }
 }

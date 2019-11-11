@@ -14,7 +14,7 @@ class UserCreateRequest extends UserRequest
     public function rules(): array
     {
         $rules = parent::rules();
-        $rules['password'] = 'required, min:8';
+        $rules['password'] = 'required|min:8';
         return $rules;
 
     }
