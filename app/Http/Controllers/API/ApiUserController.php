@@ -7,7 +7,10 @@ use App\Http\Requests\User\UserChangePasswordRequest;
 use App\Http\Requests\User\UserCreateRequest;
 use App\Http\Requests\User\UserRequest;
 use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -18,61 +21,61 @@ class ApiUserController extends Controller
      * Store a newly created resource in storage.
      * require: name, surname, email, address, phone, password
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param UserCreateRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(UserCreateRequest $request)
+    public function storeCustomer(UserCreateRequest $request)
     {
-        try {
-            $user = new User();
-            $user = $this->fillUser($user, $request);
-            $user->password = Hash::make($request->password);
-            $user->assignRole("customer");
-            $user->save();
-        } catch (\Exception $e) {
-            return response()->json([ 'message' => 'Wystąpił błąd w trakcie dodawania użytkownika'], 500);
-        }
-        return response()->json(['message' => "Pomyślnie dodano użytkownika"], 200);
+        return $this->store($request, "customer");
     }
 
     /**
      * Store a newly created resource in storage.
      * require: name, surname, email, address, phone, password
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param UserCreateRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function storeWorker(UserCreateRequest $request)
     {
+        return $this->store($request, "worker");
+    }
+
+    /**
+     * @param UserCreateRequest $request
+     * @param string $role
+     * @return \Illuminate\Http\JsonResponse
+     */
+    private function store(UserCreateRequest $request, string $role)
+    {
         try {
             $user = new User();
-            $user = $this->fillUser($user, $request);
+            $user->fillUser($request);
             $user->password = Hash::make($request->password);
-            $user->assignRole("worker");
+            $user->assignRole($role);
             $user->save();
         } catch (\Exception $e) {
-            return response()->json([ 'message' => 'Wystąpił błąd w trakcie dodawania użytkownika'], 500);
+            return response()->json(['message' => 'Wystąpił błąd w trakcie dodawania użytkownika'], 500);
         }
         return response()->json(['message' => "Pomyślnie dodano użytkownika"], 200);
     }
+
     /**
-     * Fill users fields using request
-     *
+     * @param UserRequest $request
      * @param User $user
-     * @param Request $request
-     * @return User
+     * @return \Illuminate\Http\JsonResponse
      */
-    private function fillUser(User $user, Request $request) {
-        $user->name = $request->name;
-        $user->surname = $request->surname;
-        $user->email = $request->email;
-        $user->address = $request->address;
-        $user->phone = $request->phone;
-        if (!$user->remember_token) {
-            $user->remember_token = Str::random(10);
+    public function update(UserRequest $request, User $user)
+    {
+        try {
+            $user->fillUser($request);
+            $user->save();
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Wystąpił błąd w trakcie edycji użytkownika'], 500);
         }
-        return $user;
+        return response()->json(['message' => "Pomyślnie zmieniono dane użytkownika"], 201);
     }
+
 
     /**
      * Change users password
@@ -89,54 +92,49 @@ class ApiUserController extends Controller
             $user->save();
             return response()->json(['message' => "Pomyślnie zmieniono hasło"], 200);
         }
-        return response()->json([ 'message' => 'Wystąpił błąd w trakcie zmiany hasła'], 500);
+        return response()->json(['message' => 'Wystąpił błąd w trakcie zmiany hasła'], 500);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function fetchCustomers()
+    {
+        return response()->json((new UserService)->getUsersByRole("customer"), 200);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function fetchWorkers()
+    {
+        return response()->json((new UserService)->getUsersByRole("worker"), 200);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param User $user
+     * @return Response
      */
-    public function show(User $user)
+    public function fetchUser(User $user)
     {
-        return response()->json([
-            'id' => $user->id,
-            'name' => $user->name,
-            'surname' => $user->surname,
-            'email' => $user->email,
-            'address' => $user->address,
-            'phone' => $user->phone
-        ], 200);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * require: name, surname, email, address, phone
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UserRequest $request, User $user)
-    {
-        try {
-            $user = $this->fillUser($user, $request);
-            $user->save();
-        } catch (\Exception $e) {
-            return response()->json([ 'message' => 'Wystąpił błąd w trakcie edycji użytkownika'], 500);
-        }
-        return response()->json(['message' => "Pomyślnie zmieniono dane użytkownika"], 201);
+        return response()->json($user->fetchUserData(), 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param User $user
+     * @return Response
      */
-    public function destroy(int $id)
+    public function destroy($id)
     {
-        //
+        try {
+            User::findOrFail($id)->delete();
+            return response()->json("Użytkownik został usunięty", 201);
+        } catch (\Exception $e) {
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        }
     }
 }
