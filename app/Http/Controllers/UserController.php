@@ -18,4 +18,9 @@ class UserController extends Controller
     {
         return view('auth.passwords.email');
     }
+
+    public function myAccount(){
+        return view('users/myAccount');
+    }
+
 }
