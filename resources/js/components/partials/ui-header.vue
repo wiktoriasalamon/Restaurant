@@ -86,6 +86,7 @@
           {id: 3, text: "Kelnerzy", link: route('menu')},
           {id: 4, text: "Rezerwacje", link: route('reservation.indexUser')},
           {id: 5, text: "Zamowienia", link: route('home')},
+          {id: 6, text: "Stoliki", link: route('table.index')},
 				],
 				waiterMenu:[
           {id: 1, text: "Stoliki", link: route('menu')},
@@ -105,7 +106,7 @@
       }
     },
 		beforeMount(){
-      this.menu = this.questMenu
+      this.menu = this.adminMenu
 			if(this.user !== null){
 			  this.notLogged = false
 				this.loggedUser = this.user

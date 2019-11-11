@@ -79,6 +79,10 @@ Vue.component('user-index-reservation', require('./components/reservation/user-i
 Vue.component('user-menu', require('./components/menu/user-menu').default);
 Vue.component('admin-menu', require('./components/menu/admin-menu').default);
 
+//TABLES
+Vue.component('admin-tables-index', require('./components/tables/admin-tables-index').default);
+
+
 
 
 const app = new Vue({
