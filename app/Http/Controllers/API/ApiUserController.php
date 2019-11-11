@@ -8,11 +8,12 @@ use App\Http\Requests\User\UserCreateRequest;
 use App\Http\Requests\User\UserRequest;
 use App\Models\User;
 use App\Services\UserService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
+
 
 class ApiUserController extends Controller
 {
@@ -83,7 +84,7 @@ class ApiUserController extends Controller
      *
      * @param Request $request
      * @param User $user
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function changePassword(UserChangePasswordRequest $request, User $user)
     {
@@ -136,5 +137,13 @@ class ApiUserController extends Controller
         } catch (\Exception $e) {
             return response()->json('Wystąpił nieoczekiwany błąd', 500);
         }
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function myAccount(){
+        $user = Auth::user();
+        return response()->json($user, 200);
     }
 }

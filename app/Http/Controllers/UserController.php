@@ -49,6 +49,10 @@ class UserController extends Controller
         return response()->json(compact('user','token'),201);
     }
 
+    public function myAccount(){
+        return view('users/myAccount');
+    }
+
     public function getAuthenticatedUser()
     {
         try {
@@ -73,4 +77,5 @@ class UserController extends Controller
 
         return response()->json(compact('user'));
     }
+
 }

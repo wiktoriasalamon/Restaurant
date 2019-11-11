@@ -34,6 +34,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/reservation-user', 'ReservationController@indexUser')->name('reservation.indexUser')->middleware('permission:onlineReservationIndex');
     Route::get('/menu-admin', 'DishController@adminMenu')->name('menu.admin')->middleware('permission:tableIndex');
     Route::get('/dish/edit/{id}', 'DishController@edit')->name('dish.edit')->middleware('permission:dishEdit');
+    Route::get('/myAccount', 'UserController@myAccount')->name('user.myAccount');
+
 });
 
 Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(function () {
@@ -73,6 +75,7 @@ Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(
         Route::put('/update-customer/{user}', 'ApiUserController@update')->middleware('permission:customerEdit');
         Route::post('/store-worker', 'ApiUserController@storeWorker')->middleware('permission:createUser');
         Route::post('/store-customer', 'ApiUserController@storeCustomer');
-        Route::delete('/{id}', 'ApiUserController@destroy')->middleware('permission:userDelete');;
+        Route::delete('/{id}', 'ApiUserController@destroy')->middleware('permission:userDelete');
+        Route::get('/auth-user', 'ApiUserController@myAccount')->name('authenticatedUser');
     });
 });
