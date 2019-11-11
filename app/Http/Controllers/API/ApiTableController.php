@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DishRequest;
+use App\Http\Requests\TableRequest;
+use App\Models\Dish;
 use App\Models\Reservation;
 use App\Models\Table;
 use Illuminate\Http\JsonResponse;
@@ -41,6 +44,62 @@ class ApiTableController extends Controller
             Log::notice("Error deleting data all:" . $e);
             Log::notice("Error deleting data msg:" . $e->getMessage());
             Log::notice("Error deleting data code:" . $e->getCode());
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        }
+    }
+
+    /**
+     * @param Table $table
+     * @return JsonResponse
+     */
+    public function load (Table $table)
+    {
+        try {
+            return response()->json($table);
+        } catch (\Exception $e) {
+            Log::notice("Error deleting data all:" . $e);
+            Log::notice("Error deleting data msg:" . $e->getMessage());
+            Log::notice("Error deleting data code:" . $e->getCode());
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        }
+    }
+
+    /**
+     * @param DishRequest $request [name]
+     * @return JsonResponse
+     */
+    public function store(DishRequest $request)
+    {
+        try {
+            $table = new Table();
+            $table->size = $request->size;
+            $table->occupied_since = null;
+            $table->save();
+            return response()->json(['message' => "Stolik został pomyślnie zapisany."], 200);
+        } catch (\Exception $e) {
+            Log::notice("Error storing data all:" . $e);
+            Log::notice("Error storing data msg:" . $e->getMessage());
+            Log::notice("Error storing data code:" . $e->getCode());
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        }
+    }
+
+    /**
+     * @param DishRequest $request [id,name]
+     * @return JsonResponse
+     */
+    public function update (DishRequest $request)
+    {
+        try {
+            $table = Dish::findOrFail($request->id);
+            $table->size = $request->size;
+            $table->occupied_since = null;
+            $table->save();
+            return response()->json(['message' => "Stolik został pomyślnie zapisany."], 200);
+        } catch (\Exception $e) {
+            Log::notice("Error updating data all:" . $e);
+            Log::notice("Error updating data msg:" . $e->getMessage());
+            Log::notice("Error updating data code:" . $e->getCode());
             return response()->json('Wystąpił nieoczekiwany błąd', 500);
         }
     }
