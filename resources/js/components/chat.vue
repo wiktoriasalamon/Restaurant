@@ -34,7 +34,8 @@
         this.newMessage = ''
       },
       test() {
-        axios.get(route('api.dish.index'))
+        let id = 2;
+        axios.delete(route('api.table.delete',id))
           .then(function (response) {
             console.log(response.data)
           }).catch(function (error) {

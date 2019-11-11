@@ -4,12 +4,13 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-import './bootstrap';
+import 'bootstrap';
 import Vue from 'vue'
 import Vuetify from 'vuetify';
 import vuetifyPL from 'vuetify/lib/locale/pl';
 import vuetifyEn from 'vuetify/lib/locale/en';
 import 'vuetify/dist/vuetify.min.css'
+import Toasted from 'vue-toasted';
 
 
 require('./bootstrap');
@@ -36,6 +37,10 @@ const opts = {
 };
 
 Vue.use(Vuetify);
+const Options = {
+    position: 'top-center'
+}
+Vue.use(Toasted, Options)
 
 
 /**
@@ -60,12 +65,25 @@ Vue.component('ui-footer', require('./components/partials/ui-footer').default);
 //AUTH
 Vue.component('login-form', require('./components/auth/login-form').default);
 Vue.component('reset-password-form', require('./components/auth/reset-password-form').default);
+Vue.component('loginpage', require('./components/auth/loginpage').default);
+Vue.component('registerpage', require('./components/auth/registerpage').default);
 
 
 //RESERVATION
 
 Vue.component('user-create-reservation', require('./components/reservation/user-create-reservation').default);
 Vue.component('user-index-reservation', require('./components/reservation/user-index-reservation').default);
+
+
+//MENU
+
+Vue.component('user-menu', require('./components/menu/user-menu').default);
+Vue.component('admin-menu', require('./components/menu/admin-menu').default);
+
+//TABLES
+Vue.component('admin-tables-index', require('./components/tables/admin-tables-index').default);
+
+
 
 
 const app = new Vue({

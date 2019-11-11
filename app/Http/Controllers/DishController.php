@@ -3,19 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dish;
+use App\Models\DishCategory;
 use Illuminate\Http\Request;
 
 class DishController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     /**
      * Show the application dashboard.
@@ -35,7 +27,31 @@ class DishController extends Controller
      */
     public function menu()
     {
-        return view('menuLayouts/menu');
+        $categories = DishCategory::all();
+        $dishes = Dish::all()->load('category');
+        return view('menuLayouts/menu', compact('dishes', 'categories'));
     }
 
+
+    /**
+     * Show the restaurant menuLayouts for admin
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function adminMenu()
+    {
+        return view('menuLayouts/adminMenu');
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $dish = Dish::find($id);
+        return view('dish/edit', compact(['dish', 'id']));
+    }
 }

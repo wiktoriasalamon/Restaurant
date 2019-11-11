@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-<registerpage></registerpage>
+    <admin-tables-index></admin-tables-index>
 @endsection
