@@ -23,5 +23,14 @@ class UserService
        })->get();
    }
 
+   public static function getAuthRoles()
+   {
+       try {
+           if (Auth::user()) {
+               return Auth::user()->roles[0]->name;
+           }
+       }catch (\Exception $exception){}
+       return null;
+   }
 
 }

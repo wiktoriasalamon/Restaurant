@@ -69,7 +69,7 @@
 <script>
   export default {
     name: "ui-header",
-		props:['user'],
+		props:['user','role'],
     data() {
       return {
         questMenu: [
