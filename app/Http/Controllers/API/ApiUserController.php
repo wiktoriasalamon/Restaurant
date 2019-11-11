@@ -7,9 +7,14 @@ use App\Http\Requests\User\UserChangePasswordRequest;
 use App\Http\Requests\User\UserCreateRequest;
 use App\Http\Requests\User\UserRequest;
 use App\Models\User;
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Tymon\JWTAuth\JWTAuth;
 
 class ApiUserController extends Controller
 {
@@ -18,8 +23,8 @@ class ApiUserController extends Controller
      * Store a newly created resource in storage.
      * require: name, surname, email, address, phone, password
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function store(UserCreateRequest $request)
     {
@@ -28,7 +33,7 @@ class ApiUserController extends Controller
             $user = $this->fillUser($user, $request);
             $user->password = Hash::make($request->password);
             $user->save();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([ 'message' => 'Wystąpił błąd w trakcie dodawania użytkownika'], 500);
         }
         return response()->json(['message' => "Pomyślnie dodano użytkownika"], 200);
@@ -59,7 +64,7 @@ class ApiUserController extends Controller
      *
      * @param Request $request
      * @param User $user
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function changePassword(UserChangePasswordRequest $request, User $user)
     {
@@ -75,7 +80,7 @@ class ApiUserController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show(User $user)
     {
@@ -93,16 +98,16 @@ class ApiUserController extends Controller
      * Update the specified resource in storage.
      * require: name, surname, email, address, phone
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(UserRequest $request, User $user)
     {
         try {
             $user = $this->fillUser($user, $request);
             $user->save();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([ 'message' => 'Wystąpił błąd w trakcie edycji użytkownika'], 500);
         }
         return response()->json(['message' => "Pomyślnie zmieniono dane użytkownika"], 201);
@@ -112,10 +117,15 @@ class ApiUserController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(int $id)
     {
         //
+    }
+
+    public function myAccount(){
+        $user = Auth::user();
+        return response()->json($user, 200);
     }
 }
