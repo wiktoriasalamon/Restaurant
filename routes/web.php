@@ -16,6 +16,8 @@
 //});
 
 Route::get('/menu', 'DishController@menu')->name('menu');
+Route::get('/forgot-password', 'UserController@resetPassword')->name('forgotPassword.mail');
+
 Auth::routes();
 Route::middleware('auth')->group(function () {
     Route::get('/', 'HomeController@index')->name('home');
