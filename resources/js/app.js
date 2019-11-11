@@ -64,6 +64,7 @@ Vue.component('ui-footer', require('./components/partials/ui-footer').default);
 
 //AUTH
 Vue.component('login-form', require('./components/auth/login-form').default);
+Vue.component('reset-password-form', require('./components/auth/reset-password-form').default);
 Vue.component('loginpage', require('./components/auth/loginpage').default);
 Vue.component('registerpage', require('./components/auth/registerpage').default);
 Vue.component('forgot-password-mail', require('./components/auth/forgot-password-mail').default);
