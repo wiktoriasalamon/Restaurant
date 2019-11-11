@@ -15,7 +15,7 @@
 //    return view('welcome');
 //});
 
-
+Route::get('/menu', 'DishController@menu')->name('menu');
 Auth::routes();
 Route::middleware('auth')->group(function () {
     Route::get('/', 'HomeController@index')->name('home');
@@ -26,7 +26,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/table/edit/{id}', 'TableController@edit')->name('table.edit')->middleware('permission:tableEdit');
     Route::get('/table/{id}', 'TableController@show')->name('table.show')->middleware('permission:tableShow');
     Route::get('/dish', 'DishController@index')->name('dish.index')->middleware('permission:dishIndex');
-    Route::get('/menu', 'DishController@menu')->name('menu');
     Route::get('/menu-admin', 'DishController@adminMenu')->name('menu.admin');
     Route::get('/dish/edit/{id}', 'DishController@edit')->name('dish.edit')->middleware('permission:dishEdit');
     Route::get('/dishCategory', 'DishCategoryController@index')->name('dishCategory.index')->middleware('permission:dishCategoryIndex');
