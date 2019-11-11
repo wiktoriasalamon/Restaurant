@@ -57,9 +57,17 @@ Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(
         Route::get('/tables/{date}', 'ApiReservationController@fetchTablesByDate')->name('fetchTablesByDate')->middleware('permission:reservationIndex');
         Route::delete('/{id}', 'ApiReservationController@delete')->name('delete')->middleware('permission:reservationDelete|onlineReservationDelete');
     });
+
+    Route::name('order.')->prefix('order')->group(function () {
+        Route::get('/tables/{date}', 'ApiOrderController@fetchTablesByDate')->name('fetchTablesByDate')->middleware('permission:orderIndex');
+    });
+
+
+
     Route::resource('user', 'ApiUserController')->except([
         'index'
     ]);
     Route::post('user/change-password/{user}', 'ApiUserController@changePassword');
     Route::get('/auth-user', 'ApiUserController@myAccount')->name('authenticatedUser');
+    Route::post('user/store-worker', 'ApiUserController@storeWorker')->middleware('permission:createUser');
 });

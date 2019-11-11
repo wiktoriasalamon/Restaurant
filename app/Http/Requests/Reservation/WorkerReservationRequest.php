@@ -15,7 +15,7 @@ class WorkerReservationRequest extends ReservationRequest
     {
         $rules = parent::rules();
         $rules['email'] = 'required|e-mail|max:50';
-        $rules['tableId']='table_available:'. $this->request->get('date').','.$this->request->get('startTime');
+        $rules['tables']='tables_available:'. $this->request->get('date').','.$this->request->get('startTime');
         return $rules;
 
 
@@ -30,7 +30,7 @@ class WorkerReservationRequest extends ReservationRequest
         $messages['email.email'] = 'Niepoprawny adres e-mail.';
         $messages['email.max'] = 'Niepoprawny adres e-mail.';
         $messages['email.required'] =  'Adres e-mail jest wymagany.';
-        $messages['tableId.table_available'] =  'Stolik jest niedostępny.';
+        $messages['tables.tables_available'] =  'Stolik jest niedostępny.';
         return $messages;
 
     }

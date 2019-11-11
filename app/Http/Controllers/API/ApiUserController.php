@@ -32,6 +32,7 @@ class ApiUserController extends Controller
             $user = new User();
             $user = $this->fillUser($user, $request);
             $user->password = Hash::make($request->password);
+            $user->assignRole("customer");
             $user->save();
         } catch (Exception $e) {
             return response()->json([ 'message' => 'Wystąpił błąd w trakcie dodawania użytkownika'], 500);
@@ -39,6 +40,26 @@ class ApiUserController extends Controller
         return response()->json(['message' => "Pomyślnie dodano użytkownika"], 200);
     }
 
+    /**
+     * Store a newly created resource in storage.
+     * require: name, surname, email, address, phone, password
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeWorker(UserCreateRequest $request)
+    {
+        try {
+            $user = new User();
+            $user = $this->fillUser($user, $request);
+            $user->password = Hash::make($request->password);
+            $user->assignRole("worker");
+            $user->save();
+        } catch (\Exception $e) {
+            return response()->json([ 'message' => 'Wystąpił błąd w trakcie dodawania użytkownika'], 500);
+        }
+        return response()->json(['message' => "Pomyślnie dodano użytkownika"], 200);
+    }
     /**
      * Fill users fields using request
      *
