@@ -67,7 +67,7 @@ Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(
     Route::resource('user', 'ApiUserController')->except([
         'index'
     ]);
-    Route::post('user/change-password/{user}', 'ApiUserController@changePassword');
+    Route::post('user/change-password/{user}', 'ApiUserController@changePassword')->name('changePassword');
     Route::get('/auth-user', 'ApiUserController@myAccount')->name('authenticatedUser');
     Route::post('user/store-worker', 'ApiUserController@storeWorker')->middleware('permission:createUser');
 });

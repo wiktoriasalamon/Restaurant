@@ -61,6 +61,39 @@
 			</v-card>
 		</v-col>
 		<v-col>
+			<v-card>
+				<v-card-text>
+					<v-form>
+						<v-text-field
+							:append-icon="show1 ? 'visibility' : 'visibility_off'"
+							:rules="[rules.required, rules.min6]"
+							:type="show1 ? 'text' : 'password'"
+							@click:append="show1 = !show1"
+							label="Stare hasło"
+							v-model="passwordForm.oldPassword">
+						</v-text-field>
+						<v-text-field
+							:append-icon="show2 ? 'visibility' : 'visibility_off'"
+							:rules="[rules.required, rules.min6]"
+							:type="show2 ? 'text' : 'password'"
+							@click:append="show2 = !show2"
+							label="Nowe hasło"
+							v-model="passwordForm.newPassword">
+						</v-text-field>
+						<v-text-field
+							:append-icon="show3 ? 'visibility' : 'visibility_off'"
+							:rules="[rules.required, rules.min6, rules.passwordRules]"
+							:type="show3 ? 'text' : 'password'"
+							@click:append="show3 = !show3"
+							label="Powtórz hasło"
+							v-model="passwordForm.repeatNewPassword">
+						</v-text-field>
+						<v-btn @click="savePassword">
+							Zapisz
+						</v-btn>
+					</v-form>
+				</v-card-text>
+			</v-card>
 
 		</v-col>
 	</v-row>
@@ -85,6 +118,11 @@
 					},
           phone: '',
         },
+        passwordForm:{
+          oldPassword: '',
+          newPassword: '',
+          repeatNewPassword: ''
+				},
         errors: {
           name: '',
           surname: '',
@@ -96,9 +134,14 @@
           required: value => !!value || "To pole jest wymagane",
           emailRules: v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'Niepoprawny adres email',
           phoneMax12: value => value.length <= 12 || 'Numer telefonu powinien mieć mniej niż 13 znaków',
-          postCodeFormat: value => /^\d{2}-\d{3}$/.test(value) || 'Nieprawidłowy format kodu pocztowego'
+          postCodeFormat: value => /^\d{2}-\d{3}$/.test(value) || 'Nieprawidłowy format kodu pocztowego',
+          min6: v => v.length >= 6 || 'Hasło musi mieć conajmniej 6 znaków',
+          passwordRules: value => ((value && !value.localeCompare(this.passwordForm.newPassword)) || "Hasła nie są takie same"),
+
         },
-				userId: ''
+        show1: false,
+        show2: false,
+        show3: false,
       }
     },
     beforeMount(){
@@ -148,7 +191,26 @@
               Vue.toasted.error(error.response.data).goAway(3000);
             }
           })
-      }
+      },
+			savePassword(){
+        axios.post(route('api.changePassword', this.form.id),{
+          oldPassword: this.passwordForm.oldPassword,
+          newPassword: this.passwordForm.newPassword,
+          newPasswordRepeated: this.passwordForm.repeatNewPassword,
+        }).then(
+          response => {
+            Vue.toasted.success(response.data.message).goAway(5000);
+            setTimeout(function(){window.location.href=route('home')} , 5000);
+          },
+          error => {
+            console.log(error.response);
+            if (error.response.status === 422) {
+              Vue.toasted.error("Podano niepoprawne dane, spróbuj jeszcze raz").goAway(3000);
+            } else {
+              Vue.toasted.error(error.response.data).goAway(3000);
+            }
+          })
+			}
     }
   }
 </script>
