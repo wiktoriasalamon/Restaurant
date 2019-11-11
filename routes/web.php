@@ -63,11 +63,19 @@ Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(
     });
 
 
-
-    Route::resource('user', 'ApiUserController')->except([
-        'index'
-    ]);
-    Route::post('user/change-password/{user}', 'ApiUserController@changePassword')->name('changePassword');
-    Route::get('/auth-user', 'ApiUserController@myAccount')->name('authenticatedUser');
-    Route::post('user/store-worker', 'ApiUserController@storeWorker')->middleware('permission:createUser');
+    Route::name('user.')->prefix('user')->group(function () {
+        Route::get('/fetch-user/{user}', 'ApiUserController@fetchUser')->middleware('permission:userEdit');
+        Route::get('/fetch-customers', 'ApiUserController@fetchCustomers')->middleware('permission:customerIndex');
+        Route::get('/fetch-workers', 'ApiUserController@fetchWorkers')->middleware('permission:userIndex');
+        Route::get('/fetch-user-my-account/{user}', 'ApiUserController@changePassword')->middleware('myAccount');
+        Route::put('/change-password/{user}', 'ApiUserController@changePassword')->middleware('permission:userEdit');
+        Route::put('/change-password-my-account/{user}', 'ApiUserController@changePassword')->middleware('myAccount');
+        Route::put('/update-my-account/{user}', 'ApiUserController@update')->middleware('myAccount');
+        Route::put('/update-worker/{user}', 'ApiUserController@update')->middleware('permission:userEdit');
+        Route::put('/update-customer/{user}', 'ApiUserController@update')->middleware('permission:customerEdit');
+        Route::post('/store-worker', 'ApiUserController@storeWorker')->middleware('permission:createUser');
+        Route::post('/store-customer', 'ApiUserController@storeCustomer');
+        Route::delete('/{id}', 'ApiUserController@destroy')->middleware('permission:userDelete');
+        Route::get('/auth-user', 'ApiUserController@myAccount')->name('authenticatedUser');
+    });
 });

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
@@ -68,5 +70,43 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    /**
+     * @param $request
+     */
+    public function fillUser($request)
+    {
+        $this->name = $request->name;
+        $this->surname = $request->surname;
+        $this->email = $request->email;
+        $this->address = $request->address;
+        $this->phone = $request->phone;
+        if (!$this->remember_token) {
+            $this->remember_token = Str::random(10);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function fetchUserData():array
+    {
+        return[
+            'id' => $this->id,
+            'name' => $this->name,
+            'surname' => $this->surname,
+            'email' => $this->email,
+            'address' => $this->address,
+            'phone' => $this->phone
+        ];
+    }
+
+    /**
+     * @return bool
+     */
+    public function ifAuth():bool
+    {
+       return $this===Auth::user();
     }
 }

@@ -30,7 +30,13 @@ return[
         "orderShow",
         "orderEdit",
         "orderDelete",
-        "orderIndex"
+        "orderIndex",
+        "onlineReservationCreate",
+        "onlineReservationShow",
+        "onlineReservationEdit",
+        "onlineReservationDelete",
+        "onlineReservationIndex",
+
     ],
     "worker"=>[
         "reservationCreate",
@@ -38,11 +44,18 @@ return[
         "reservationEdit",
         "reservationDelete",
         "reservationIndex",
+        "onlineReservationCreate",
+        "onlineReservationShow",
+        "onlineReservationEdit",
+        "onlineReservationDelete",
+        "onlineReservationIndex",
         "orderCreate",
         "orderShow",
         "orderEdit",
         "orderDelete",
-        "orderIndex"
+        "orderIndex",
+        "customerIndex",
+        "customerEdit"
 
     ],
     "customer"=>[
@@ -50,6 +63,7 @@ return[
         "onlineReservationShow",
         "onlineReservationEdit",
         "onlineReservationDelete",
-        "onlineReservationIndex"
+        "onlineReservationIndex",
+
     ]
 ];
