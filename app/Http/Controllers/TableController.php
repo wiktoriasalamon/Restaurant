@@ -18,7 +18,30 @@ class TableController extends Controller
      */
     public function index()
     {
-        dd(Table::all()->load(['reservation', 'order']));
-        return view('home');
+        return view('tables/index');
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $table = Table::find($id);
+        return view('tables/edit', compact(['table', 'id']));
+    }
+
+    /**
+     * Show the form for show th table.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $table = Table::find($id);
+        return view('tables/show', compact(['table', 'id']));
     }
 }

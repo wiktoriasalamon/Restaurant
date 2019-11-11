@@ -22,7 +22,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/chat', 'ChatsController@index');
     Route::get('messages', 'ChatsController@fetchMessages');
     Route::post('messages', 'ChatsController@sendMessage');
-    Route::get('/table', 'TableController@index')->name('table.index')->middleware('permission:tableIndex');
+    Route::get('/table-admin', 'TableController@index')->name('table.index')->middleware('permission:tableIndex');
+    Route::get('/table/edit/{id}', 'TableController@edit')->name('table.edit')->middleware('permission:tableEdit');
+    Route::get('/table/{id}', 'TableController@show')->name('table.show')->middleware('permission:tableShow');
     Route::get('/dish', 'DishController@index')->name('dish.index')->middleware('permission:dishIndex');
     Route::get('/menu', 'DishController@menu')->name('menu');
     Route::get('/menu-admin', 'DishController@adminMenu')->name('menu.admin');
