@@ -36,8 +36,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/dish/edit/{id}', 'DishController@edit')->name('dish.edit')->middleware('permission:dishEdit');
     Route::name('worker.')->prefix('worker')->group(function () {
         Route::get('/create','WorkerController@create')->name('create')->middleware('permission:userCreate');
-        Route::get('edit/{id}','WorkerController@edit')->middleware('permission:userEdit');
-        Route::get('index','WorkerController@index')->middleware('permission:userIndex');
+        Route::get('edit/{id}','WorkerController@edit')->name('edit')->middleware('permission:userEdit');
+        Route::get('index','WorkerController@index')->name('index')->middleware('permission:userIndex');
     });
 });
 

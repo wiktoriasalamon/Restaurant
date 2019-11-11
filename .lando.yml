@@ -7,6 +7,9 @@ config:
   database: postgres
   xdebug: true
 services:
+  database:
+    portforward: 5433
+
   node:
     type: node
     build:

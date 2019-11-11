@@ -19,7 +19,7 @@ class UserRequest extends FormRequest
             'name' => 'required',
             'surname' => 'required',
             'email' => 'required|email',
-            'address' => 'required|string|json',
+            'address' => 'required|json',
             'phone' =>[
                 'max:12',
                 'regex:/^[+]{1}(48)[0-9]{9}$|^[0-9]{9}$/'
