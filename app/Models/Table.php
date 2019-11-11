@@ -10,7 +10,7 @@ class Table extends Model
 
     protected $fillable = [
         'size',
-        'occupied_from'
+        'occupied_since'
     ];
 
     public function reservation()
