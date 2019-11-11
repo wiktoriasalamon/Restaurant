@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-    <workers-edit></workers-edit>
+    <workers-edit id="{{ $id }}"></workers-edit>
 @endsection

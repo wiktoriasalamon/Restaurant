@@ -11,9 +11,11 @@ class WorkerController extends Controller
         return view('workers.index');
     }
 
-    public function edit()
+    public function edit(int $id)
     {
-        return view('workers.edit');
+        return view('workers.edit', [
+            'id' => $id
+        ]);
     }
 
     public function create()

@@ -41,6 +41,7 @@
 
 <script>
   export default {
+    props: ['id'],
     name: "workers-edit",
     data() {
       return {
@@ -82,7 +83,7 @@
       };
     },
     beforeMount() {
-      axios.get(route()).then(response => {
+      axios.get(route(, this.id)).then(response => {
         let entries = Object.entries(response.data);
         for (let [key, v] of entries) {
           let value = v;
