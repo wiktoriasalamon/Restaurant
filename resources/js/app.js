@@ -39,8 +39,8 @@ const opts = {
 Vue.use(Vuetify);
 const Options = {
     position: 'top-center'
-}
-Vue.use(Toasted, Options)
+};
+Vue.use(Toasted, Options);
 
 
 /**
@@ -81,6 +81,10 @@ Vue.component('admin-menu', require('./components/menu/admin-menu').default);
 
 //TABLES
 Vue.component('admin-tables-index', require('./components/tables/admin-tables-index').default);
+
+//USERS
+Vue.component('my-account', require('./components/users/myAccount').default);
+
 
 
 

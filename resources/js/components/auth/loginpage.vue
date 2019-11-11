@@ -90,7 +90,7 @@ export default {
 			})
 			.then((response)=> {
         Vue.toasted.success("Zostałeś pomyślnie zalogowany do systemu").goAway(5000);
-        setTimeout(function(){window.location.href="/"} , 5000);
+        setTimeout(function(){window.location.href="/"} , 3000);
 			})
 			.catch(error => {
         if(error.response.status === 422){
