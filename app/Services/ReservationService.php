@@ -107,28 +107,17 @@ class ReservationService
         return $reservationWithStatus;
     }
 
+
     /**
      * @param string $date
-     * @return array
+     * @return mixed
      */
-    public function tablesByDate(string $date): array
-    {
-        $tables = Table::all();
-        $tableArray = [];
-        foreach ($tables as $table) {
-            $reservationSince = null;
-            $reservations=Reservation::where('table_id',$table->id)->get();
-            foreach ($reservations as $reservation) {
-                if ($reservation->date == $date) {
-                    $reservationSince = $reservation->start_time;
-                }
-            }
-            array_push($tableArray, [
-                'table' => $table,
-                'reservation_since' => $reservationSince
-            ]);
-        }
-        return $tableArray;
-    }
+    public function freeTablesByDate(string $date)    {
 
+        $tables = Table::where('occupied_since',null)->whereDoesntHave('reservation', function ($query) use ($date) {
+            $query->where('date', 'like', $date);
+        })->get();
+
+        return $tables;
+    }
 }
