@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Events\MessageSent;
+use App\Interfaces\StatusTypesInterface;
+use App\Models\Order;
+use App\Services\OrderService;
 use Illuminate\Http\Request;
 use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
@@ -22,6 +25,13 @@ class ChatsController extends Controller
      */
     public function index()
     {
+        $id = 7;
+        return response()->json(Order::status(StatusTypesInterface::TYPE_ORDERED)
+            ->orderedLocal()
+            ->where("table_id",$id)
+            ->get()
+            ->load("check"),
+            200);
         return view('chat');
     }
 

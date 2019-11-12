@@ -21,7 +21,7 @@ class OrderTableSeeder extends Seeder
                         $order->takeaway = false;
                         $order->worker()->associate(\App\Models\User::find(1));
                         $order->table()->associate($table);
-                        $order->address = json_encode("adres");
+                        $order->address = random_int(0, 1) ? null : json_encode("adres");
                         $order->save();
                     }
                 }
