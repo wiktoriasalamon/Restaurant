@@ -25,13 +25,6 @@ class ChatsController extends Controller
      */
     public function index()
     {
-        $id = 7;
-        return response()->json(Order::status(StatusTypesInterface::TYPE_ORDERED)
-            ->orderedLocal()
-            ->where("table_id",$id)
-            ->get()
-            ->load("check"),
-            200);
         return view('chat');
     }
 

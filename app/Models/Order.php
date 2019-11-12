@@ -51,6 +51,16 @@ class Order extends Model
         return $query->where('status', $statusTypes);
     }
     /**
+     * Filter order yhat are different that given status
+     * @param Builder $query
+     * @param string $statusTypes
+     * @return Builder
+     */
+    public function scopeStatusNotEqual(Builder $query, string $statusTypes): Builder
+    {
+        return $query->where('status',"!=", $statusTypes);
+    }
+    /**
      * Filter order which were ordered in restaurant
      * @param Builder $query
      * @return Builder
