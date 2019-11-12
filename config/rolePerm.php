@@ -7,7 +7,6 @@ return[
         "dishDelete",
         "dishIndex",
         "userCreate",
-        "userShow",
         "userEdit",
         "userDelete",
         "userIndex",
@@ -36,7 +35,7 @@ return[
         "onlineReservationEdit",
         "onlineReservationDelete",
         "onlineReservationIndex",
-
+        "createUser",
     ],
     "worker"=>[
         "reservationCreate",
