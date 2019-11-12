@@ -86,12 +86,11 @@ class ReservationService
     }
 
     /**
+     * @param $reservations
      * @return array
      */
-    public function reservationWithStatus(): array
+    private function reservationWithStatus($reservations): array
     {
-        $auth=Auth::user();
-        $reservations = Reservation::where('email', $auth->email)->get();
         $reservationWithStatus = [];
         foreach ($reservations as $reservation) {
             $status = self::STATUS_CURRENT;
@@ -105,6 +104,24 @@ class ReservationService
             array_push($reservationWithStatus, ['reservation' => $reservation, 'status' => $status]);
         }
         return $reservationWithStatus;
+    }
+
+    /**
+     * @param string $date
+     * @return array
+     */
+    public function workerReservations(string $date):array
+    {
+        return $this->reservationWithStatus(Reservation::where('date', $date)->get());
+    }
+
+    /**
+     * @return array
+     */
+    public function customerReservations():array
+    {
+        $auth=Auth::user();
+        return $this->reservationWithStatus(Reservation::where('email', $auth->email)->get());
     }
 
 
