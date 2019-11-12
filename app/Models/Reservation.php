@@ -77,4 +77,5 @@ class Reservation extends Model
             $this->table()->associate(Table::findOrFail($tableId));
 
     }
+
 }
