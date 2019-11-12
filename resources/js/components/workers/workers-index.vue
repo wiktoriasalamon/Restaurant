@@ -105,7 +105,11 @@
         window.location.replace(route('worker.edit', id));
       },
       deleteWorker(id) {
-        console.log('delete ' + id);
+        axios.delete(route('api.user.delete', id)).then(response => {
+          window.location.replace(route('worker.index'));
+        }).catch(error => {
+
+        });
       }
     }
   }
