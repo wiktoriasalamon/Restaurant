@@ -180,18 +180,25 @@
 				form:{
           email: '',
 					phone: ''
-				}
+				},
+				tablesId:[]
       }
     },
     methods:{
       allowedStep: m => m % 15 === 0,
       allowedHours: v => v >= 9 && v <=23,
+      setMinTime(){
+        var d = new Date();
+        var h = d.getHours();
+        var m = d.getMinutes();
+        if(h<22 && d.toISOString().substr(0, 10) === this.date){
+          return h+":"+m
+				}
+      },
       getAvailableTables(date){
         axios.get(route('api.reservation.fetchTablesByDate', date))
           .then(response => {
 						this.availableTables = response.data.tables
-            console.log(response.data)
-
           }).catch(error => {
           console.error(error)
         })
@@ -199,7 +206,8 @@
       makeReservation(id){
 				for(let i=0; i< this.availableTables.length ; i++){
 				  if(this.availableTables[i].id === id){
-						this.choosenTables.push(this.availableTables[i])
+						this.choosenTables.push(this.availableTables[i]);
+						this.tablesId.push(this.availableTables[i].id);
 						this.availableTables.splice(i, 1);
 					}
 				}
@@ -207,14 +215,39 @@
       cancelReservationTable(id){
         for(let i=0; i< this.choosenTables.length ; i++){
           if(this.choosenTables[i].id === id){
-            this.availableTables.push(this.choosenTables[i])
+            this.availableTables.push(this.choosenTables[i]);
             this.choosenTables.splice(i, 1);
+            this.tablesId.splice(i, 1);
+
           }
         }
       },
 			saveReservation(){
+        if(this.choosenTables === [] || this.time === null){
+          Vue.toasted.error("Musisz wypełnić wszystkie dane!!!").goAway(7000);
+        }else{
+          axios.post(route('api.reservation.storeAsWorker'),{
+            date: this.date,
+            startTime: this.time,
+            email: this.form.email,
+            phone: this.form.phone,
+            tables: this.tablesId,
+          }).then(
+            response => {
+              Vue.toasted.success(response.data.message).goAway(5000);
+              setTimeout(function(){window.location.href=route('home')} , 5000);
+            },
+            error => {
+              if(error.response.status === 422){
+                Vue.toasted.error("Podano niepoprawne dane, spróbuj jeszcze raz").goAway(3000);
+              }else{
+                Vue.toasted.error(error.response.data).goAway(3000);
+              }
 
-			}
+            },
+          );
+        }
+      }
     }
   }
 </script>

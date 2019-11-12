@@ -98,8 +98,6 @@
         axios.get(route('api.reservation.workerIndex', date))
           .then(response => {
             this.reservations = response.data.reservations
-						console.log(response.data.reservations)
-
           }).catch(error => {
           console.error(error)
         })
