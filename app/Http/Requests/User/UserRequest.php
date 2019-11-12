@@ -41,7 +41,7 @@ class UserRequest extends FormRequest
             'email.email' => 'Niepoprawny adres e-mail',
             'address.required' => 'To pole jest wymagane',
             'address.json' => 'Nieprawidłowy format',
-            'phone.max' => 'Niepoprawna długość numer telefonu.',
+            'phone.max' => 'Niepoprawna długość numer telefonu',
             'phone.regex' => 'Niepoprawny numer telefonu',
         ];
     }
