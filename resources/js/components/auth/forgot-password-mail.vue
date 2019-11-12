@@ -16,6 +16,7 @@
 </template>
 
 <script>
+  import {notification} from '../../Notifications.js';
   export default {
     name: "forgot-password-mail",
     data() {
@@ -32,8 +33,16 @@
         window.history.back();
       },
       send() {
-
-      }
+        axios.post(route('password.email'), {
+          'email': this.mail,
+        })
+          .then((response)=> {
+            notification(response.data,"success")
+          })
+          .catch(error => {
+            notification(error.response.data,"error")
+           });
+      },
     }
   }
 </script>
