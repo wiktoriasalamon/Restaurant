@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UserChangePasswordRequest;
 use App\Http\Requests\User\UserCreateRequest;
 use App\Http\Requests\User\UserRequest;
+use App\Mails\RegistrationMail;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
@@ -52,9 +53,11 @@ class ApiUserController extends Controller
         try {
             $user = new User();
             $user->fillUser($request);
-            $user->password = Hash::make($request->password);
+            $user->setPassword($request->password);
             $user->assignRole($role);
-            $user->save();
+            if($user->save()){
+                (new RegistrationMail($request->password, $request->email))->sendMail();
+            }
         } catch (\Exception $e) {
             return response()->json(['message' => 'Wystąpił błąd w trakcie dodawania użytkownika'], 500);
         }
@@ -89,7 +92,7 @@ class ApiUserController extends Controller
     public function changePassword(UserChangePasswordRequest $request, User $user)
     {
         if (Hash::check($request->oldPassword, $user->password)) {
-            $user->password = Hash::make($request->newPassword);
+            $user->setPassword($request->newPassword);
             $user->save();
             return response()->json(['message' => "Pomyślnie zmieniono hasło"], 200);
         }

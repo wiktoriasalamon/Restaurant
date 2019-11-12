@@ -15,7 +15,7 @@ class OrderTableSeeder extends Seeder
 //      zamówienia na miejscu zgodne z zajętymi stolikami w danym momencie
         try {
             foreach ($tables as $table){
-                if ($table->occupied_from) {
+                if ($table->occupied_since) {
                     for ($i = 0; $i < random_int(1, $table->size); $i++) {
                         $order = new \App\Models\Order();
                         $order->takeaway = false;
