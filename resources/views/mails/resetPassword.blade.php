@@ -5,7 +5,7 @@
         Aby zmienić hasło kliknij w poniższy link:<br>
 
         <a href="{{$link}}">{{$link}}</a><br><br>
-        System restauracji RestaurApp<br><br>
+        System restauracji "W-17 wydział smaków"<br><br>
     </p>
     <br>
 

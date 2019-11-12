@@ -14,7 +14,7 @@ class ResetPasswordMail extends Mailable
 
     public $sendToMail;
     public $link;
-    private const SUBJECT="Zmiana hasła w Restaurapp";
+    private const SUBJECT="Zmiana hasła w systemie restauracji \"W-17 wydział smaków\"";
 
     public function __construct(string $token, string $email)
     {

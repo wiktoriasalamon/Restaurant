@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\ResetPasswordRequest;
 use App\Models\PasswordResets;
+use App\Models\User;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Response;
 
@@ -49,6 +51,29 @@ class ResetPasswordController extends Controller
         if (!PasswordResets::where('token', $token)->get('email')->first()) {
             return response(null, Response::HTTP_FORBIDDEN);
         }
-        return view('auth.passwords.email', ['token' => $token]);
+        return view('auth.passwords.reset', ['token' => $token]);
+    }
+
+
+    /**
+     * @param ResetPasswordRequest $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|Response
+     */
+    public function reset(ResetPasswordRequest $request)
+    {
+        try {
+            if (!$passwordResets = PasswordResets::where('token', $request->token)->first()) {
+                return response(null, Response::HTTP_FORBIDDEN);
+            }
+            $email=$passwordResets->email;
+            $user=User::where('email',$email)->first();
+            $user->setPassword($request->newPassword);
+            $passwordResets->delete();
+            if ($user->update()) {
+                return response()->json(["Pomyślnie zmieniono hasło"], 200);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['Wystąpił błąd w trakcie zmiany hasła'], 500);
+        }
     }
 }
