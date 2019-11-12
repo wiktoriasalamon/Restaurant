@@ -141,5 +141,10 @@ class ApiOrderController extends Controller
         }
     }
 
-
+//todo test statusOrder
+//todo nowe zamówienie na miejscy
+//todo nowe zamówienie online
+//todo edycja zamówienia
+//todo podsumowanie zamówienia online i na miejscu + rachenek?
+//todo rachunek + zamknięcie stolika
 }
