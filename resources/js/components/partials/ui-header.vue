@@ -76,23 +76,22 @@
           {id: 1, text: "Strona główna", link: route('home')},
           {id: 2, text: "Menu", link: route('menu')},
           {id: 3, text: "Zamów online", link: route('menu')},
-          {id: 4, text: "Zarezerwuj", link: route('reservation.create')},
           {id: 5, text: "Kontakt", link: route('home')},
-
 				],
 				adminMenu:[
           {id: 1, text: "Strona główna", link: route('home')},
-          {id: 2, text: "Menu", link: route('menu.admin')},
-          {id: 3, text: "Kelnerzy", link: route('menu')},
-          {id: 4, text: "Rezerwacje", link: route('reservation.indexUser')},
-          {id: 5, text: "Zamowienia", link: route('home')},
-          {id: 6, text: "Stoliki", link: route('table.index')},
+          {id: 2, text: "Dania", link: route('menu.admin')},
+          {id: 3, text: "Kategorie dań", link: route('dishCategory.index')},
+          {id: 4, text: "Kelnerzy", link: route('worker.index')},
+          {id: 5, text: "Rezerwacje", link: route('reservation.indexUser')},
+          {id: 6, text: "Zamowienia", link: route('home')},
+          {id: 7, text: "Stoliki", link: route('table.index')},
 				],
 				waiterMenu:[
           {id: 1, text: "Stoliki", link: route('menu')},
           {id: 2, text: "Zamówienia", link: route('menu')},
           {id: 3, text: "Zamówienia online", link: route('menu')},
-          {id: 4, text: "Rezerwacje", link: route('reservation.indexUser')},
+          {id: 4, text: "Rezerwacje", link: route('reservation.index')},
 				],
 				userMenu:[
           {id: 1, text: "moje zamówienia", link: route('home')},
@@ -100,13 +99,33 @@
           {id: 3, text: "moje konto", link: route('user.myAccount')},
           {id: 4, text: "wyloguj", link: "logout"},
 				],
+        customerMenu: [
+          {id: 1, text: "Strona główna", link: route('home')},
+          {id: 2, text: "Menu", link: route('menu')},
+          {id: 3, text: "Zamów online", link: route('menu')},
+          {id: 4, text: "Zarezerwuj", link: route('reservation.createUser')},
+          {id: 5, text: "Kontakt", link: route('home')},
+        ],
 				menu:[],
 				notLogged: true,
 				loggedUser: ''
       }
     },
 		beforeMount(){
-      this.menu = this.adminMenu;
+      switch(this.role) {
+        case 'guest':
+          this.menu = this.questMenu
+          break;
+				case 'admin':
+				  this.menu = this.adminMenu
+					break;
+				case 'worker':
+				  this.menu = this.waiterMenu
+					break;
+				case 'customer':
+				  this.menu = this.customerMenu
+					break;
+			}
 			if(this.user !== null){
 			  this.notLogged = false;
 				this.loggedUser = this.user
