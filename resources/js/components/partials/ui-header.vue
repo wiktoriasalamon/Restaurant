@@ -80,11 +80,12 @@
 				],
 				adminMenu:[
           {id: 1, text: "Strona główna", link: route('home')},
-          {id: 2, text: "Menu", link: route('menu.admin')},
-          {id: 3, text: "Kelnerzy", link: route('worker.index')},
-          {id: 4, text: "Rezerwacje", link: route('reservation.indexUser')},
-          {id: 5, text: "Zamowienia", link: route('home')},
-          {id: 6, text: "Stoliki", link: route('table.index')},
+          {id: 2, text: "Dania", link: route('menu.admin')},
+          {id: 3, text: "Kategorie dań", link: route('dishCategory.index')},
+          {id: 4, text: "Kelnerzy", link: route('worker.index')},
+          {id: 5, text: "Rezerwacje", link: route('reservation.indexUser')},
+          {id: 6, text: "Zamowienia", link: route('home')},
+          {id: 7, text: "Stoliki", link: route('table.index')},
 				],
 				waiterMenu:[
           {id: 1, text: "Stoliki", link: route('menu')},

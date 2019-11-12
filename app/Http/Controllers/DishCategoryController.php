@@ -15,7 +15,6 @@ class DishCategoryController extends Controller
      */
     public function index()
     {
-        dd(DishCategory::all());
-        return view('home');
+        return view('dishCategory.index');
     }
 }
