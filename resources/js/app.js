@@ -93,6 +93,10 @@ Vue.component('workers-index', require('./components/workers/workers-index').def
 Vue.component('workers-create', require('./components/workers/workers-create').default);
 Vue.component('workers-edit', require('./components/workers/workers-edit').default);
 
+//DISH CATEGORIES
+Vue.component('dish-category-index', require('./components/dishCategories/dish-category-index').default);
+
+
 
 
 
