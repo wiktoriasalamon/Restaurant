@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\ReservationChanged;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Reservation\CustomerReservationRequest;
 use App\Http\Requests\Reservation\WorkerReservationRequest;
@@ -28,6 +29,7 @@ class ApiReservationController extends Controller
             $reservation->start_time = $request->startTime;
             $reservation->setCustomer($request->email, $request->phone);
             if ($reservation->findTable($request->tableSize) &&  $reservation->save()) {
+                broadcast(new ReservationChanged())->toOthers();
                 (new ReservationMail($reservation))->sendMail();
                 return response()->json(['message' => "Rezerwacja została pomyślnie zapisana."], 200);
             }
@@ -93,7 +95,6 @@ class ApiReservationController extends Controller
         try {
             return response()->json(['tables' => (new ReservationService())->freeTablesByDate($date)], 200);
         } catch (\Exception $exception) {
-            dd($exception);
             return response()->json('Wystąpił nieoczekiwany błąd', 500);
         }
     }
