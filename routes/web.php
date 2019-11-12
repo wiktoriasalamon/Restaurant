@@ -17,6 +17,7 @@
 
 Route::get('/menu', 'DishController@menu')->name('menu');
 Route::get('/forgot-password', 'UserController@resetPassword')->name('forgotPassword.mail');
+Route::post('api/user/store-customer', 'API\ApiUserController@storeCustomer')->name('storeCustomer');
 
 Auth::routes();
 Route::middleware('auth')->group(function () {
@@ -99,7 +100,6 @@ Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(
         Route::put('/update-worker/{user}', 'ApiUserController@update')->name('updateWorker')->middleware('permission:userEdit');
         Route::put('/update-customer/{user}', 'ApiUserController@update')->name('updateCustomer')->middleware('permission:customerEdit');
         Route::post('/store-worker', 'ApiUserController@storeWorker')->name('storeWorker')->middleware('permission:createUser');
-        Route::post('/store-customer', 'ApiUserController@storeCustomer')->name('storeCustomer');
         Route::delete('/{id}', 'ApiUserController@destroy')->name('delete')->middleware('permission:userDelete');
         Route::get('/auth-user', 'ApiUserController@myAccount')->name('authenticatedUser');
     });

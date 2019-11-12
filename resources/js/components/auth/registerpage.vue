@@ -29,26 +29,33 @@
 		<v-text-field 
 			label="Ulica" 
 			outlined
-			v-model="input.street"
+			v-model="input.address.street"
 			:rules="[rules.required]"
 		></v-text-field>
 		<v-text-field 
 			label="Numer domu" 
 			outlined
-			v-model="input.homeNumber"
+			v-model="input.address.homeNumber"
 			:rules="[rules.required]"
 		></v-text-field>
 		<v-text-field 
 			label="Numer mieszkania" 
 			outlined
-			v-model="input.flatNumber"
+			v-model="input.address.flatNumber"
 		></v-text-field>
 		<v-text-field 
 			label="Miejscowość" 
 			outlined
-			v-model="input.city"
+			v-model="input.address.city"
 			:rules="[rules.required]"
 		></v-text-field>
+		<v-text-field
+			:rules="[rules.required, rules.postCodeFormat]"
+			label="Kod pocztowy"
+			outlined
+			v-model="input.address.postCode">
+
+		</v-text-field>
 		<v-text-field 
 			label="Hasło" 
 			outlined
@@ -92,7 +99,7 @@
 </template>
 
 <script>
-import {isEmail, isPassword, isPhoneNumber, passwordMatch} from '../../validator/DataValidator.js';
+import {isEmail, isPassword, isPhoneNumber, passwordMatch, isPostalCode} from '../../validator/DataValidator.js';
 import alertStrings from '../../strings/AlertStrings.js';
 
 export default {
@@ -107,10 +114,13 @@ export default {
 				lastName: "",
 				email: "",
 				phoneNumber: "",
-				street: "",
-				homeNumber: "",
-				flatNumber: "",
-				city: "",
+				address:{
+					street: "",
+					homeNumber: "",
+					flatNumber: "",
+					city: "",
+					postCode: ''
+				},
 				password1: "",
 				password2: ""
 			},
@@ -124,7 +134,7 @@ export default {
 				},
 				email: value => {
 					return isEmail(value) || alertStrings.invalidEmail;
-				  },
+				},
 				phoneNumber: value => {
 					return isPhoneNumber(value) || alertStrings.invalidPhoneNumber;
 				},
@@ -132,25 +142,37 @@ export default {
 					return isPassword(value) || alertStrings.invalidPassword;
 				},
 				passwordMatch: value => {
-					return passwordMatch(this.input.password1,value) || alertStrings.differentPasswords;
+					return passwordMatch(this.input.password1, value) || alertStrings.differentPasswords;
+				},
+				postCodeFormat: value => {
+					return isPostalCode(value) || alertStrings.invalidPostalCode
 				}
-			   },
+			},
 		}
 	},
 	methods: {
 		handlePressRegister() {
 			if(this.validateData()) {
 				this.showAlert('Tu będzie rejestracja');
+				this.register()
 			}
 		},
 		register() {
-			axios.post('', {
+			let address=JSON.stringify(this.input.address)
+			axios.post('/api/user/store-customer', {
+				name:this.input.firstName,
+				surname:this.input.lastName,
+				email:this.input.email,
+				address: address,
+				phone:this.input.phoneNumber,
+				password:this.input.password1,
+				repeatPassword:this.input.password2
+			}).then(
+				response => {
+				},
+				error => {
 
-			})
-			.then((response)=> {
-
-			})
-			.catch();
+				})
 		},
 		handlePressLogin() {
 			window.location.href = route('login');

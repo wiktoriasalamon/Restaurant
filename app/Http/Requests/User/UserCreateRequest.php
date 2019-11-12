@@ -15,6 +15,8 @@ class UserCreateRequest extends UserRequest
     {
         $rules = parent::rules();
         $rules['password'] = 'required|min:6';
+        $rules['email']=$rules['email'].'|unique:users';
+
         return $rules;
 
     }
