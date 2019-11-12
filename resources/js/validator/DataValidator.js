@@ -16,6 +16,8 @@ function isPhoneNumber(phoneNumber) {
 function passwordMatch(password1, password2) {
     return (password1.localeCompare(password2) === 0)
 }
+function isPostalCode(code) {
+    return /^\d{2}-\d{3}$/.test(code)
+}
 
-
-export {isEmail, isPassword, isPhoneNumber, passwordMatch};
+export {isEmail, isPassword, isPhoneNumber, passwordMatch, isPostalCode};

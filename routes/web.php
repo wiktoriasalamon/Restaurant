@@ -16,7 +16,7 @@
 //});
 
 Route::get('/menu', 'DishController@menu')->name('menu');
-Route::get('/forgot-password', 'UserController@resetPassword')->name('forgotPassword.mail');
+Route::post('api/user/store-customer', 'API\ApiUserController@storeCustomer')->name('storeCustomer');
 
 Auth::routes();
 Route::middleware('auth')->group(function () {
@@ -105,14 +105,13 @@ Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(
         Route::get('/fetch-user/{user}', 'ApiUserController@fetchUser')->name('fetchUser')->middleware('permission:userEdit');
         Route::get('/fetch-customers', 'ApiUserController@fetchCustomers')->name('fetchCustomers')->middleware('permission:customerIndex');
         Route::get('/fetch-workers', 'ApiUserController@fetchWorkers')->name('fetchWorkers')->middleware('permission:userIndex');
-        Route::get('/fetch-user-my-account/{user}', 'ApiUserController@changePassword')->name('fetchUserMyAccount')->middleware('myAccount');
+        Route::get('/fetch-user-my-account/{user}', 'ApiUserController@fetchUser')->name('fetchUserMyAccount')->middleware('myAccount');
         Route::put('/change-password/{user}', 'ApiUserController@changePassword')->name('changePassword')->middleware('permission:userEdit');
         Route::put('/change-password-my-account/{user}', 'ApiUserController@changePassword')->name('changePasswordMyAccount')->middleware('myAccount');
         Route::put('/update-my-account/{user}', 'ApiUserController@update')->name('updateUserMyAccount')->middleware('myAccount');
         Route::put('/update-worker/{user}', 'ApiUserController@update')->name('updateWorker')->middleware('permission:userEdit');
         Route::put('/update-customer/{user}', 'ApiUserController@update')->name('updateCustomer')->middleware('permission:customerEdit');
         Route::post('/store-worker', 'ApiUserController@storeWorker')->name('storeWorker')->middleware('permission:createUser');
-        Route::post('/store-customer', 'ApiUserController@storeCustomer')->name('storeCustomer');
         Route::delete('/{id}', 'ApiUserController@destroy')->name('delete')->middleware('permission:userDelete');
         Route::get('/auth-user', 'ApiUserController@myAccount')->name('authenticatedUser');
     });
