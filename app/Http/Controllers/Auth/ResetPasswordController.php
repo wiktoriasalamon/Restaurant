@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\PasswordResets;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\Response;
 
 class ResetPasswordController extends Controller
 {
@@ -34,6 +36,19 @@ class ResetPasswordController extends Controller
      */
     public function __construct()
     {
-//        $this->middleware('guest');
+        $this->middleware('guest');
+    }
+
+
+    /**
+     * @param $token
+     * @return $this
+     */
+    public function showResetForm($token)
+    {
+        if (!PasswordResets::where('token', $token)->get('email')->first()) {
+            return response(null, Response::HTTP_FORBIDDEN);
+        }
+        return view('auth.passwords.email', ['token' => $token]);
     }
 }

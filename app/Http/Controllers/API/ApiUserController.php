@@ -59,7 +59,6 @@ class ApiUserController extends Controller
                 (new RegistrationMail($request->password, $request->email))->sendMail();
             }
         } catch (\Exception $e) {
-            dd($e);
             return response()->json(['message' => 'Wystąpił błąd w trakcie dodawania użytkownika'], 500);
         }
         return response()->json(['message' => "Pomyślnie dodano użytkownika"], 200);

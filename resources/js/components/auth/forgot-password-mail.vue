@@ -32,7 +32,13 @@
         window.history.back();
       },
       send() {
-
+        axios.post(route('password.email'), {
+          'email': this.mail,
+        })
+          .then((response)=> {
+          })
+          .catch(error => {
+           });
       }
     }
   }

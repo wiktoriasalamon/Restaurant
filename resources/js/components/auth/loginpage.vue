@@ -103,7 +103,7 @@ export default {
 			window.location.href = route('register');
 		},
 		handlePressForgetPassword() {
-			this.showAlert('Tu będzie przypominanie hasła');
+			window.location.href=route('password.request')
 		},
 		showAlert(alert) {
 			this.text=alert;

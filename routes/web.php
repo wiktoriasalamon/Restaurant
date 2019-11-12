@@ -16,7 +16,6 @@
 //});
 
 Route::get('/menu', 'DishController@menu')->name('menu');
-Route::get('/forgot-password', 'UserController@resetPassword')->name('forgotPassword.mail');
 Route::post('api/user/store-customer', 'API\ApiUserController@storeCustomer')->name('storeCustomer');
 
 Auth::routes();
@@ -93,7 +92,7 @@ Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(
         Route::get('/fetch-user/{user}', 'ApiUserController@fetchUser')->name('fetchUser')->middleware('permission:userEdit');
         Route::get('/fetch-customers', 'ApiUserController@fetchCustomers')->name('fetchCustomers')->middleware('permission:customerIndex');
         Route::get('/fetch-workers', 'ApiUserController@fetchWorkers')->name('fetchWorkers')->middleware('permission:userIndex');
-        Route::get('/fetch-user-my-account/{user}', 'ApiUserController@changePassword')->name('fetchUserMyAccount')->middleware('myAccount');
+        Route::get('/fetch-user-my-account/{user}', 'ApiUserController@fetchUser')->name('fetchUserMyAccount')->middleware('myAccount');
         Route::put('/change-password/{user}', 'ApiUserController@changePassword')->name('changePassword')->middleware('permission:userEdit');
         Route::put('/change-password-my-account/{user}', 'ApiUserController@changePassword')->name('changePasswordMyAccount')->middleware('myAccount');
         Route::put('/update-my-account/{user}', 'ApiUserController@update')->name('updateUserMyAccount')->middleware('myAccount');
