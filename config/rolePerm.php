@@ -35,7 +35,7 @@ return[
         "onlineReservationEdit",
         "onlineReservationDelete",
         "onlineReservationIndex",
-
+        "createUser",
     ],
     "worker"=>[
         "reservationCreate",

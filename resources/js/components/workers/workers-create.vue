@@ -12,28 +12,28 @@
                         v-model="form.surname"></v-text-field>
           <v-text-field :rules="[rules.required, rules.emailRules]" label="Email" v-bind:error-messages="errors.email"
                         v-model="form.email"></v-text-field>
-          <v-text-field :rules="[rules.required]" label="Ulica" v-bind:error-messages="errors.address.street"
+          <v-text-field :rules="[rules.required]" label="Ulica" v-bind:error-messages="errors.address"
                         v-model="form.address.street"></v-text-field>
           <v-text-field label="Numer domu" :rules="[rules.required]"
-                        v-bind:error-messages="errors.address.houseNumber" v-model="form.address.houseNumber"></v-text-field>
+                        v-bind:error-messages="errors.address" v-model="form.address.houseNumber"></v-text-field>
           <v-text-field label="Numer apartamentu" :rules="[rules.required]"
-                        v-bind:error-messages="errors.address.apartmentNumber"
+                        v-bind:error-messages="errors.address"
                         v-model="form.address.apartmentNumber"></v-text-field>
-          <v-text-field :rules="[rules.required]" label="Miasto" v-bind:error-messages="errors.address.city"
+          <v-text-field :rules="[rules.required]" label="Miasto" v-bind:error-messages="errors.address"
                         v-model="form.address.city"></v-text-field>
           <v-text-field label="Kod pocztowy" :rules="[rules.required, rules.postCodeFormat]"
-                        v-bind:error-messages="errors.address.postCode" v-model="form.address.postCode"></v-text-field>
+                        v-bind:error-messages="errors.address" v-model="form.address.postCode"></v-text-field>
           <v-text-field :rules="[rules.phoneMax12]" v-bind:error-messages="errors.phone"
                         label="Telefon" v-model="form.phone"></v-text-field>
           <v-text-field :rules="[rules.required, rules.passwordMax6]" label="Hasło"
                         v-bind:error-messages="errors.password"
-                        v-model="form.name"></v-text-field>
+                        v-model="form.password"></v-text-field>
         </v-form>
       </v-container>
     </v-card-text>
     <v-card-actions>
       <v-btn @click="cancel">Anuluj</v-btn>
-      <v-btn>Zapisz</v-btn>
+      <v-btn @click="save">Zapisz</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -68,13 +68,7 @@
           name: [],
           surname: [],
           email: [],
-          address: {
-            street: [],
-            houseNumber: [],
-            apartmentNumber: [],
-            city: [],
-            postCode: [],
-          },
+          address: [],
           phone: [],
           password: [],
         }
@@ -82,19 +76,28 @@
     },
     methods: {
       cancel() {
-        window.location.replace(route(worker.index));
+        window.location.replace(route('worker.index'));
       },
       save() {
-        let data = this.form;
-        data.address = JSON.stringify(data.address);
-        axios.post(route(), data).then(response => {
-          windows.location.replace(route(worker.index));
-        }).catch(error => {
-          let entries = Object.entries(error.response.data.messages);
-          for (let [key, value] of entries) {
-            this.error[key] = value;
+        if (this.$refs.form.validate()) {
+          let data = {};
+          let entries = Object.entries(this.form);
+          for (let [key, v] of entries) {
+            let value = v;
+            if (key == 'address') {
+              value = JSON.stringify(value);
+            }
+            data[key] = value;
           }
-        });
+          axios.post(route('api.user.storeWorker'), data).then(response => {
+            window.location.replace(route('worker.index'));
+          }).catch(error => {
+            let entries = Object.entries(error.response.data.errors);
+            for (let [key, value] of entries) {
+              this.errors[key] = value;
+            }
+          });
+        }
       }
     }
   }

@@ -44,16 +44,7 @@
     data() {
       return {
         search: '',
-        workers: [
-          {
-            id: 1,
-            name: 'Name',
-            surname: 'Surname',
-            email: 'adksfj@gkj.co',
-            address: 'we afj',
-            phone: '505505505'
-          }
-        ],
+        workers: [],
         headers: [
           {
             text: 'ID',
@@ -89,7 +80,22 @@
       };
     },
     beforeMount() {
-
+      axios.get(route('api.user.fetchWorkers')).then(result => {
+        this.workers = result.data;
+        let workersEntries = Object.entries(result.data);
+        for (let [workerId, workerValue] of workersEntries) {
+          let entries = Object.entries(JSON.parse(workerValue.address));
+          this.workers[workerId].address = '';
+          for (let [key, value] of entries) {
+            this.workers[workerId].address += value;
+            if (key != 'postCode') {
+              this.workers[workerId].address += ', ';
+            }
+          }
+        }
+      }).catch(error => {
+        console.log(error);
+      });
     },
     methods: {
       addWorker() {
