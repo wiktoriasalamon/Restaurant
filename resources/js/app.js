@@ -89,6 +89,7 @@ Vue.component('admin-menu', require('./components/menu/admin-menu').default);
 //TABLES
 Vue.component('admin-tables-index', require('./components/tables/admin-tables-index').default);
 Vue.component('waiter-tables-index', require('./components/tables/waiter-tables-index').default);
+Vue.component('waiter-show', require('./components/tables/waiter-show').default);
 
 //USERS
 Vue.component('my-account', require('./components/users/myAccount').default);
