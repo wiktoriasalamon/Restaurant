@@ -9,6 +9,7 @@ use App\Models\Dish;
 use App\Models\Reservation;
 use App\Models\Table;
 use App\Services\OrderService;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -51,13 +52,31 @@ class ApiTableController extends Controller
     }
 
     /**
+     * Show for waiter
+     * @param Table $table
+     * @return JsonResponse
+     */
+    public function loadTableForWaiter(Table $table)
+    {
+        try {
+            return response()->json((new OrderService)->tableByDate(Carbon::now()->format('Y-m-d'),
+                $table->load('order')), 200);
+        } catch (\Exception $e) {
+            dd($e);
+            Log::notice("Error deleting data all:" . $e);
+            Log::notice("Error deleting data msg:" . $e->getMessage());
+            Log::notice("Error deleting data code:" . $e->getCode());
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        }
+    }
+    /**
      * @param Table $table
      * @return JsonResponse
      */
     public function load(Table $table)
     {
         try {
-            return response()->json($table);
+            return response()->json($table, 200);
         } catch (\Exception $e) {
             Log::notice("Error deleting data all:" . $e);
             Log::notice("Error deleting data msg:" . $e->getMessage());
