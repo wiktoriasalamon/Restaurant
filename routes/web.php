@@ -38,6 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/reservation/index', 'ReservationController@index')->name('reservation.index');
     Route::get('/menu-admin', 'DishController@adminMenu')->name('menu.admin')->middleware('permission:tableIndex');
     Route::get('/dish/edit/{id}', 'DishController@edit')->name('dish.edit')->middleware('permission:dishEdit');
+    Route::get('/dish/create', 'DishController@create')->name('dish.create')->middleware('permission:dishCreate');
     Route::get('/myAccount', 'UserController@myAccount')->name('user.myAccount');
 
     Route::name('worker.')->prefix('worker')->group(function () {
