@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-    <worker-order-edit :orderid="{{$id}}"></worker-order-edit>
+    <worker-order-edit token="{{$token}}"></worker-order-edit>
 @endsection

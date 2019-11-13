@@ -59,6 +59,7 @@
 							</tr>
 						</template>
 					</v-data-table>
+					<h5>Suma zamówienia: {{orderSum}}</h5>
 				</v-card-text>
 				<v-card-actions>
 					<v-btn @click="updateOrder">
@@ -73,7 +74,7 @@
 <script>
   export default {
     name: "worker-order-edit",
-    props:['orderid'],
+    props:['token'],
     data() {
       return {
         menuItems:[],
@@ -90,12 +91,13 @@
         ],
         orderedItems:[],
 				statusItems: [],
-				orderStatus:''
+				orderStatus:'',
+				orderSum: ''
       }
     },
     beforeMount(){
-      this.getMenuData()
-			this.getOrder()
+      this.getMenuData();
+			this.getOrder();
 			this.getStatusItems()
     },
     methods: {
@@ -103,6 +105,7 @@
         axios.get(route('api.dish.index'))
           .then(response => {
             this.menuItems = response.data;
+            console.log(this.menuItems);
             this.menuItems.forEach(item=>{
               item.amount = 0
             })
@@ -111,7 +114,14 @@
         })
       },
 			getOrder(){
-
+        axios.get(route('api.order.loadOrder', this.token))
+          .then(response => {
+            this.orderedItems = response.data.dishes;
+						this.orderSum = response.data.sum;
+            console.log(response)
+          }).catch(error => {
+          console.error(error)
+        })
 			},
 			getStatusItems(){
         axios.get(route('api.order.fetchOrderStatusTypes'))
