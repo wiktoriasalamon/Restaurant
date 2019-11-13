@@ -16,7 +16,6 @@
 //});
 
 Route::get('/menu', 'DishController@menu')->name('menu');
-Route::get('/forgot-password', 'UserController@resetPassword')->name('forgotPassword.mail');
 Route::post('api/user/store-customer', 'API\ApiUserController@storeCustomer')->name('storeCustomer');
 Route::get('/order/online', 'OrderController@createOrder')->name('order.create.online');
 
@@ -33,12 +32,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/menu-admin', 'DishController@adminMenu')->name('menu.admin');
     Route::get('/dish/edit/{id}', 'DishController@edit')->name('dish.edit')->middleware('permission:dishEdit');
     Route::get('/dishCategory', 'DishCategoryController@index')->name('dishCategory.index')->middleware('permission:dishCategoryIndex');
-    Route::get('/reservation/create', 'ReservationController@create')->name('reservation.create')->middleware('permission:reservationCreate|onlineReservationCreate');
-    Route::get('/reservation-user', 'ReservationController@indexUser')->name('reservation.indexUser')->middleware('permission:onlineReservationIndex');
+    Route::get('/reservation/create', 'ReservationController@create')->name('reservation.create');
+    Route::get('/reservation/user-index', 'ReservationController@indexUser')->name('reservation.indexUser')->middleware('permission:onlineReservationIndex');
+    Route::get('/reservation/create-user', 'ReservationController@createUser')->name('reservation.createUser')->middleware('permission:reservationCreate|onlineReservationCreate');;
+    Route::get('/reservation/index', 'ReservationController@index')->name('reservation.index');
     Route::get('/menu-admin', 'DishController@adminMenu')->name('menu.admin')->middleware('permission:tableIndex');
     Route::get('/dish/edit/{id}', 'DishController@edit')->name('dish.edit')->middleware('permission:dishEdit');
     Route::get('/myAccount', 'UserController@myAccount')->name('user.myAccount');
 
+    Route::name('worker.')->prefix('worker')->group(function () {
+        Route::get('/create', 'WorkerController@create')->name('create')->middleware('permission:userCreate');
+        Route::get('edit/{id}', 'WorkerController@edit')->name('edit')->middleware('permission:userEdit');
+        Route::get('index', 'WorkerController@index')->name('index')->middleware('permission:userIndex');
+    });
 });
 
 Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(function () {
@@ -79,8 +85,8 @@ Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(
         Route::post('/store-as-worker', 'ApiReservationController@storeAsWorker')->name('storeAsWorker')->middleware('permission:reservationCreate');
         Route::put('/update-as-worker', 'ApiReservationController@updateAsWorker')->name('updateAsWorker')->middleware('permission:reservationEdit');
         Route::get('/show/{id}', 'ApiReservationController@fetchReservation')->name('show')->middleware('permission:reservationShow|onlineReservationShow');
-        Route::get('', 'ApiReservationController@customerIndex')->name('customerIndex')->middleware('permission:onlineReservationIndex');
-        Route::get('worker-index/{date}', 'ApiReservationController@workerIndex')->name('workerIndex')->middleware('permission:reservationIndex');
+        Route::get('/customer-index', 'ApiReservationController@customerIndex')->name('customerIndex')->middleware('permission:onlineReservationIndex');
+        Route::get('/worker-index/{date}', 'ApiReservationController@workerIndex')->name('workerIndex')->middleware('permission:reservationIndex');
         Route::get('/tables/{date}', 'ApiReservationController@fetchTablesByDate')->name('fetchTablesByDate')->middleware('permission:reservationIndex');
         Route::delete('/{id}', 'ApiReservationController@delete')->name('delete')->middleware('permission:reservationDelete|onlineReservationDelete');
     });
@@ -94,8 +100,10 @@ Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(
         Route::get('/fetch-user/{user}', 'ApiUserController@fetchUser')->name('fetchUser')->middleware('permission:userEdit');
         Route::get('/fetch-customers', 'ApiUserController@fetchCustomers')->name('fetchCustomers')->middleware('permission:customerIndex');
         Route::get('/fetch-workers', 'ApiUserController@fetchWorkers')->name('fetchWorkers')->middleware('permission:userIndex');
-        Route::get('/fetch-user-my-account/{user}', 'ApiUserController@changePassword')->name('fetchUserMyAccount')->middleware('myAccount');
-        Route::put('/change-password/{user}', 'ApiUserController@changePassword')->name('changePassword')->middleware('permission:userEdit');
+        Route::get('/fetch-user-my-account/{user}', 'ApiUserController@fetchUser')->name('fetchUserMyAccount')
+            ->middleware('myAccount');
+        Route::put('/change-password/{user}', 'ApiUserController@changePassword')->name('changePassword')->middleware
+        ('permission:userEdit');
         Route::put('/change-password-my-account/{user}', 'ApiUserController@changePassword')->name('changePasswordMyAccount')->middleware('myAccount');
         Route::put('/update-my-account/{user}', 'ApiUserController@update')->name('updateUserMyAccount')->middleware('myAccount');
         Route::put('/update-worker/{user}', 'ApiUserController@update')->name('updateWorker')->middleware('permission:userEdit');

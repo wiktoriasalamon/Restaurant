@@ -74,6 +74,8 @@ Vue.component('forgot-password-mail', require('./components/auth/forgot-password
 
 Vue.component('user-create-reservation', require('./components/reservation/user-create-reservation').default);
 Vue.component('user-index-reservation', require('./components/reservation/user-index-reservation').default);
+Vue.component('waiter-create-reservation', require('./components/reservation/waiter-create-reservation').default);
+Vue.component('waiter-index-reservation', require('./components/reservation/waiter-index-reservation').default);
 
 
 //MENU
@@ -87,8 +89,18 @@ Vue.component('admin-tables-index', require('./components/tables/admin-tables-in
 //USERS
 Vue.component('my-account', require('./components/users/myAccount').default);
 
+
 //ORDERS
 Vue.component('customer-order', require('./components/orders/customer-order').default);
+
+
+//WORKERS
+Vue.component('workers-index', require('./components/workers/workers-index').default);
+Vue.component('workers-create', require('./components/workers/workers-create').default);
+Vue.component('workers-edit', require('./components/workers/workers-edit').default);
+
+//DISH CATEGORIES
+Vue.component('dish-category-index', require('./components/dishCategories/dish-category-index').default);
 
 
 

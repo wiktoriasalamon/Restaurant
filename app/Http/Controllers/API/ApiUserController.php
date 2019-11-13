@@ -53,13 +53,12 @@ class ApiUserController extends Controller
         try {
             $user = new User();
             $user->fillUser($request);
-            $user->password = Hash::make($request->password);
+            $user->setPassword($request->password);
             $user->assignRole($role);
             if($user->save()){
                 (new RegistrationMail($request->password, $request->email))->sendMail();
             }
         } catch (\Exception $e) {
-            dd($e);
             return response()->json(['message' => 'Wystąpił błąd w trakcie dodawania użytkownika'], 500);
         }
         return response()->json(['message' => "Pomyślnie dodano użytkownika"], 200);
@@ -93,7 +92,7 @@ class ApiUserController extends Controller
     public function changePassword(UserChangePasswordRequest $request, User $user)
     {
         if (Hash::check($request->oldPassword, $user->password)) {
-            $user->password = Hash::make($request->newPassword);
+            $user->setPassword($request->newPassword);
             $user->save();
             return response()->json(['message' => "Pomyślnie zmieniono hasło"], 200);
         }

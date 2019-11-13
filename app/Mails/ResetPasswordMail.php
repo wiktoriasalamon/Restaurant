@@ -8,20 +8,18 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 
 
-class RegistrationMail extends Mailable
+class ResetPasswordMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $sendToMail;
-    public $password;
     public $link;
-    private const SUBJECT="Rejestracja w systemie restauracji \"W-17 wydział smaków\"";
+    private const SUBJECT="Zmiana hasła w systemie restauracji \"W-17 wydział smaków\"";
 
-    public function __construct(string $password, string $login)
+    public function __construct(string $token, string $email)
     {
-        $this->sendToMail=$login;
-        $this->password=$password;
-        $this->link=route('login');
+        $this->sendToMail=$email;
+        $this->link=route('password.reset',$token);
     }
 
     /**
@@ -31,7 +29,7 @@ class RegistrationMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mails.registration') ->subject(self::SUBJECT);
+        return $this->view('mails.resetPassword') ->subject(self::SUBJECT);
     }
 
     /**

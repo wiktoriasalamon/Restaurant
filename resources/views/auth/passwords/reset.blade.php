@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-<reset-password-form></reset-password-form>
+<reset-password-form token="{{$token}}"></reset-password-form>
 @endsection
