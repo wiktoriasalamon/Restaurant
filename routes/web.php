@@ -97,6 +97,8 @@ Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(
         ->middleware('permission:orderIndex');
     Route::get('/order/my-order', 'ApiOrderController@myOrder')->name('order.myOrder')
         ->middleware('permission:orderIndex');
+    Route::get('/order/customer-index', 'ApiOrderController@customerOrder')->name('order.customerOrder')
+        ->middleware('permission:orderIndex');
     Route::get('/order/{type}', 'ApiOrderController@orderWithStatus')->name('order.orderWithStatus')
         ->middleware('permission:orderIndex');
     Route::post('/order/worker', 'ApiOrderController@storeNewOrderFromWorker')->name('order.storeNewOrderFromWorker')

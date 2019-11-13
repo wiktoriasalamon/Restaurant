@@ -101,6 +101,25 @@ class ApiOrderController extends Controller
         }
     }
 
+    /**
+     * All orders customer_id = auth::id()
+     * @return JsonResponse
+     */
+    public function customerOrder()
+    {
+        try {
+            return response()->json(Order::where('customer_id', Auth::id())
+                ->with("check")
+                ->get()
+                , 200);
+        } catch (Exception $e) {
+            Log::notice("Error :" . $e);
+            Log::notice("Error :" . $e->getMessage());
+            Log::notice("Error :" . $e->getCode());
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        }
+    }
+
 
     /**
      * To change status of order
