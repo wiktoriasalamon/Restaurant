@@ -29,6 +29,8 @@
 </template>
 
 <script>
+  import {notification} from "../../Notifications";
+
   export default {
     props: ['id'],
     name: "edit-dish",
@@ -56,6 +58,7 @@
       axios.get(route('api.dishCategory.index')).then(response => {
         this.dishCategory = response.data;
       }).catch(error => {
+        console.error(error.response);
       });
       axios.get(route('api.dish.load', this.id)).then(response => {
         let keys = Object.keys(this.form);
@@ -63,6 +66,7 @@
           this.form[key] = response.data[key];
         }
       }).catch(error => {
+        console.error(error.response);
       });
     },
     methods: {
@@ -72,8 +76,11 @@
       save() {
         if (this.$refs.form.validate()) {
           axios.post(route('api.dish.update'), this.form).then(response => {
+            notification('Pomyślnie dodano danie', 'success');
             window.location.replace(route('menu.admin'));
           }).catch(error => {
+            notification('Wystąpił błąd poczas edytowania dania', 'error');
+            console.error(error.response);
             let entries = Object.entries(error.response.data.errors);
             for (let [key, value] of entries) {
               this.errors[key] = value;

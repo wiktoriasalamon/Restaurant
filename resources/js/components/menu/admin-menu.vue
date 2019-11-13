@@ -34,6 +34,8 @@
 </template>
 
 <script>
+  import {notification} from "../../Notifications";
+
   export default {
     name: "admin-menu",
     data() {
@@ -53,10 +55,10 @@
       deleteItem(item) {
         axios.delete(route('api.dish.delete', item.id))
           .then(response => {
-            Vue.toasted.success(response.data).goAway(5000);
+            notification(response.data, 'success');
             this.getData()
           }).catch(error => {
-          Vue.toasted.error(error.response.data).goAway(3000);
+            notification(error.response.data, 'error');
           console.error(error)
         })
 
