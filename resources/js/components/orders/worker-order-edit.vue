@@ -117,7 +117,7 @@
           .then(response => {
             this.orderedItems = response.data.dishes;
 						this.orderSum = response.data.sum;
-						this.orderStatus = response.data.status
+						this.orderStatus = response.data.status;
             console.log(response)
           }).catch(error => {
           console.error(error)
@@ -172,7 +172,7 @@
       },
 			changeStatus(){
         axios.post(route('api.order.changeStatusOrder'), {
-          order_id: this.id,
+          token: this.token,
           status: this.orderStatus,
         }).then(
           response => {
