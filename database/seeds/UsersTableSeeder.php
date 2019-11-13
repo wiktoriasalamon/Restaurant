@@ -19,7 +19,7 @@ class UsersTableSeeder extends Seeder
             $pass = "123456";
             $areaCode='+48';
 
-            $users = ['admin', 'worker','customer','user1', 'user2', 'user3', 'user4', 'user5', 'user6', 'user7'];
+            $users = ['admin', 'worker','worker2','customer','user1', 'user2', 'user3', 'user4', 'user5', 'user6', 'user7'];
 
             foreach ($users as $user) {
                 $phoneNumber = $areaCode . random_int(1, 9);
