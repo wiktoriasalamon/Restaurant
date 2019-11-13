@@ -191,9 +191,5 @@ class ApiOrderController extends Controller
 //todo rachunek + zamknięcie stolika
 //todo API do moich zamówień
 
-//todo do grida stolików przez kelnera potrzebne kiedy jest dana rezerwacja dzisiaj plus on widzi tylko wolne
-// stoliki i stoliki, które otworzył/obsługuje
-
-//todo w podglą∂zie stolika kelner widzi swszystkie zamówienia dla danego stolika
 }
 

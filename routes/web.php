@@ -57,6 +57,8 @@ Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(
         ->middleware('permission:tableIndex');
     Route::get('/table/{table}', 'ApiTableController@load')->name('table.load')
         ->middleware('permission:tableIndex');
+    Route::get('/table/waiter/{table}', 'ApiTableController@loadTableForWaiter')->name('table.loadTableForWaiter')
+        ->middleware('permission:tableShow');
     Route::post('/table', 'ApiTableController@store')->name('table.store')
         ->middleware('permission:tableCreate');
     Route::post('/table/update', 'ApiTableController@update')->name('table.update')

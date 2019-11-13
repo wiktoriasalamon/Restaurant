@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderService
 {
-
-
     /**
      * @param string $date
      * @param $tables
@@ -25,7 +23,7 @@ class OrderService
         $tableArray = [];
         foreach ($tables as $table) {
             $reservationSince = null;
-            $reservations=Reservation::where('table_id',$table->id)->get();
+            $reservations = Reservation::where('table_id', $table->id)->get();
             foreach ($reservations as $reservation) {
                 if ($reservation->date == $date) {
                     $reservationSince = $reservation->start_time;
@@ -40,13 +38,33 @@ class OrderService
     }
 
     /**
+     * @param string $date
+     * @param $table
+     * @return array
+     */
+    public function tableByDate(string $date, $table): array
+    {
+        $reservationSince = null;
+        $reservations = Reservation::where('table_id', $table->id)->get();
+        foreach ($reservations as $reservation) {
+            if ($reservation->date == $date) {
+                $reservationSince = $reservation->start_time;
+            }
+        }
+        return [
+            'table' => $table,
+            'reservation_since' => $reservationSince
+        ];
+    }
+
+    /**
      * Add items to give order
      * @param Order $order
      * @param $items [[ammount, dishId],[],..
      */
     public function addItems(Order $order, $items)
     {
-        foreach ($items as $item){
+        foreach ($items as $item) {
             $check = new \App\Models\Check();
             $check->amount = $item['amount'];
             $check->dish()->associate(\App\Models\Dish::find($item['dishId']));
@@ -59,15 +77,16 @@ class OrderService
      * @return array of tables with order served by auth user
      * and empty tables without any orders
      */
-    public function myTablesWithReservation(){
+    public function myTablesWithReservation()
+    {
         //stoliki kelnera
-        $waiterTables =  Table::whereHas("order", function($q){
-            $q->where("worker_id",Auth::id());
+        $waiterTables = Table::whereHas("order", function ($q) {
+            $q->where("worker_id", Auth::id());
         })->get()->load('order');
 
         //stoliki bez zamówień
         $tables = Table::doesnthave('order')->get();
 
-        return $this->tablesByDate(Carbon::now()->format('Y-m-d'),$waiterTables->merge($tables));
+        return $this->tablesByDate(Carbon::now()->format('Y-m-d'), $waiterTables->merge($tables));
     }
 }
