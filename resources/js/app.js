@@ -87,7 +87,8 @@ Vue.component('admin-tables-index', require('./components/tables/admin-tables-in
 //USERS
 Vue.component('my-account', require('./components/users/myAccount').default);
 
-
+//ORDERS
+Vue.component('customer-order', require('./components/orders/customer-order').default);
 
 
 
