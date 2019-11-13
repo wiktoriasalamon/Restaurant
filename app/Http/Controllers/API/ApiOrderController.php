@@ -256,12 +256,93 @@ class ApiOrderController extends Controller
         }
     }
 
-//todo edycja zamówienia ( + delete)
+    /**
+     * @param $token
+     * @return JsonResponse
+     */
+    public function deleteOrder($token)
+    {
+        try {
+            $tokens = Order::pluck('token')->toArray();
+            if (!in_array($token, $tokens)) {
+                abort(403);
+            }
+            if ($order = Order::where('token', $token)->first()) {
+                $order->delete();
+                return response()->json("Zamówienie usunięte", 200);
+            }
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        } catch (Exception $e) {
+            Log::notice("Error :" . $e);
+            Log::notice("Error :" . $e->getMessage());
+            Log::notice("Error :" . $e->getCode());
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        }
+    }
 
-//todo open close stolik
+    /**
+     * @param NewOrderFromWorkerRequest $request
+     * @return JsonResponse
+     */
+    public function updateOrderFromWorker(NewOrderFromWorkerRequest $request)
+    {
+        try {
+            $tokens = Order::pluck('token')->toArray();
+            if (!in_array($request->token, $tokens)) {
+                abort(403);
+            }
+            if ($order = Order::where('token', $request->token)->first()) {
+                $items = Check::where('order_id', $order->id)->with('dish')->get();
+                foreach ($items as $item) {
+                    $item->delete();
+                }
+                (new OrderService())->addItems($order, $request->items);
+                return response()->json("Zamówienie pomyślnie edytowane", 200);
+            }
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        } catch (Exception $e) {
+            Log::notice("Error :" . $e);
+            Log::notice("Error :" . $e->getMessage());
+            Log::notice("Error :" . $e->getCode());
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        }
+    }
 
-
-
-//todo api usuwanie zamówień
+    /**
+     * @param NewOrderOnlineRequest $request
+     * @return JsonResponse
+     */
+    public function updateOnlineOrder(NewOrderOnlineRequest $request)
+    {
+        try {
+            $tokens = Order::pluck('token')->toArray();
+            if (!in_array($request->token, $tokens)) {
+                abort(403);
+            }
+            if ($order = Order::where('token', $request->token)->first()) {
+                $items = Check::where('order_id', $order->id)->with('dish')->get();
+                if($order->status != StatusTypesInterface::TYPE_ORDERED && $order->status !=
+                    StatusTypesInterface::TYPE_IN_PROGRESS){
+                    return response()->json("Zamówieniezostało już wykonane, edycja nie jest możliwa", 422);
+                }
+                $order->takeaway = $request->takeaway;
+                if (!$request->takeaway) {
+                    $order->address = json_encode($request->address);
+                }
+                $order->save();
+                foreach ($items as $item) {
+                    $item->delete();
+                }
+                (new OrderService())->addItems($order, $request->items);
+                return response()->json("Zamówienie pomyślnie edytowane", 200);
+            }
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        } catch (Exception $e) {
+            Log::notice("Error :" . $e);
+            Log::notice("Error :" . $e->getMessage());
+            Log::notice("Error :" . $e->getCode());
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        }
+    }
 }
 
