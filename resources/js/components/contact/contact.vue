@@ -1,0 +1,46 @@
+<template>
+    <div class="input-group">
+        <input id="btn-input" type="text" name="message" class="form-control input-sm"
+               placeholder="Type your message here..." v-model="newMessage" @keyup.enter="sendMessage">
+
+        <span class="input-group-btn">
+            <button class="btn btn-primary btn-sm" id="btn-chat" @click="sendMessage">
+                Send
+            </button>
+        <button class="btn btn-primary btn-sm"  @click="test">
+                Test
+            </button>
+        </span>
+    </div>
+</template>
+
+<script>
+  export default {
+    name: "contact-page",
+    data() {
+      return {
+        newMessage: ''
+      }
+    },
+
+    methods: {
+      sendMessage() {
+        this.$emit('messagesent', {
+          user: this.user,
+          message: this.newMessage
+        });
+
+        this.newMessage = ''
+      },
+      test() {
+        let id = 2;
+        axios.delete(route('api.table.delete',id))
+          .then(function (response) {
+            console.log(response.data)
+          }).catch(function (error) {
+          console.log(error)
+        })
+      }
+    }
+  }
+</script>
