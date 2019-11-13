@@ -63,6 +63,8 @@ Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(
         ->middleware('permission:tableEdit');
     Route::delete('/table/{table}', 'ApiTableController@delete')->name('table.delete')
         ->middleware('permission:tableDelete');
+    Route::get('/my-tables', 'ApiTableController@myTables')->name('table.myTables')
+        ->middleware('permission:tableIndex');
 //dish
     Route::get('/dish', 'ApiDishController@index')->name('dish.index')
         ->middleware('permission:dishIndex');

@@ -7,7 +7,9 @@ use App\Interfaces\StatusTypesInterface;
 use App\Models\Order;
 use App\Models\Reservation;
 use App\Models\Table;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class OrderService
 {
@@ -15,11 +17,11 @@ class OrderService
 
     /**
      * @param string $date
+     * @param $tables
      * @return array
      */
-    public function tablesByDate(string $date): array
+    public function tablesByDate(string $date, $tables): array
     {
-        $tables = Table::all();
         $tableArray = [];
         foreach ($tables as $table) {
             $reservationSince = null;
@@ -51,5 +53,21 @@ class OrderService
             $check->order()->associate($order);
             $check->save();
         }
+    }
+
+    /**
+     * @return array of tables with order served by auth user
+     * and empty tables without any orders
+     */
+    public function myTablesWithReservation(){
+        //stoliki kelnera
+        $waiterTables =  Table::whereHas("order", function($q){
+            $q->where("worker_id",Auth::id());
+        })->get()->load('order');
+
+        //stoliki bez zamówień
+        $tables = Table::doesnthave('order')->get();
+
+        return $this->tablesByDate(Carbon::now()->format('Y-m-d'),$waiterTables->merge($tables));
     }
 }
