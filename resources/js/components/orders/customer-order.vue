@@ -306,9 +306,11 @@ export default {
         })
         .then(
           response => {
-			Vue.toasted.success(response.data.message).goAway(5000);
+			Vue.toasted
+			.success(response.data.message)
+			.goAway(5000);
 			this.orderArray = [];
-            window.location.href=route('order/online');
+            window.location.href=route('order.create.online');
             
           },
           error => {
