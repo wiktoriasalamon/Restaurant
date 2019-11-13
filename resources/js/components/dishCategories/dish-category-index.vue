@@ -67,7 +67,6 @@
     name: "dish-category-index",
     data() {
       return {
-        _this: this,
         dialog: false,
         headers: [
           {
@@ -119,6 +118,7 @@
         this.dialog = false;
         setTimeout(() => {
           this.editedItem = Object.assign({}, this.defaultItem);
+          this.$refs.form.reset();
           this.editedIndex = -1;
         }, 300)
       },

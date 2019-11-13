@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\DishRequest;
 use App\Http\Requests\TableRequest;
 use App\Models\Dish;
 use App\Models\Reservation;
@@ -65,10 +64,10 @@ class ApiTableController extends Controller
     }
 
     /**
-     * @param DishRequest $request [name]
+     * @param TableRequest $request [name]
      * @return JsonResponse
      */
-    public function store(DishRequest $request)
+    public function store(TableRequest $request)
     {
         try {
             $table = new Table();
@@ -85,13 +84,13 @@ class ApiTableController extends Controller
     }
 
     /**
-     * @param DishRequest $request [id,name]
+     * @param TableRequest $request [id,name]
      * @return JsonResponse
      */
-    public function update (DishRequest $request)
+    public function update (TableRequest $request)
     {
         try {
-            $table = Dish::findOrFail($request->id);
+            $table = Table::findOrFail($request->id);
             $table->size = $request->size;
             $table->occupied_since = null;
             $table->save();
