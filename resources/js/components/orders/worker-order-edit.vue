@@ -21,12 +21,12 @@
 		<v-col>
 			<v-card>
 				<v-card-title>
-					Edycja zamówienia
+					<h2>Edycja zamówienia</h2>
 				</v-card-title>
 				<v-card-text>
-					<h6>Status zamówienia: </h6>
+					<h5 >Status zamówienia: </h5>
 
-					<v-row>
+					<v-row class="mx-1" style="margin-bottom: 2rem; ">
 						<v-select
 							:items="statusItems"
 							label="Status"
@@ -59,7 +59,7 @@
 							</tr>
 						</template>
 					</v-data-table>
-					<h5>Suma zamówienia: {{orderSum}}</h5>
+					<h5 style="margin-top: 2rem;">Suma zamówienia: {{orderSum}}</h5>
 				</v-card-text>
 				<v-card-actions>
 					<v-btn @click="updateOrder">
@@ -105,7 +105,6 @@
         axios.get(route('api.dish.index'))
           .then(response => {
             this.menuItems = response.data;
-            console.log(this.menuItems);
             this.menuItems.forEach(item=>{
               item.amount = 0
             })
@@ -118,6 +117,7 @@
           .then(response => {
             this.orderedItems = response.data.dishes;
 						this.orderSum = response.data.sum;
+						this.orderStatus = response.data.status
             console.log(response)
           }).catch(error => {
           console.error(error)
