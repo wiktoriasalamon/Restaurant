@@ -35,7 +35,7 @@
       return {
         rules: {
           required: value => !!value || "To pole jest wymagane",
-          numeric: value => /^(\d+|\d+\.\d+)$/.test(value) || 'Nieprawidłowy format ceny'
+          numeric: value => /^(\d+|\d+\.\d{1,2})$/.test(value) || 'Nieprawidłowy format ceny'
         },
         dishCategory: [],
         form: {
@@ -54,14 +54,14 @@
       axios.get(route('api.dishCategory.index')).then(response => {
         this.dishCategory = response.data;
       }).catch(error => {
-      })
+      });
     },
     methods: {
       cancel() {
         window.location.replace(route('menu.admin'));
       },
       save() {
-        // if (this.$refs.form.validate()) {
+        if (this.$refs.form.validate()) {
           axios.post(route('api.dish.store'), this.form).then(response => {
             window.location.replace(route('menu.admin'));
           }).catch(error => {
@@ -70,7 +70,7 @@
               this.errors[key] = value;
             }
           })
-        // }
+        }
       },
     }
   }
