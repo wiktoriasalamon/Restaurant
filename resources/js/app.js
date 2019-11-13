@@ -11,7 +11,8 @@ import vuetifyPL from 'vuetify/lib/locale/pl';
 import vuetifyEn from 'vuetify/lib/locale/en';
 import 'vuetify/dist/vuetify.min.css'
 import Toasted from 'vue-toasted';
-
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import '@mdi/font/css/materialdesignicons.css'
 
 require('./bootstrap');
 
@@ -36,9 +37,11 @@ const opts = {
     },
 };
 
-Vue.use(Vuetify);
+Vue.use(Vuetify,{
+    iconfont: 'md, mdi',
+});
 const Options = {
-    position: 'top-center'
+    position: 'top-center',
 };
 Vue.use(Toasted, Options);
 
