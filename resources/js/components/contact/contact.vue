@@ -1,46 +1,66 @@
 <template>
-    <div class="input-group">
-        <input id="btn-input" type="text" name="message" class="form-control input-sm"
-               placeholder="Type your message here..." v-model="newMessage" @keyup.enter="sendMessage">
-
-        <span class="input-group-btn">
-            <button class="btn btn-primary btn-sm" id="btn-chat" @click="sendMessage">
-                Send
-            </button>
-        <button class="btn btn-primary btn-sm"  @click="test">
-                Test
-            </button>
-        </span>
-    </div>
+      <v-card max-width="375" class="mx-auto">
+        <v-list two-line>
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon color="indigo">restaurant</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>{{this.name}}</v-list-item-title>
+              <v-list-item-subtitle></v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon color="indigo">mail</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>{{this.email}}</v-list-item-title>
+              <v-list-item-subtitle></v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon color="indigo">phone</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>{{this.phone}}</v-list-item-title>
+              <v-list-item-subtitle></v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon color="indigo">room</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>{{this.address}}</v-list-item-title>
+              <v-list-item-subtitle></v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon color="indigo">access_time</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>{{this.time}}</v-list-item-title>
+              <v-list-item-subtitle>Godziny otwarcia</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-card>
 </template>
 
 <script>
-  export default {
-    name: "contact-page",
-    data() {
-      return {
-        newMessage: ''
-      }
-    },
-
-    methods: {
-      sendMessage() {
-        this.$emit('messagesent', {
-          user: this.user,
-          message: this.newMessage
-        });
-
-        this.newMessage = ''
-      },
-      test() {
-        let id = 2;
-        axios.delete(route('api.table.delete',id))
-          .then(function (response) {
-            console.log(response.data)
-          }).catch(function (error) {
-          console.log(error)
-        })
-      }
-    }
-  }
+export default {
+  name: "contact-page",
+  data() {
+    return {
+      address: "ul. Sienkiewicza 18, Wrocław",
+      email: "wydzialsmakow@gmail.com",
+      name: "W17 Wydział Smaków",
+      time: "12:00 - 23:00",
+      phone: "+48 500 400 400",
+    };
+  },
+};
 </script>

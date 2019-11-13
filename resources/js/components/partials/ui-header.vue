@@ -61,7 +61,7 @@ export default {
         { id: 1, text: "Strona główna", link: route("home") },
         { id: 2, text: "Menu", link: route("menu") },
         { id: 3, text: "Zamów online", link: route("order.create.online") },
-        { id: 5, text: "Kontakt", link: route("home") }
+        { id: 5, text: "Kontakt", link: route("contact") }
       ],
       adminMenu: [
         { id: 1, text: "Strona główna", link: route("home") },
@@ -93,7 +93,7 @@ export default {
         { id: 2, text: "Menu", link: route("menu") },
         { id: 3, text: "Zamów online", link: route("order.create.online") },
         { id: 4, text: "Zarezerwuj", link: route("reservation.createUser") },
-        { id: 5, text: "Kontakt", link: route("home") }
+        { id: 5, text: "Kontakt", link: route("contact") }
       ],
       menu: [],
       notLogged: true,
