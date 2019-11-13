@@ -76,7 +76,7 @@
       save() {
         if (this.$refs.form.validate()) {
           axios.post(route('api.dish.update'), this.form).then(response => {
-            notification('Pomyślnie dodano danie', 'success');
+            notification('Pomyślnie edytowano danie', 'success');
             window.location.replace(route('menu.admin'));
           }).catch(error => {
             notification('Wystąpił błąd poczas edytowania dania', 'error');

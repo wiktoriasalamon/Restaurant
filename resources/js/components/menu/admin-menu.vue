@@ -55,10 +55,10 @@
       deleteItem(item) {
         axios.delete(route('api.dish.delete', item.id))
           .then(response => {
-            notification(response.data, 'success');
+            notification('Pomyślnie usunięto danie', 'success');
             this.getData()
           }).catch(error => {
-            notification(error.response.data, 'error');
+            notification('Wystąpił błąd podczas usuwania dania', 'error');
           console.error(error)
         })
 
