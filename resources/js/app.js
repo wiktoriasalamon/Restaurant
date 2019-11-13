@@ -85,6 +85,7 @@ Vue.component('admin-menu', require('./components/menu/admin-menu').default);
 
 //TABLES
 Vue.component('admin-tables-index', require('./components/tables/admin-tables-index').default);
+Vue.component('waiter-tables-index', require('./components/tables/waiter-tables-index').default);
 
 //USERS
 Vue.component('my-account', require('./components/users/myAccount').default);
@@ -100,6 +101,7 @@ Vue.component('dish-category-index', require('./components/dishCategories/dish-c
 
 //ORDERS
 Vue.component('worker-order-index', require('./components/orders/worker-order-index').default);
+Vue.component('worker-order-create', require('./components/orders/worker-order-create').default);
 
 
 
