@@ -130,8 +130,8 @@ class ApiOrderController extends Controller
         try {
             $types = StatusTypesInterface::TYPES;
             if (!in_array($request->status, $types))
-                return response()->json('Błędnyz status', 422);
-            if ($order = Order::findOrFail((int)$request->order_id)) {
+                return response()->json('Błędnyy status', 422);
+            if ($order = Order::where('token', $request->token)->first()) {
                 $order->status = $request->status;
                 $order->save();
                 return response()->json("Status zmieniony", 200);
