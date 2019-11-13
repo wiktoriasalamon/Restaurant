@@ -100,7 +100,35 @@ export default {
       loggedUser: ""
     };
   },
+  beforeMount() {
+    switch (this.role) {
+      case "guest":
+        this.menu = this.questMenu;
+        break;
+      case "admin":
+        this.menu = this.adminMenu;
+        break;
+      case "worker":
+        this.menu = this.waiterMenu;
+        break;
+      case "customer":
+        this.menu = this.customerMenu;
+        break;
+    }
+    if (this.user !== null) {
+      this.notLogged = false;
+      this.loggedUser = this.user;
+    }
+  },
+
   methods: {
+    goTo(route) {
+      if (route === "logout") {
+        this.logout();
+      } else {
+        window.location.href = route;
+      }
+    },
     register() {
       window.location.href = route("register");
     },
