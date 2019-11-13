@@ -15,7 +15,7 @@ class RegistrationMail extends Mailable
     public $sendToMail;
     public $password;
     public $link;
-    private const SUBJECT="Rejestracja w Restaurapp!";
+    private const SUBJECT="Rejestracja w systemie restauracji \"W-17 wydział smaków\"";
 
     public function __construct(string $password, string $login)
     {
