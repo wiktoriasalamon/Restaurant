@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Events\MessageSent;
+use App\Interfaces\StatusTypesInterface;
+use App\Models\Order;
+use App\Services\OrderService;
 use Illuminate\Http\Request;
 use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
