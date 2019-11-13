@@ -68,7 +68,7 @@
             </v-col>
           </v-row>
         </v-card>
-        <v-btn color="primary" @click="e1 = 2">Dalej</v-btn>
+        <v-btn color="primary" @click="goToStep2">Dalej</v-btn>
       </v-stepper-content>
       <v-stepper-content class="background" step="2">
         <v-card>
@@ -157,7 +157,7 @@
           </v-row>
         </v-card>
 
-        <v-btn color="primary">Zamów</v-btn>
+        <v-btn color="primary" @click="completeOrderOnline">Zamów</v-btn>
         <v-btn text @click="e1 = 2">Wróć</v-btn>
       </v-stepper-content>
     </v-stepper-items>
@@ -253,8 +253,9 @@ export default {
       this.priceSum = 0;
       this.ordered.forEach(item => {
         this.priceSum =
-          this.priceSum + Number(item.amount) * Number(item.price);
-      });
+          this.priceSum + parseFloat(item.amount) * parseFloat(item.price);
+	  });
+	  this.priceSum = this.priceSum.toFixed(2);
     },
     setMenuItems(id) {
       if (id === -1) {
@@ -294,24 +295,32 @@ export default {
       });
     },
     completeOrderOnline() {
+		this.ordered.forEach(item => {
+			this.addItemToNewOrder(item.id, item.amount);
+		});
       axios
         .post(route("api.order.storeNewOrderOnline"), {
           takeaway: false,
-          address: " tu jeson",
+          address: this.form.address,
           items: this.orderArray
         })
         .then(
           response => {
-            Vue.toasted.success(response.data.message).goAway(5000);
-            // setTimeout(function(){window.location.href=route('home')} , 5000);
-            this.orderArray = [];
+			Vue.toasted.success(response.data.message).goAway(5000);
+			this.orderArray = [];
+            window.location.href=route('order/online');
+            
           },
           error => {
             if (error.response.status === 422) {
               Vue.toasted
                 .error("Podano niepoprawne dane, spróbuj jeszcze raz")
                 .goAway(3000);
-            } else {
+            } else if (error.response.status === 500) {
+				Vue.toasted
+                .error("Nie udało się złożyć zamówienia. Wystąpił błąd na serwerze.")
+                .goAway(3000);
+			} else {
               Vue.toasted.error(error.response.data).goAway(3000);
             }
           }
@@ -324,7 +333,14 @@ export default {
       let formAddress = this.form.address;
       formAddress = JSON.stringify(formAddress);
       this.e1 = 3;
-    }
+	},
+	goToStep2() {
+		if(this.ordered.length>0) {
+			this.e1 = 2;
+		} else {
+			Vue.toasted.error("Nie wybrano żadnego dania.").goAway(3000);
+		}
+	}
   }
 };
 </script>
