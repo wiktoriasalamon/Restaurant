@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dish/edit/{id}', 'DishController@edit')->name('dish.edit')->middleware('permission:dishEdit');
     Route::get('/dish/create', 'DishController@create')->name('dish.create')->middleware('permission:dishCreate');
     Route::get('/myAccount', 'UserController@myAccount')->name('user.myAccount');
+    Route::get('/order/myOrders', 'CustomerMyOrdersController@index')->name('orders.myOrders');
 
     Route::name('worker.')->prefix('worker')->group(function () {
         Route::get('/create', 'WorkerController@create')->name('create')->middleware('permission:userCreate');

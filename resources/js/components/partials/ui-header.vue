@@ -79,7 +79,7 @@ export default {
         { id: 4, text: "Rezerwacje", link: route("reservation.index") }
       ],
       userMenu: [
-        { id: 1, text: "moje zamówienia", link: route("home") },
+        { id: 1, text: "moje zamówienia", link: route("orders.myOrders") },
         {
           id: 2,
           text: "moje rezerwacje",

@@ -108,6 +108,7 @@ Vue.component('dish-category-index', require('./components/dishCategories/dish-c
 Vue.component('worker-order-index', require('./components/orders/worker-order-index').default);
 Vue.component('worker-order-create', require('./components/orders/worker-order-create').default);
 Vue.component('customer-order', require('./components/orders/customer-order').default);
+Vue.component('customer-my-orders', require('./components/orders/customer-my-orders').default);
 
 const app = new Vue({
     el: '#app',
