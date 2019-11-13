@@ -17,6 +17,7 @@
 
 Route::get('/menu', 'DishController@menu')->name('menu');
 Route::post('api/user/store-customer', 'API\ApiUserController@storeCustomer')->name('storeCustomer');
+Route::get('/order/online', 'OrderController@createOrder')->name('order.create.online');
 
 Auth::routes();
 Route::middleware('auth')->group(function () {
