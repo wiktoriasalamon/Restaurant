@@ -243,7 +243,7 @@ class ApiOrderController extends Controller
                         "name" => $item->dish->name,
                         'price' => (float)$item->dish->price,
                         'amount' => $item->amount]);
-                    $sum += (float)$item->dish->price;
+                    $sum += (float)$item->dish->price * (float)$item->amount;
                 }
                 return response()->json(["dishes" => $dishes, 'sum' => $sum, 'status'=>$order->status], 200);
             }
