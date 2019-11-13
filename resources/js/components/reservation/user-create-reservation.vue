@@ -104,7 +104,6 @@
       }
     },
 		beforeMount(){
-      console.log(this.user);
 			this.email = this.user.email;
 			this.phone = this.user.phone
 		},

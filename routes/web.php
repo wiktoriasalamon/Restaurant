@@ -44,39 +44,57 @@ Route::middleware('auth')->group(function () {
         Route::get('edit/{id}', 'WorkerController@edit')->name('edit')->middleware('permission:userEdit');
         Route::get('index', 'WorkerController@index')->name('index')->middleware('permission:userIndex');
     });
+    Route::get('/orders/waiter-index', 'OrderController@index')->name('order.index');
+    Route::get('/orders/waiter-create/{tableId}', 'OrderController@createWaiterOrder')->name('order.createWaiter');
+    Route::get('/tables/waiter-index', 'TableController@waiterIndex')->name('table.waiterIndex')->middleware('permission:tableIndex');
 });
 
 Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(function () {
+    //todo refactor na group
+//table
     Route::get('/table', 'ApiTableController@index')->name('table.index')
         ->middleware('permission:tableIndex');
     Route::get('/table/{table}', 'ApiTableController@load')->name('table.load')
         ->middleware('permission:tableIndex');
     Route::post('/table', 'ApiTableController@store')->name('table.store')
-        ->middleware('permission:tableIndex');
+        ->middleware('permission:tableCreate');
     Route::post('/table/update', 'ApiTableController@update')->name('table.update')
-        ->middleware('permission:tableIndex');
+        ->middleware('permission:tableEdit');
     Route::delete('/table/{table}', 'ApiTableController@delete')->name('table.delete')
         ->middleware('permission:tableDelete');
-
+//dish
     Route::get('/dish', 'ApiDishController@index')->name('dish.index')
         ->middleware('permission:dishIndex');
     Route::get('/dish/{dish}', 'ApiDishController@load')->name('dish.load')
-        ->middleware('permission:dishIndex');
+        ->middleware('permission:dishShow');
     Route::post('/dish', 'ApiDishController@store')->name('dish.store')
-        ->middleware('permission:dishIndex');
+        ->middleware('permission:tableCreate');
     Route::post('/dish/update', 'ApiDishController@update')->name('dish.update')
-        ->middleware('permission:dishIndex');
+        ->middleware('permission:dishEdit');
     Route::delete('/dish/{dish}', 'ApiDishController@delete')->name('dish.delete')
         ->middleware('permission:dishDelete');
-
+//dishCategory
     Route::get('/dishCategory', 'ApiDishCategoryController@index')->name('dishCategory.index')
         ->middleware('permission:dishCategoryIndex');
     Route::post('/dishCategory', 'ApiDishCategoryController@store')->name('dishCategory.store')
-        ->middleware('permission:dishCategoryIndex');
+        ->middleware('permission:dishCategoryCreate');
     Route::post('/dishCategory/update', 'ApiDishCategoryController@update')->name('dishCategory.update')
-        ->middleware('permission:dishCategoryIndex');
+        ->middleware('permission:dishCategoryEdit');
     Route::delete('/dishCategory/{dishCategory}', 'ApiDishCategoryController@delete')->name('dishCategory.delete')
         ->middleware('permission:dishCategoryDelete');
+
+//order
+    Route::post('/order/status', 'ApiOrderController@changeStatusOrder')->name('order.changeStatusOrder')
+        ->middleware('permission:orderEdit');
+    Route::get('/order/status-types', 'ApiOrderController@fetchOrderStatusTypes')->name('order.fetchOrderStatusTypes')
+        ->middleware('permission:orderIndex');
+    Route::get('/order/my-order', 'ApiOrderController@myOrder')->name('order.myOrder')
+        ->middleware('permission:orderIndex');
+    Route::get('/order/{type}', 'ApiOrderController@orderWithStatus')->name('order.orderWithStatus')
+        ->middleware('permission:orderIndex');
+    Route::post('/order/worker', 'ApiOrderController@storeNewOrderFromWorker')->name('order.storeNewOrderFromWorker')
+        ->middleware('permission:orderCreate');
+    Route::post('/order/online', 'ApiOrderController@storeNewOrderOnline')->name('order.storeNewOrderOnline');
 
     Route::name('reservation.')->prefix('reservation')->group(function () {
 
@@ -84,8 +102,8 @@ Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(
         Route::post('/store-as-worker', 'ApiReservationController@storeAsWorker')->name('storeAsWorker')->middleware('permission:reservationCreate');
         Route::put('/update-as-worker', 'ApiReservationController@updateAsWorker')->name('updateAsWorker')->middleware('permission:reservationEdit');
         Route::get('/show/{id}', 'ApiReservationController@fetchReservation')->name('show')->middleware('permission:reservationShow|onlineReservationShow');
-        Route::get('', 'ApiReservationController@customerIndex')->name('customerIndex')->middleware('permission:onlineReservationIndex');
-        Route::get('worker-index/{date}', 'ApiReservationController@workerIndex')->name('workerIndex')->middleware('permission:reservationIndex');
+        Route::get('/customer-index', 'ApiReservationController@customerIndex')->name('customerIndex')->middleware('permission:onlineReservationIndex');
+        Route::get('/worker-index/{date}', 'ApiReservationController@workerIndex')->name('workerIndex')->middleware('permission:reservationIndex');
         Route::get('/tables/{date}', 'ApiReservationController@fetchTablesByDate')->name('fetchTablesByDate')->middleware('permission:reservationIndex');
         Route::delete('/{id}', 'ApiReservationController@delete')->name('delete')->middleware('permission:reservationDelete|onlineReservationDelete');
     });

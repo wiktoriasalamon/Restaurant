@@ -3,8 +3,12 @@
 
 namespace App\Services;
 
+use App\Interfaces\StatusTypesInterface;
+use App\Models\Order;
 use App\Models\Reservation;
 use App\Models\Table;
+use Illuminate\Database\Eloquent\Collection;
+
 class OrderService
 {
 
@@ -33,6 +37,19 @@ class OrderService
         return $tableArray;
     }
 
-
-
+    /**
+     * Add items to give order
+     * @param Order $order
+     * @param $items [[ammount, dishId],[],..
+     */
+    public function addItems(Order $order, $items)
+    {
+        foreach ($items as $item){
+            $check = new \App\Models\Check();
+            $check->amount = $item['amount'];
+            $check->dish()->associate(\App\Models\Dish::find($item['dishId']));
+            $check->order()->associate($order);
+            $check->save();
+        }
+    }
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Order;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DishCategoryRequest extends FormRequest
+class NewOrderFromWorkerRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,9 +14,9 @@ class DishCategoryRequest extends FormRequest
     public function rules(): array
     {
         return[
-            'name' => 'required|unique:dish_category,name'
+            'table_id' => 'required',
+            'items' => 'required|array'
         ];
-
     }
 
     /**
@@ -25,8 +25,9 @@ class DishCategoryRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required'=>'Nazwa kategorii jest wymagana',
-            'name.unique'=>'Podana kategoria już istnieje',
+            'table_id.required'=>'Id stolika jest wymagane',
+            'items.required'=>'Produkty są wymagane',
+            'items.array'=>'Zły format produktów',
         ];
     }
 }
