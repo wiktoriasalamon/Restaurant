@@ -89,7 +89,7 @@
 				],
 				waiterMenu:[
           {id: 1, text: "Stoliki", link: route('menu')},
-          {id: 2, text: "Zamówienia", link: route('menu')},
+          {id: 2, text: "Zamówienia", link: route('order.index')},
           {id: 3, text: "Zamówienia online", link: route('menu')},
           {id: 4, text: "Rezerwacje", link: route('reservation.index')},
 				],

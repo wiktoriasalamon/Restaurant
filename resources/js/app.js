@@ -98,7 +98,8 @@ Vue.component('workers-edit', require('./components/workers/workers-edit').defau
 //DISH CATEGORIES
 Vue.component('dish-category-index', require('./components/dishCategories/dish-category-index').default);
 
-
+//ORDERS
+Vue.component('worker-order-index', require('./components/orders/worker-order-index').default);
 
 
 

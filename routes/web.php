@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
         Route::get('edit/{id}', 'WorkerController@edit')->name('edit')->middleware('permission:userEdit');
         Route::get('index', 'WorkerController@index')->name('index')->middleware('permission:userIndex');
     });
+    Route::get('/order/waiter-index', 'OrderController@index')->name('order.index');
 });
 
 Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(function () {
