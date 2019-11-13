@@ -30,7 +30,7 @@
                     <v-form
                         ref="form">
                       <v-text-field label="Wielkość stolika" v-bind:rules="rules"
-                                    v-model="editedItem.size"></v-text-field>
+                                    v-bind:error-messages="errors.size" v-model="editedItem.size"></v-text-field>
                     </v-form>
                   </v-row>
                 </v-container>
@@ -66,6 +66,8 @@
 </template>
 
 <script>
+  import {notification} from "../../Notifications";
+
   export default {
     name: "admin-tables-index",
     data() {
@@ -87,6 +89,9 @@
         defaultItem: {
           id: '',
           size: ''
+        },
+        errors: {
+          size: []
         },
         rules: [
           value => !!value || "To pole jest wymagane",
