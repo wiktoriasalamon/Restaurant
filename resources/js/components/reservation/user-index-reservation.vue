@@ -35,7 +35,7 @@
 		},
 		methods:{
       getReservations(){
-        axios.get('api/reservation')
+        axios.get(route('api.reservation.customerIndex'))
           .then((response) => {
             this.reservations = response.data.reservations
           }).catch((error) => {

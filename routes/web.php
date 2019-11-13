@@ -84,8 +84,8 @@ Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(
         Route::post('/store-as-worker', 'ApiReservationController@storeAsWorker')->name('storeAsWorker')->middleware('permission:reservationCreate');
         Route::put('/update-as-worker', 'ApiReservationController@updateAsWorker')->name('updateAsWorker')->middleware('permission:reservationEdit');
         Route::get('/show/{id}', 'ApiReservationController@fetchReservation')->name('show')->middleware('permission:reservationShow|onlineReservationShow');
-        Route::get('', 'ApiReservationController@customerIndex')->name('customerIndex')->middleware('permission:onlineReservationIndex');
-        Route::get('worker-index/{date}', 'ApiReservationController@workerIndex')->name('workerIndex')->middleware('permission:reservationIndex');
+        Route::get('/customer-index', 'ApiReservationController@customerIndex')->name('customerIndex')->middleware('permission:onlineReservationIndex');
+        Route::get('/worker-index/{date}', 'ApiReservationController@workerIndex')->name('workerIndex')->middleware('permission:reservationIndex');
         Route::get('/tables/{date}', 'ApiReservationController@fetchTablesByDate')->name('fetchTablesByDate')->middleware('permission:reservationIndex');
         Route::delete('/{id}', 'ApiReservationController@delete')->name('delete')->middleware('permission:reservationDelete|onlineReservationDelete');
     });
