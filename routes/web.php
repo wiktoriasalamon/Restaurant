@@ -70,6 +70,10 @@ Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(
         ->middleware('permission:tableDelete');
     Route::get('/my-tables', 'ApiTableController@myTables')->name('table.myTables')
         ->middleware('permission:tableIndex');
+    Route::post('/table/{table}/open', 'ApiTableController@openTable')->name('table.openTable')
+        ->middleware('permission:orderEdit');
+    Route::post('/table/{table}/close', 'ApiTableController@closeTable')->name('table.closeTable')
+        ->middleware('permission:orderEdit');
 //dish
     Route::get('/dish', 'ApiDishController@index')->name('dish.index')
         ->middleware('permission:dishIndex');
