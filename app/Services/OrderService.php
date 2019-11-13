@@ -89,4 +89,18 @@ class OrderService
 
         return $this->tablesByDate(Carbon::now()->format('Y-m-d'), $waiterTables->merge($tables));
     }
+
+    /**
+     * Function to change all order i nthis table to finisched
+     * @param $tableId
+     */
+    public function closeTable($tableId)
+    {
+        $orders = Order::where('table_id', $tableId)->get();
+
+        foreach ($orders as $order){
+            $order->status = StatusTypesInterface::TYPE_FINISHED;
+            $order->save();
+        }
+    }
 }
