@@ -14,7 +14,7 @@ class DishCategoryRequest extends FormRequest
     public function rules(): array
     {
         return[
-            'name' => 'required'
+            'name' => 'required|unique:dish_category,name'
         ];
 
     }
@@ -26,6 +26,7 @@ class DishCategoryRequest extends FormRequest
     {
         return [
             'name.required'=>'Nazwa kategorii jest wymagana',
+            'name.unique'=>'Podana kategoria już istnieje',
         ];
     }
 }
