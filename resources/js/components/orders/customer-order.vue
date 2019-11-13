@@ -220,10 +220,6 @@ export default {
           "Numer telefonu powinien mieć mniej niż 13 znaków",
         postCodeFormat: value =>
           /^\d{2}-\d{3}$/.test(value) || "Nieprawidłowy format kodu pocztowego",
-        min6: v => v.length >= 6 || "Hasło musi mieć conajmniej 6 znaków",
-        passwordRules: value =>
-          (value && !value.localeCompare(this.passwordForm.newPassword)) ||
-          "Hasła nie są takie same"
       }
     };
   },
