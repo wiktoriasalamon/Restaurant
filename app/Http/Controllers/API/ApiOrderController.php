@@ -8,6 +8,7 @@ use App\Http\Requests\Order\NewOrderOnlineRequest;
 use App\Http\Requests\Order\OrderChangeStatusRequest;
 use App\Interfaces\StatusTypesInterface;
 use App\Mails\OrderOnlineMail;
+use App\Models\Check;
 use App\Models\Order;
 use App\Models\Table;
 use App\Services\OrderService;
@@ -183,13 +184,41 @@ class ApiOrderController extends Controller
         }
     }
 
+    /**
+     * Show of order
+     * @param $token
+     * @return JsonResponse
+     */
+    public function loadOrder($token){
+        $tokens = Order::pluck('token')->toArray();
+        if (!in_array($token, $tokens)){
+            abort(403);
+        }
+        $dishes = [];
+        $sum = 0;
+        if($orderId = Order::where('token', $token)->first()->id){
+            $items = Check::where('order_id', $orderId)->with('dish')->get();
+            foreach ($items as $item){
+                array_push($dishes, [
+                    "id"=>$item->id,
+                    "name"=>$item->dish->name,
+                    'price'=>(float)$item->dish->price,
+                    'amount'=>$item->amount]);
+                $sum += (float)$item->dish->price;
+            }
+            return response()->json(["dishes"=>$dishes, 'sum'=>$sum], 200);
+        }
+        return response()->json('Wystąpił nieoczekiwany błąd', 500);
+    }
+
 //todo edycja zamówienia ( + delete)
-//todo podgląd zamówienia po tokenia
 
 //todo open close stolik
 //todo podsumowanie zamówienia online i na miejscu + rachenek?
 //todo rachunek + zamknięcie stolika
-//todo API do moich zamówień
+//todo API do moich zamówień (lista zamówień klienta)
 
+
+//todo api usuwanie zamówień
 }
 

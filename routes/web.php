@@ -99,6 +99,8 @@ Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(
         ->middleware('permission:orderIndex');
     Route::post('/order/worker', 'ApiOrderController@storeNewOrderFromWorker')->name('order.storeNewOrderFromWorker')
         ->middleware('permission:orderCreate');
+    Route::get('/order/show/{token}', 'ApiOrderController@loadOrder')->name('order.loadOrder')
+        ->middleware('permission:orderShow');
     Route::post('/order/online', 'ApiOrderController@storeNewOrderOnline')->name('order.storeNewOrderOnline');
 
     Route::name('reservation.')->prefix('reservation')->group(function () {
