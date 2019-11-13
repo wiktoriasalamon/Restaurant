@@ -93,7 +93,7 @@ Vue.component('my-account', require('./components/users/myAccount').default);
 //ORDERS
 Vue.component('customer-order', require('./components/orders/customer-order').default);
 
-
+ 
 //WORKERS
 Vue.component('workers-index', require('./components/workers/workers-index').default);
 Vue.component('workers-create', require('./components/workers/workers-create').default);
