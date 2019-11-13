@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\DishRequest;
 use App\Http\Requests\TableRequest;
 use App\Models\Dish;
 use App\Models\Reservation;
@@ -86,10 +85,10 @@ class ApiTableController extends Controller
     }
 
     /**
-     * @param DishRequest $request [name]
+     * @param TableRequest $request [name]
      * @return JsonResponse
      */
-    public function store(DishRequest $request)
+    public function store(TableRequest $request)
     {
         try {
             $table = new Table();
@@ -106,13 +105,13 @@ class ApiTableController extends Controller
     }
 
     /**
-     * @param DishRequest $request [id,name]
+     * @param TableRequest $request [id,name]
      * @return JsonResponse
      */
-    public function update(DishRequest $request)
+    public function update (TableRequest $request)
     {
         try {
-            $table = Dish::findOrFail($request->id);
+            $table = Table::findOrFail($request->id);
             $table->size = $request->size;
             $table->occupied_since = null;
             $table->save();
@@ -132,5 +131,45 @@ class ApiTableController extends Controller
     public function myTables()
     {
         return response()->json((new OrderService())->myTablesWithReservation(), 200);
+    }
+
+    /**
+     * @param Table $table
+     * @return JsonResponse
+     */
+    public function openTable (Table $table)
+    {
+        try {
+            if ($table->occupied_since != null) {
+                return response()->json('stolik jest zajęty', 422);
+            }
+            $table->occupied_since = Carbon::now();
+            $table->save();
+            return response()->json(['message' => "Stolik został pomyślnie otworzony."], 200);
+        } catch (\Exception $e) {
+            Log::notice("Error updating data all:" . $e);
+            Log::notice("Error updating data msg:" . $e->getMessage());
+            Log::notice("Error updating data code:" . $e->getCode());
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        }
+    }
+
+    /**
+     * @param Table $table
+     * @return JsonResponse
+     */
+    public function closeTable (Table $table)
+    {
+        try {
+            $table->occupied_since = null;
+            (new OrderService())->closeTable($table->id);
+            $table->save();
+            return response()->json(['message' => "Stolik został pomyślnie zamknięty."], 200);
+        } catch (\Exception $e) {
+            Log::notice("Error updating data all:" . $e);
+            Log::notice("Error updating data msg:" . $e->getMessage());
+            Log::notice("Error updating data code:" . $e->getCode());
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        }
     }
 }

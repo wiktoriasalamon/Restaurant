@@ -8,6 +8,7 @@ use App\Http\Requests\Order\NewOrderOnlineRequest;
 use App\Http\Requests\Order\OrderChangeStatusRequest;
 use App\Interfaces\StatusTypesInterface;
 use App\Mails\OrderOnlineMail;
+use App\Models\Check;
 use App\Models\Order;
 use App\Models\Table;
 use App\Services\OrderService;
@@ -18,7 +19,6 @@ use Illuminate\Support\Facades\Log;
 
 class ApiOrderController extends Controller
 {
-
 
     /**
      * @param string $date
@@ -80,6 +80,45 @@ class ApiOrderController extends Controller
         }
     }
 
+    /**
+     * All open order with worker_id = auth::id()
+     * @return JsonResponse
+     */
+    public function myOrder()
+    {
+        try {
+            return response()->json(Order::statusNotEqual(StatusTypesInterface::TYPE_FINISHED)
+                ->where('worker_id', Auth::id())
+                ->with("check")
+                ->get()
+                , 200);
+        } catch (Exception $e) {
+            Log::notice("Error :" . $e);
+            Log::notice("Error :" . $e->getMessage());
+            Log::notice("Error :" . $e->getCode());
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        }
+    }
+
+    /**
+     * All orders customer_id = auth::id()
+     * @return JsonResponse
+     */
+    public function customerOrder()
+    {
+        try {
+            return response()->json(Order::where('customer_id', Auth::id())
+                ->with("check")
+                ->get()
+                , 200);
+        } catch (Exception $e) {
+            Log::notice("Error :" . $e);
+            Log::notice("Error :" . $e->getMessage());
+            Log::notice("Error :" . $e->getCode());
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        }
+    }
+
 
     /**
      * To change status of order
@@ -91,8 +130,8 @@ class ApiOrderController extends Controller
         try {
             $types = StatusTypesInterface::TYPES;
             if (!in_array($request->status, $types))
-                return response()->json('Błędnyz status', 422);
-            if ($order = Order::findOrFail((int)$request->order_id)) {
+                return response()->json('Błędnyy status', 422);
+            if ($order = Order::where('token', $request->token)->first()) {
                 $order->status = $request->status;
                 $order->save();
                 return response()->json("Status zmieniony", 200);
@@ -136,7 +175,7 @@ class ApiOrderController extends Controller
             $order->status = StatusTypesInterface::TYPE_ORDERED;
             $order->worker()->associate(Auth::user());
             $order->save();
-            (new OrderService())->addItems($order,$request->items);
+            (new OrderService())->addItems($order, $request->items);
             return response()->json("Zamówienie złożone", 200);
         } catch (Exception $e) {
             Log::notice("Error :" . $e);
@@ -155,27 +194,26 @@ class ApiOrderController extends Controller
         try {
             $order = new Order();
             $order->token = uniqid();
-            if ($user = Auth::user()){
+            if ($user = Auth::user()) {
                 $order->email = $user->email;
                 $order->customer()->associate($user);
             } else {
-                if($request->email){
+                if ($request->email) {
                     $order->email = $request->email;
-                }else {
+                } else {
                     return response()->json("Mail wymagany", 422);
                 }
             }
             $order->takeaway = $request->takeaway;
-            if (!$request->takeaway){
+            if (!$request->takeaway) {
                 $order->address = json_encode($request->address);
             }
             $order->status = StatusTypesInterface::TYPE_ORDERED;
             $order->save();
-            (new OrderService())->addItems($order,$request->items);
+            (new OrderService())->addItems($order, $request->items);
             (new OrderOnlineMail($order->email, $order->token))->sendMail();
             return response()->json("Zamówienie złożone", 200);
         } catch (Exception $e) {
-            dd($e);
             Log::notice("Error :" . $e);
             Log::notice("Error :" . $e->getMessage());
             Log::notice("Error :" . $e->getCode());
@@ -183,13 +221,128 @@ class ApiOrderController extends Controller
         }
     }
 
-//todo edycja zamówienia ( + delete)
-//todo podgląd zamówienia po tokenia
+    /**
+     * Show of order
+     * @param $token
+     * @return JsonResponse
+     */
+    public function loadOrder($token)
+    {
+        try {
+            $tokens = Order::pluck('token')->toArray();
+            if (!in_array($token, $tokens)) {
+                abort(403);
+            }
+            $dishes = [];
+            $sum = 0;
+            if ($order = Order::where('token', $token)->first()) {
+                $items = Check::where('order_id', $order->id)->with('dish')->get();
+                foreach ($items as $item) {
+                    array_push($dishes, [
+                        "id" => $item->id,
+                        "name" => $item->dish->name,
+                        'price' => (float)$item->dish->price,
+                        'amount' => $item->amount]);
+                    $sum += (float)$item->dish->price;
+                }
+                return response()->json(["dishes" => $dishes, 'sum' => $sum, 'status'=>$order->status], 200);
+            }
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        } catch (Exception $e) {
+            Log::notice("Error :" . $e);
+            Log::notice("Error :" . $e->getMessage());
+            Log::notice("Error :" . $e->getCode());
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        }
+    }
 
-//todo open close stolik
-//todo podsumowanie zamówienia online i na miejscu + rachenek?
-//todo rachunek + zamknięcie stolika
-//todo API do moich zamówień
+    /**
+     * @param $token
+     * @return JsonResponse
+     */
+    public function deleteOrder($token)
+    {
+        try {
+            $tokens = Order::pluck('token')->toArray();
+            if (!in_array($token, $tokens)) {
+                abort(403);
+            }
+            if ($order = Order::where('token', $token)->first()) {
+                $order->delete();
+                return response()->json("Zamówienie usunięte", 200);
+            }
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        } catch (Exception $e) {
+            Log::notice("Error :" . $e);
+            Log::notice("Error :" . $e->getMessage());
+            Log::notice("Error :" . $e->getCode());
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        }
+    }
 
+    /**
+     * @param NewOrderFromWorkerRequest $request
+     * @return JsonResponse
+     */
+    public function updateOrderFromWorker(NewOrderFromWorkerRequest $request)
+    {
+        try {
+            $tokens = Order::pluck('token')->toArray();
+            if (!in_array($request->token, $tokens)) {
+                abort(403);
+            }
+            if ($order = Order::where('token', $request->token)->first()) {
+                $items = Check::where('order_id', $order->id)->with('dish')->get();
+                foreach ($items as $item) {
+                    $item->delete();
+                }
+                (new OrderService())->addItems($order, $request->items);
+                return response()->json("Zamówienie pomyślnie edytowane", 200);
+            }
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        } catch (Exception $e) {
+            Log::notice("Error :" . $e);
+            Log::notice("Error :" . $e->getMessage());
+            Log::notice("Error :" . $e->getCode());
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        }
+    }
+
+    /**
+     * @param NewOrderOnlineRequest $request
+     * @return JsonResponse
+     */
+    public function updateOnlineOrder(NewOrderOnlineRequest $request)
+    {
+        try {
+            $tokens = Order::pluck('token')->toArray();
+            if (!in_array($request->token, $tokens)) {
+                abort(403);
+            }
+            if ($order = Order::where('token', $request->token)->first()) {
+                $items = Check::where('order_id', $order->id)->with('dish')->get();
+                if($order->status != StatusTypesInterface::TYPE_ORDERED && $order->status !=
+                    StatusTypesInterface::TYPE_IN_PROGRESS){
+                    return response()->json("Zamówieniezostało już wykonane, edycja nie jest możliwa", 422);
+                }
+                $order->takeaway = $request->takeaway;
+                if (!$request->takeaway) {
+                    $order->address = json_encode($request->address);
+                }
+                $order->save();
+                foreach ($items as $item) {
+                    $item->delete();
+                }
+                (new OrderService())->addItems($order, $request->items);
+                return response()->json("Zamówienie pomyślnie edytowane", 200);
+            }
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        } catch (Exception $e) {
+            Log::notice("Error :" . $e);
+            Log::notice("Error :" . $e->getMessage());
+            Log::notice("Error :" . $e->getCode());
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        }
+    }
 }
 

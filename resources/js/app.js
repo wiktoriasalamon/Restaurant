@@ -85,6 +85,8 @@ Vue.component('waiter-index-reservation', require('./components/reservation/wait
 
 Vue.component('user-menu', require('./components/menu/user-menu').default);
 Vue.component('admin-menu', require('./components/menu/admin-menu').default);
+Vue.component('edit-dish', require('./components/menu/edit-dish').default);
+Vue.component('create-dish', require('./components/menu/create-dish').default);
 
 //TABLES
 Vue.component('admin-tables-index', require('./components/tables/admin-tables-index').default);

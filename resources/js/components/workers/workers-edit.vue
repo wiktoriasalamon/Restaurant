@@ -37,6 +37,8 @@
 </template>
 
 <script>
+  import {notification} from "../../Notifications";
+
   export default {
     props: ['id'],
     name: "workers-edit",
@@ -80,7 +82,9 @@
           }
           this.form[key] = value;
         }
-      }).catch(error => {});
+      }).catch(error => {
+        console.error(error.response);
+      });
     },
     methods: {
       cancel() {
@@ -98,9 +102,11 @@
             data[key] = value;
           }
           axios.put(route('api.user.updateWorker', this.id), data).then(response => {
-            console.log(response);
+            notification('Pomyślnie edytowano pracownika', 'success');
             window.location.replace(route('worker.index'));
           }).catch(error => {
+            notification('Wystąpił błąd podczas edytowania pracownika', 'error');
+            console.error(error.response);
             let entries = Object.entries(error.response.data.errors);
             for (let [key, value] of entries) {
               this.errors[key] = value;

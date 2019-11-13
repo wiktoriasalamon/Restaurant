@@ -31,7 +31,7 @@
         <ui-header :user="{{ json_encode( Auth::user()) ?? ""}}" role="{{\App\Services\UserService::getAuthRoles()}}"></ui-header>
     @show
     <v-container class="main_content">
-        <main id="main_page">
+        <main id="main_page" style="margin-bottom: 20px">
             @yield('content')
         </main>
     </v-container>
