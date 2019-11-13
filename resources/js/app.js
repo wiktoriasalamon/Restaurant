@@ -85,15 +85,11 @@ Vue.component('admin-menu', require('./components/menu/admin-menu').default);
 
 //TABLES
 Vue.component('admin-tables-index', require('./components/tables/admin-tables-index').default);
+Vue.component('waiter-tables-index', require('./components/tables/waiter-tables-index').default);
 
 //USERS
 Vue.component('my-account', require('./components/users/myAccount').default);
 
-
-//ORDERS
-Vue.component('customer-order', require('./components/orders/customer-order').default);
-
- 
 //WORKERS
 Vue.component('workers-index', require('./components/workers/workers-index').default);
 Vue.component('workers-create', require('./components/workers/workers-create').default);
@@ -103,43 +99,17 @@ Vue.component('workers-edit', require('./components/workers/workers-edit').defau
 Vue.component('dish-category-index', require('./components/dishCategories/dish-category-index').default);
 
 
+//ORDERS
+Vue.component('worker-order-index', require('./components/orders/worker-order-index').default);
+Vue.component('worker-order-create', require('./components/orders/worker-order-create').default);
+Vue.component('customer-order', require('./components/orders/customer-order').default);
 
 const app = new Vue({
     el: '#app',
-    data: {
-        messages: []
-    },
-
-    created() {
-        this.fetchMessages();
-        Echo.channel('chat')
-          .listen('MessageSent', (e) => {
-              this.messages.push({
-                  message: e.message.message,
-                  user: e.user
-              });
-          });
-
-
-    },
-
-    methods: {
-        fetchMessages: function () {
-            axios.get('/messages').then(response => {
-                this.messages = response.data;
-            });
-        },
-
-        addMessage(message) {
-            this.messages.push(message);
-
-            axios.post('/messages', message).then(response => {
-                console.log(response.data);
-            });
-        }
-    },
-    vuetify: new Vuetify(opts),
+    vuetify: new Vuetify(opts)
 });
+
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

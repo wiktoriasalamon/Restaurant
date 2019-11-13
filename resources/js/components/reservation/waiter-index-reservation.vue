@@ -90,6 +90,16 @@
         ],
       }
     },
+		created() {
+			Echo.channel('reservation')
+				.listen('ReservationChanged', (e) => {
+					if(this.date){
+						this.getReservations(this.date)
+					}
+				});
+
+
+		},
     methods:{
       addReservation(){
         window.location.href = route('reservation.create')
