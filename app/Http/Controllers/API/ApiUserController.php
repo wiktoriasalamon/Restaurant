@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 
 class ApiUserController extends Controller
@@ -58,7 +59,10 @@ class ApiUserController extends Controller
             if($user->save()){
                 (new RegistrationMail($request->password, $request->email))->sendMail();
             }
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
+            Log::notice("Error :" . $exception);
+            Log::notice("Error :" . $exception->getMessage());
+            Log::notice("Error :" . $exception->getCode());
             return response()->json(['message' => 'Wystąpił błąd w trakcie dodawania użytkownika'], 500);
         }
         return response()->json(['message' => "Pomyślnie dodano użytkownika"], 200);
@@ -75,6 +79,9 @@ class ApiUserController extends Controller
             $user->fillUser($request);
             $user->save();
         } catch (\Exception $e) {
+            Log::notice("Error :" . $e);
+            Log::notice("Error :" . $e->getMessage());
+            Log::notice("Error :" . $e->getCode());
             return response()->json(['message' => 'Wystąpił błąd w trakcie edycji użytkownika'], 500);
         }
         return response()->json(['message' => "Pomyślnie zmieniono dane użytkownika"], 201);
@@ -138,6 +145,9 @@ class ApiUserController extends Controller
             User::findOrFail($id)->delete();
             return response()->json("Użytkownik został usunięty", 201);
         } catch (\Exception $e) {
+            Log::notice("Error :" . $e);
+            Log::notice("Error :" . $e->getMessage());
+            Log::notice("Error :" . $e->getCode());
             return response()->json('Wystąpił nieoczekiwany błąd', 500);
         }
     }
