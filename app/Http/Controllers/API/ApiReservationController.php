@@ -8,12 +8,7 @@ use App\Http\Requests\Reservation\CustomerReservationRequest;
 use App\Http\Requests\Reservation\WorkerReservationRequest;
 use App\Mails\ReservationMail;
 use App\Models\Reservation;
-use App\Models\Table;
 use App\Services\ReservationService;
-use App\Services\TableService;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class ApiReservationController extends Controller
 {
@@ -35,7 +30,6 @@ class ApiReservationController extends Controller
             }
             return response()->json(['message' => "Brak dostępnego stolika w podanym terminie.", 500]);
         } catch (\Exception $exception) {
-            dd($exception);
             return response()->json('Wystąpił nieoczekiwany błąd', 500);
         }
     }
@@ -50,7 +44,9 @@ class ApiReservationController extends Controller
             foreach ($request->tables as $tableId) {
                 $reservation = new Reservation();
                 $reservation->setWorkerReservation($request, $tableId);
-                $reservation->save();
+                if($reservation->save()){
+                    broadcast(new ReservationChanged())->toOthers();
+                }
             }
             return response()->json(['message' => "Rezerwacja została pomyślnie zapisana."], 200);
 
@@ -116,6 +112,7 @@ class ApiReservationController extends Controller
     {
         try {
             Reservation::findOrFail($id)->delete();
+            broadcast(new ReservationChanged())->toOthers();
             return response()->json("Rezerwacja została anulowana", 201);
         } catch (\Exception $e) {
             return response()->json('Wystąpił nieoczekiwany błąd', 500);

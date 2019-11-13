@@ -90,19 +90,17 @@
         ],
       }
     },
+		created() {
+			Echo.channel('reservation')
+				.listen('ReservationChanged', (e) => {
+					if(this.date){
+						this.getReservations(this.date)
+					}
+				});
+
+
+		},
     methods:{
-			created() {
-				this.fetchMessages();
-				Echo.channel('chat')
-					.listen('MessageSent', (e) => {
-						this.messages.push({
-							message: e.message.message,
-							user: e.user
-						});
-					});
-
-
-			},
       addReservation(){
         window.location.href = route('reservation.create')
 			},
