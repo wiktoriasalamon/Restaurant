@@ -132,4 +132,44 @@ class ApiTableController extends Controller
     {
         return response()->json((new OrderService())->myTablesWithReservation(), 200);
     }
+
+    /**
+     * @param Table $table
+     * @return JsonResponse
+     */
+    public function openTable (Table $table)
+    {
+        try {
+            if ($table->occupied_since != null) {
+                return response()->json('stolik jest zajęty', 422);
+            }
+            $table->occupied_since = Carbon::now();
+            $table->save();
+            return response()->json(['message' => "Stolik został pomyślnie otworzony."], 200);
+        } catch (\Exception $e) {
+            Log::notice("Error updating data all:" . $e);
+            Log::notice("Error updating data msg:" . $e->getMessage());
+            Log::notice("Error updating data code:" . $e->getCode());
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        }
+    }
+
+    /**
+     * @param Table $table
+     * @return JsonResponse
+     */
+    public function closeTable (Table $table)
+    {
+        try {
+            $table->occupied_since = null;
+            (new OrderService())->closeTable($table->id);
+            $table->save();
+            return response()->json(['message' => "Stolik został pomyślnie zamknięty."], 200);
+        } catch (\Exception $e) {
+            Log::notice("Error updating data all:" . $e);
+            Log::notice("Error updating data msg:" . $e->getMessage());
+            Log::notice("Error updating data code:" . $e->getCode());
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        }
+    }
 }
