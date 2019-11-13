@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Order\NewOrderFromWorkerRequest;
+use App\Http\Requests\Order\NewOrderOnlineRequest;
 use App\Http\Requests\Order\OrderChangeStatusRequest;
 use App\Http\Requests\Reservation\CustomerReservationRequest;
 use App\Http\Requests\Reservation\WorkerReservationRequest;
@@ -61,16 +63,15 @@ class ApiOrderController extends Controller
     }
 
     /**
-     * WIP
-     * todo (transformer check to dish [id, name] + amount in order
-     * todo uzgodnić postać array
-     * For kitchen list of open orders
+     * All open order with given status
+     * @param $type [ordered, ...]
      * @return \Illuminate\Http\JsonResponse
      */
-    public function fetchNoPrepareOrder()
+    public function orderWithStatus($type)
     {
         try {
-            return response()->json(Order::status(StatusTypesInterface::TYPE_ORDERED)
+            return response()->json(Order::status($type)
+                ->statusNotEqual(StatusTypesInterface::TYPE_FINISHED)
                 ->with("check")
                 ->get()
                 , 200);
@@ -82,36 +83,19 @@ class ApiOrderController extends Controller
         }
     }
 
-    /**
-     *
-     * For waiters list of open orders
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function fetchReadyToPickUpOrder()
-    {
-        try {
-            return response()->json(Order::status(StatusTypesInterface::TYPE_COMPLETED)->get()->load("check"), 200);
-        } catch (\Exception $e) {
-            Log::notice("Error :" . $e);
-            Log::notice("Error :" . $e->getMessage());
-            Log::notice("Error :" . $e->getCode());
-            return response()->json('Wystąpił nieoczekiwany błąd', 500);
-        }
-    }
 
     /**
      * To change status of order
      * @param OrderChangeStatusRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function statusOrder(OrderChangeStatusRequest $request)
+    public function changeStatusOrder(OrderChangeStatusRequest $request)
     {
         try {
-            dd($request->order_id);
             $types = StatusTypesInterface::TYPES;
             if (!in_array($request->status, $types))
                 return response()->json('Błędnyz status', 422);
-            if ($order = Order::findOrFail($request->order_id)->first()) {
+            if ($order = Order::findOrFail((int)$request->order_id)) {
                 $order->status = $request->status;
                 $order->save();
                 return response()->json("Status zmieniony", 200);
@@ -141,10 +125,71 @@ class ApiOrderController extends Controller
         }
     }
 
-//todo test statusOrder
-//todo nowe zamówienie na miejscy
-//todo nowe zamówienie online
-//todo edycja zamówienia
+    /**
+     * @param NewOrderFromWorkerRequest $request ['table_id', items]
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function storeNewOrderFromWorker(NewOrderFromWorkerRequest $request)
+    {
+        try {
+            $order = new Order();
+            $order->token = uniqid();
+            $order->takeaway = false;
+            $order->table()->associate($request->table_id);
+            $order->status = StatusTypesInterface::TYPE_ORDERED;
+            $order->worker()->associate(Auth::user());
+            $order->save();
+            (new OrderService())->addItems($order,$request->items);
+            return response()->json("Zamówienie złożone", 200);
+        } catch (\Exception $e) {
+            Log::notice("Error :" . $e);
+            Log::notice("Error :" . $e->getMessage());
+            Log::notice("Error :" . $e->getCode());
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        }
+    }
+
+    /**
+     * @param NewOrderOnlineRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function storeNewOrderOnline(NewOrderOnlineRequest $request)
+    {
+        try {
+            $order = new Order();
+            $order->token = uniqid();
+            if ($user = Auth::user()){
+                $order->email = $user->email;
+                $order->customer()->associate($user);
+            } else {
+                if($request->email){
+                    $order->email = $request->email;
+                }else {
+                    return response()->json("Mail wymagany", 422);
+                }
+            }
+            $order->takeaway = $request->takeaway;
+            if (!$request->takeaway){
+                $order->address = json_encode($request->address);
+            }
+            $order->status = StatusTypesInterface::TYPE_ORDERED;
+            $order->save();
+            (new OrderService())->addItems($order,$request->items);
+            return response()->json("Zamówienie złożone", 200);
+        } catch (\Exception $e) {
+            Log::notice("Error :" . $e);
+            Log::notice("Error :" . $e->getMessage());
+            Log::notice("Error :" . $e->getCode());
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        }
+    }
+
+//todo edycja zamówienia ( + delete)
+//todo podgląd zamówienia po tokenia
+
+//todo open close stolik
 //todo podsumowanie zamówienia online i na miejscu + rachenek?
 //todo rachunek + zamknięcie stolika
+
 }
+

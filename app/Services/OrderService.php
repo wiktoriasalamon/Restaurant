@@ -37,14 +37,19 @@ class OrderService
         return $tableArray;
     }
 
-    public function fetchNoPrepareOrder(): Collection
+    /**
+     * Add items to give order
+     * @param Order $order
+     * @param $items [[ammount, dishId],[],..
+     */
+    public function addItems(Order $order, $items)
     {
-//        return Order::status(StatusTypesInterface::TYPE_ORDERED)->get();
-        return Order::status(StatusTypesInterface::TYPE_ORDERED);
+        foreach ($items as $item){
+            $check = new \App\Models\Check();
+            $check->amount = $item['amount'];
+            $check->dish()->associate(\App\Models\Dish::find($item['dishId']));
+            $check->order()->associate($order);
+            $check->save();
+        }
     }
-
-
-//return Order::whereHas("check", function($q){
-//    $q->where("amount","1");
-//})->get();
 }

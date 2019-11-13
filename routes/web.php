@@ -79,17 +79,19 @@ Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(
         ->middleware('permission:dishCategoryEdit');
     Route::delete('/dishCategory/{dishCategory}', 'ApiDishCategoryController@delete')->name('dishCategory.delete')
         ->middleware('permission:dishCategoryDelete');
-//kitchen
-    Route::get('/kitchen/no-prepare-order', 'ApiOrderController@fetchNoPrepareOrder')->name('kitchen.fetchNoPrepareOrder')
-        ->middleware('permission:orderIndex');
-//waiters
-    Route::get('/waiter/ready-to-pick-up-order', 'ApiOrderController@fetchReadyToPickUpOrder')->name('waiter.fetchReadyToPickUpOrder')
-        ->middleware('permission:orderIndex');
+
 //order
-    Route::post('/order/status', 'ApiOrderController@statusOrder')->name('order.statusOrder')
+    Route::post('/order/status', 'ApiOrderController@changeStatusOrder')->name('order.changeStatusOrder')
         ->middleware('permission:orderEdit');
     Route::get('/order/status-types', 'ApiOrderController@fetchOrderStatusTypes')->name('order.fetchOrderStatusTypes')
         ->middleware('permission:orderIndex');
+    Route::get('/order/my-order', 'ApiOrderController@myOrder')->name('order.myOrder')
+        ->middleware('permission:orderIndex');
+    Route::get('/order/{type}', 'ApiOrderController@orderWithStatus')->name('order.orderWithStatus')
+        ->middleware('permission:orderIndex');
+    Route::post('/order/worker', 'ApiOrderController@storeNewOrderFromWorker')->name('order.storeNewOrderFromWorker')
+        ->middleware('permission:orderCreate');
+    Route::post('/order/online', 'ApiOrderController@storeNewOrderOnline')->name('order.storeNewOrderOnline');
 
     Route::name('reservation.')->prefix('reservation')->group(function () {
 
