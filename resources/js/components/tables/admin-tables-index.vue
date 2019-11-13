@@ -55,9 +55,6 @@
 						<v-icon @click="editItem(props.item)" small>
 							edit
 						</v-icon>
-						<v-icon @click="showItem(props.item.id)" small>
-							visibility
-						</v-icon>
 						<v-icon @click="deleteItem(props.item)" small>
 							delete
 						</v-icon>
@@ -116,9 +113,6 @@
 				this.editedIndex = this.tables.indexOf(item);
 				this.editedItem = Object.assign({}, item);
 				this.dialog = true;
-      },
-      showItem(id) {
-        window.location.href = route('table.show', [id])
       },
       getData() {
         axios.get(route('api.table.index'))
