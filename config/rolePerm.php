@@ -54,7 +54,10 @@ return[
         "orderDelete",
         "orderIndex",
         "customerIndex",
-        "customerEdit"
+        "customerEdit",
+        "tableIndex",
+        "tableShow",
+        "dishIndex",
 
     ],
     "customer"=>[

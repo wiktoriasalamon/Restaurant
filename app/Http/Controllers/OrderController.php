@@ -22,9 +22,9 @@ class OrderController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function createWaiterOrder($tableId)
     {
-        //
+        return view('order/createWaiter', compact(['tableId']));
     }
 
     /**
