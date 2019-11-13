@@ -81,6 +81,26 @@ class ApiOrderController extends Controller
         }
     }
 
+    /**
+     * All open order with worker_id = auth::id()
+     * @return JsonResponse
+     */
+    public function myOrder()
+    {
+        try {
+            return response()->json(Order::statusNotEqual(StatusTypesInterface::TYPE_FINISHED)
+                ->where('worker_id', Auth::id())
+                ->with("check")
+                ->get()
+                , 200);
+        } catch (Exception $e) {
+            Log::notice("Error :" . $e);
+            Log::notice("Error :" . $e->getMessage());
+            Log::notice("Error :" . $e->getCode());
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        }
+    }
+
 
     /**
      * To change status of order
@@ -216,6 +236,8 @@ class ApiOrderController extends Controller
 //todo open close stolik
 //todo podsumowanie zamówienia online i na miejscu + rachenek?
 //todo rachunek + zamknięcie stolika
+
+
 //todo API do moich zamówień (lista zamówień klienta)
 
 
