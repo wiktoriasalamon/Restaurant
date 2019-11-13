@@ -13,11 +13,15 @@ class RoleUserTableSeeder extends Seeder
     public function run()
     {
         $domain = "@gmail.com";
+        $users=User::all();
+        foreach ($users as $user){
+            $user->assignRole('customer');
+        }
         $admin=User::where('email', 'admin'.$domain)->first();
         $admin->assignRole('admin');
         $mobile=User::where('email', 'worker'.$domain)->first();
         $mobile->assignRole('worker');
-        $mobile=User::where('email', 'customer'.$domain)->first();
-        $mobile->assignRole('customer');
+        $mobile=User::where('email', 'worker2'.$domain)->first();
+        $mobile->assignRole('worker');
     }
 }

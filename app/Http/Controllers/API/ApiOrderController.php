@@ -7,6 +7,7 @@ use App\Http\Requests\Order\NewOrderFromWorkerRequest;
 use App\Http\Requests\Order\NewOrderOnlineRequest;
 use App\Http\Requests\Order\OrderChangeStatusRequest;
 use App\Interfaces\StatusTypesInterface;
+use App\Mails\OrderOnlineMail;
 use App\Models\Order;
 use App\Models\Table;
 use App\Services\OrderService;
@@ -171,8 +172,10 @@ class ApiOrderController extends Controller
             $order->status = StatusTypesInterface::TYPE_ORDERED;
             $order->save();
             (new OrderService())->addItems($order,$request->items);
+            (new OrderOnlineMail($order->email, $order->token))->sendMail();
             return response()->json("Zamówienie złożone", 200);
         } catch (Exception $e) {
+            dd($e);
             Log::notice("Error :" . $e);
             Log::notice("Error :" . $e->getMessage());
             Log::notice("Error :" . $e->getCode());
@@ -188,9 +191,5 @@ class ApiOrderController extends Controller
 //todo rachunek + zamknięcie stolika
 //todo API do moich zamówień
 
-//todo do grida stolików przez kelnera potrzebne kiedy jest dana rezerwacja dzisiaj plus on widzi tylko wolne
-// stoliki i stoliki, które otworzył/obsługuje
-
-//todo w podglą∂zie stolika kelner widzi swszystkie zamówienia dla danego stolika
 }
 

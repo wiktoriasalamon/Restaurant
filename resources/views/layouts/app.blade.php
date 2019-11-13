@@ -18,6 +18,7 @@
     <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
 
 
+
 <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
