@@ -102,6 +102,7 @@ Vue.component('dish-category-index', require('./components/dishCategories/dish-c
 //ORDERS
 Vue.component('worker-order-index', require('./components/orders/worker-order-index').default);
 Vue.component('worker-order-create', require('./components/orders/worker-order-create').default);
+Vue.component('worker-order-edit', require('./components/orders/worker-order-edit').default);
 
 const app = new Vue({
     el: '#app',

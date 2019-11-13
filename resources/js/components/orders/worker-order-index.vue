@@ -96,7 +96,7 @@
 
       },
       editItem(id) {
-
+				window.location.href = route('order.editWaiter', [id])
       },
       deleteItem(id) {
 

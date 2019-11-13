@@ -55,9 +55,9 @@ class OrderController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function editWaiter($id)
     {
-        //
+        return view('order/editWaiter', compact(['id']));
     }
 
     /**

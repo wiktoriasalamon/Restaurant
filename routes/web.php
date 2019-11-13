@@ -46,6 +46,7 @@ Route::middleware('auth')->group(function () {
     });
     Route::get('/orders/waiter-index', 'OrderController@index')->name('order.index');
     Route::get('/orders/waiter-create/{tableId}', 'OrderController@createWaiterOrder')->name('order.createWaiter');
+    Route::get('/orders/waiter-edit/{id}', 'OrderController@editWaiter')->name('order.editWaiter');
     Route::get('/tables/waiter-index', 'TableController@waiterIndex')->name('table.waiterIndex')->middleware('permission:tableIndex');
 });
 
