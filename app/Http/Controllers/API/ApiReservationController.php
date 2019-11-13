@@ -9,6 +9,7 @@ use App\Http\Requests\Reservation\WorkerReservationRequest;
 use App\Mails\ReservationMail;
 use App\Models\Reservation;
 use App\Services\ReservationService;
+use Illuminate\Support\Facades\Log;
 
 class ApiReservationController extends Controller
 {
@@ -24,6 +25,9 @@ class ApiReservationController extends Controller
             }
             return response()->json(['message' => "Brak dostępnego stolika w podanym terminie.", 500]);
         } catch (\Exception $exception) {
+            Log::notice("Error :" . $exception);
+            Log::notice("Error :" . $exception->getMessage());
+            Log::notice("Error :" . $exception->getCode());
             return response()->json('Wystąpił nieoczekiwany błąd', 500);
         }
     }
@@ -39,6 +43,9 @@ class ApiReservationController extends Controller
             return response()->json(['message' => "Rezerwacja została pomyślnie zapisana."], 200);
 
         } catch (\Exception $exception) {
+            Log::notice("Error :" . $exception);
+            Log::notice("Error :" . $exception->getMessage());
+            Log::notice("Error :" . $exception->getCode());
             return response()->json('Wystąpił nieoczekiwany błąd', 500);
         }
     }
@@ -52,6 +59,9 @@ class ApiReservationController extends Controller
         try {
             return response()->json(['reservations' => $this->getReservationService()->customerReservations()], 200);
         } catch (\Exception $exception) {
+            Log::notice("Error :" . $exception);
+            Log::notice("Error :" . $exception->getMessage());
+            Log::notice("Error :" . $exception->getCode());
             return response()->json('Wystąpił nieoczekiwany błąd', 500);
         }
     }
@@ -65,6 +75,9 @@ class ApiReservationController extends Controller
         try {
             return response()->json(['reservations' => $this->getReservationService()->workerReservations($date)], 200);
         } catch (\Exception $exception) {
+            Log::notice("Error :" . $exception);
+            Log::notice("Error :" . $exception->getMessage());
+            Log::notice("Error :" . $exception->getCode());
             return response()->json('Wystąpił nieoczekiwany błąd', 500);
         }
     }
@@ -79,6 +92,9 @@ class ApiReservationController extends Controller
         try {
             return response()->json(['tables' => $this->getReservationService()->freeTablesByDate($date)], 200);
         } catch (\Exception $exception) {
+            Log::notice("Error :" . $exception);
+            Log::notice("Error :" . $exception->getMessage());
+            Log::notice("Error :" . $exception->getCode());
             return response()->json('Wystąpił nieoczekiwany błąd', 500);
         }
     }
@@ -102,7 +118,10 @@ class ApiReservationController extends Controller
             Reservation::findOrFail($id)->delete();
             broadcast(new ReservationChanged())->toOthers();
             return response()->json("Rezerwacja została anulowana", 201);
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
+            Log::notice("Error :" . $exception);
+            Log::notice("Error :" . $exception->getMessage());
+            Log::notice("Error :" . $exception->getCode());
             return response()->json('Wystąpił nieoczekiwany błąd', 500);
         }
     }
