@@ -153,8 +153,9 @@
         this.orderedItems.forEach(item=>{
           orderArray.push({amount: item.amount, dishId: item.id});
         });
-        axios.post(route('api.order.storeNewOrderFromWorker'), {
-          table_id: this.tableid,
+        console.log(this.token)
+        axios.post(route('api.order.updateOrderFromWorker'), {
+          token: this.token,
           items: orderArray,
         }).then(
           response => {
