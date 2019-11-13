@@ -41,12 +41,12 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param $token
      * @return Response
      */
-    public function show($id)
+    public function show($token)
     {
-        //
+        return view('order/show', ['token'=>$token]);
     }
 
     /**
