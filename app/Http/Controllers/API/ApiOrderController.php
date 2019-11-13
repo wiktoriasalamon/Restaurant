@@ -6,16 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\NewOrderFromWorkerRequest;
 use App\Http\Requests\Order\NewOrderOnlineRequest;
 use App\Http\Requests\Order\OrderChangeStatusRequest;
-use App\Http\Requests\Reservation\CustomerReservationRequest;
-use App\Http\Requests\Reservation\WorkerReservationRequest;
 use App\Interfaces\StatusTypesInterface;
 use App\Models\Order;
-use App\Models\Reservation;
 use App\Models\Table;
 use App\Services\OrderService;
-use App\Services\ReservationService;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -25,13 +21,13 @@ class ApiOrderController extends Controller
 
     /**
      * @param string $date
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function fetchTablesByDate(string $date)
     {
         try {
             return response()->json(['tables' => (new OrderService())->tablesByDate($date)], 200);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::notice("Error :" . $e);
             Log::notice("Error :" . $e->getMessage());
             Log::notice("Error :" . $e->getCode());
@@ -43,7 +39,7 @@ class ApiOrderController extends Controller
      * Return orders ordered in restaurant by customer in given table_id which status is ordered
      * For edit order purpose
      * @param $id table
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function fetchOpenOrderByGivenTable($id)
     {
@@ -54,7 +50,7 @@ class ApiOrderController extends Controller
                 ->get()
                 ->load("check"),
                 200);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::notice("Error :" . $e);
             Log::notice("Error :" . $e->getMessage());
             Log::notice("Error :" . $e->getCode());
@@ -65,7 +61,7 @@ class ApiOrderController extends Controller
     /**
      * All open order with given status
      * @param $type [ordered, ...]
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function orderWithStatus($type)
     {
@@ -75,7 +71,7 @@ class ApiOrderController extends Controller
                 ->with("check")
                 ->get()
                 , 200);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::notice("Error :" . $e);
             Log::notice("Error :" . $e->getMessage());
             Log::notice("Error :" . $e->getCode());
@@ -87,7 +83,7 @@ class ApiOrderController extends Controller
     /**
      * To change status of order
      * @param OrderChangeStatusRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function changeStatusOrder(OrderChangeStatusRequest $request)
     {
@@ -101,7 +97,7 @@ class ApiOrderController extends Controller
                 return response()->json("Status zmieniony", 200);
             }
             return response()->json('Błędne id zamówienia', 500);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::notice("Error :" . $e);
             Log::notice("Error :" . $e->getMessage());
             Log::notice("Error :" . $e->getCode());
@@ -111,13 +107,13 @@ class ApiOrderController extends Controller
 
     /**
      * Get possible order status types
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function fetchOrderStatusTypes()
     {
         try {
             return response()->json(StatusTypesInterface::TYPES, 200);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::notice("Error :" . $e);
             Log::notice("Error :" . $e->getMessage());
             Log::notice("Error :" . $e->getCode());
@@ -127,7 +123,7 @@ class ApiOrderController extends Controller
 
     /**
      * @param NewOrderFromWorkerRequest $request ['table_id', items]
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function storeNewOrderFromWorker(NewOrderFromWorkerRequest $request)
     {
@@ -141,7 +137,7 @@ class ApiOrderController extends Controller
             $order->save();
             (new OrderService())->addItems($order,$request->items);
             return response()->json("Zamówienie złożone", 200);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::notice("Error :" . $e);
             Log::notice("Error :" . $e->getMessage());
             Log::notice("Error :" . $e->getCode());
@@ -151,7 +147,7 @@ class ApiOrderController extends Controller
 
     /**
      * @param NewOrderOnlineRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function storeNewOrderOnline(NewOrderOnlineRequest $request)
     {
@@ -176,7 +172,7 @@ class ApiOrderController extends Controller
             $order->save();
             (new OrderService())->addItems($order,$request->items);
             return response()->json("Zamówienie złożone", 200);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::notice("Error :" . $e);
             Log::notice("Error :" . $e->getMessage());
             Log::notice("Error :" . $e->getCode());
@@ -190,6 +186,6 @@ class ApiOrderController extends Controller
 //todo open close stolik
 //todo podsumowanie zamówienia online i na miejscu + rachenek?
 //todo rachunek + zamknięcie stolika
-
+//todo API do moich zamówień
 }
 
