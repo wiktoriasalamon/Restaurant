@@ -39,6 +39,8 @@
 </template>
 
 <script>
+  import {notification} from "../../Notifications";
+
   export default {
     name: "workers-create",
     data() {
@@ -90,8 +92,11 @@
             data[key] = value;
           }
           axios.post(route('api.user.storeWorker'), data).then(response => {
+            notification('Pomyślnie dodano pracownika', 'success');
             window.location.replace(route('worker.index'));
           }).catch(error => {
+            notification('Wystąpił błąd podczas dodawania pracownika', 'error');
+            console.error(error.response);
             let entries = Object.entries(error.response.data.errors);
             for (let [key, value] of entries) {
               this.errors[key] = value;
