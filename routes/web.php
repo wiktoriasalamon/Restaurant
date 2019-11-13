@@ -17,6 +17,7 @@
 
 Route::get('/menu', 'DishController@menu')->name('menu');
 Route::post('api/user/store-customer', 'API\ApiUserController@storeCustomer')->name('storeCustomer');
+Route::get('/order/online', 'OrderController@createOrder')->name('order.create.online');
 
 Auth::routes();
 Route::middleware('auth')->group(function () {
@@ -37,6 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/reservation/index', 'ReservationController@index')->name('reservation.index');
     Route::get('/menu-admin', 'DishController@adminMenu')->name('menu.admin')->middleware('permission:tableIndex');
     Route::get('/dish/edit/{id}', 'DishController@edit')->name('dish.edit')->middleware('permission:dishEdit');
+    Route::get('/dish/create', 'DishController@create')->name('dish.create')->middleware('permission:dishCreate');
     Route::get('/myAccount', 'UserController@myAccount')->name('user.myAccount');
 
     Route::name('worker.')->prefix('worker')->group(function () {
@@ -47,6 +49,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders/waiter-index', 'OrderController@index')->name('order.index');
     Route::get('/orders/waiter-create/{tableId}', 'OrderController@createWaiterOrder')->name('order.createWaiter');
     Route::get('/orders/waiter-edit/{id}', 'OrderController@editWaiter')->name('order.editWaiter');
+    Route::get('/order-online-show/{token}', 'OrderController@show')->name('order.onlineShow');
     Route::get('/tables/waiter-index', 'TableController@waiterIndex')->name('table.waiterIndex')->middleware('permission:tableIndex');
 });
 
@@ -57,12 +60,16 @@ Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(
         ->middleware('permission:tableIndex');
     Route::get('/table/{table}', 'ApiTableController@load')->name('table.load')
         ->middleware('permission:tableIndex');
+    Route::get('/table/waiter/{table}', 'ApiTableController@loadTableForWaiter')->name('table.loadTableForWaiter')
+        ->middleware('permission:tableShow');
     Route::post('/table', 'ApiTableController@store')->name('table.store')
         ->middleware('permission:tableCreate');
     Route::post('/table/update', 'ApiTableController@update')->name('table.update')
         ->middleware('permission:tableEdit');
     Route::delete('/table/{table}', 'ApiTableController@delete')->name('table.delete')
         ->middleware('permission:tableDelete');
+    Route::get('/my-tables', 'ApiTableController@myTables')->name('table.myTables')
+        ->middleware('permission:tableIndex');
 //dish
     Route::get('/dish', 'ApiDishController@index')->name('dish.index')
         ->middleware('permission:dishIndex');
@@ -95,6 +102,8 @@ Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(
         ->middleware('permission:orderIndex');
     Route::post('/order/worker', 'ApiOrderController@storeNewOrderFromWorker')->name('order.storeNewOrderFromWorker')
         ->middleware('permission:orderCreate');
+    Route::get('/order/show/{token}', 'ApiOrderController@loadOrder')->name('order.loadOrder')
+        ->middleware('permission:orderShow');
     Route::post('/order/online', 'ApiOrderController@storeNewOrderOnline')->name('order.storeNewOrderOnline');
 
     Route::name('reservation.')->prefix('reservation')->group(function () {

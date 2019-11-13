@@ -11,7 +11,8 @@ import vuetifyPL from 'vuetify/lib/locale/pl';
 import vuetifyEn from 'vuetify/lib/locale/en';
 import 'vuetify/dist/vuetify.min.css'
 import Toasted from 'vue-toasted';
-
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import '@mdi/font/css/materialdesignicons.css'
 
 require('./bootstrap');
 
@@ -36,9 +37,11 @@ const opts = {
     },
 };
 
-Vue.use(Vuetify);
+Vue.use(Vuetify,{
+    iconfont: 'md, mdi',
+});
 const Options = {
-    position: 'top-center'
+    position: 'top-center',
 };
 Vue.use(Toasted, Options);
 
@@ -82,6 +85,8 @@ Vue.component('waiter-index-reservation', require('./components/reservation/wait
 
 Vue.component('user-menu', require('./components/menu/user-menu').default);
 Vue.component('admin-menu', require('./components/menu/admin-menu').default);
+Vue.component('edit-dish', require('./components/menu/edit-dish').default);
+Vue.component('create-dish', require('./components/menu/create-dish').default);
 
 //TABLES
 Vue.component('admin-tables-index', require('./components/tables/admin-tables-index').default);
@@ -89,7 +94,6 @@ Vue.component('waiter-tables-index', require('./components/tables/waiter-tables-
 
 //USERS
 Vue.component('my-account', require('./components/users/myAccount').default);
-
 
 //WORKERS
 Vue.component('workers-index', require('./components/workers/workers-index').default);
@@ -99,10 +103,12 @@ Vue.component('workers-edit', require('./components/workers/workers-edit').defau
 //DISH CATEGORIES
 Vue.component('dish-category-index', require('./components/dishCategories/dish-category-index').default);
 
+
 //ORDERS
 Vue.component('worker-order-index', require('./components/orders/worker-order-index').default);
 Vue.component('worker-order-create', require('./components/orders/worker-order-create').default);
 Vue.component('worker-order-edit', require('./components/orders/worker-order-edit').default);
+Vue.component('customer-order', require('./components/orders/customer-order').default);
 
 const app = new Vue({
     el: '#app',

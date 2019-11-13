@@ -7,6 +7,8 @@ use App\Http\Requests\Order\NewOrderFromWorkerRequest;
 use App\Http\Requests\Order\NewOrderOnlineRequest;
 use App\Http\Requests\Order\OrderChangeStatusRequest;
 use App\Interfaces\StatusTypesInterface;
+use App\Mails\OrderOnlineMail;
+use App\Models\Check;
 use App\Models\Order;
 use App\Models\Table;
 use App\Services\OrderService;
@@ -171,8 +173,10 @@ class ApiOrderController extends Controller
             $order->status = StatusTypesInterface::TYPE_ORDERED;
             $order->save();
             (new OrderService())->addItems($order,$request->items);
+            (new OrderOnlineMail($order->email, $order->token))->sendMail();
             return response()->json("Zamówienie złożone", 200);
         } catch (Exception $e) {
+            dd($e);
             Log::notice("Error :" . $e);
             Log::notice("Error :" . $e->getMessage());
             Log::notice("Error :" . $e->getCode());
@@ -180,17 +184,41 @@ class ApiOrderController extends Controller
         }
     }
 
+    /**
+     * Show of order
+     * @param $token
+     * @return JsonResponse
+     */
+    public function loadOrder($token){
+        $tokens = Order::pluck('token')->toArray();
+        if (!in_array($token, $tokens)){
+            abort(403);
+        }
+        $dishes = [];
+        $sum = 0;
+        if($orderId = Order::where('token', $token)->first()->id){
+            $items = Check::where('order_id', $orderId)->with('dish')->get();
+            foreach ($items as $item){
+                array_push($dishes, [
+                    "id"=>$item->id,
+                    "name"=>$item->dish->name,
+                    'price'=>(float)$item->dish->price,
+                    'amount'=>$item->amount]);
+                $sum += (float)$item->dish->price;
+            }
+            return response()->json(["dishes"=>$dishes, 'sum'=>$sum], 200);
+        }
+        return response()->json('Wystąpił nieoczekiwany błąd', 500);
+    }
+
 //todo edycja zamówienia ( + delete)
-//todo podgląd zamówienia po tokenia
 
 //todo open close stolik
 //todo podsumowanie zamówienia online i na miejscu + rachenek?
 //todo rachunek + zamknięcie stolika
-//todo API do moich zamówień
+//todo API do moich zamówień (lista zamówień klienta)
 
-//todo do grida stolików przez kelnera potrzebne kiedy jest dana rezerwacja dzisiaj plus on widzi tylko wolne
-// stoliki i stoliki, które otworzył/obsługuje
 
-//todo w podglą∂zie stolika kelner widzi swszystkie zamówienia dla danego stolika
+//todo api usuwanie zamówień
 }
 
