@@ -83,7 +83,7 @@
           {id: 2, text: "Dania", link: route('menu.admin')},
           {id: 3, text: "Kategorie dań", link: route('dishCategory.index')},
           {id: 4, text: "Kelnerzy", link: route('worker.index')},
-          {id: 5, text: "Rezerwacje", link: route('reservation.indexUser')},
+          {id: 5, text: "Rezerwacje", link: route('reservation.index')},
           {id: 6, text: "Zamowienia", link: route('home')},
           {id: 7, text: "Stoliki", link: route('table.index')},
 				],
@@ -114,16 +114,16 @@
 		beforeMount(){
       switch(this.role) {
         case 'guest':
-          this.menu = this.questMenu
+          this.menu = this.questMenu;
           break;
 				case 'admin':
-				  this.menu = this.adminMenu
+				  this.menu = this.adminMenu;
 					break;
 				case 'worker':
-				  this.menu = this.waiterMenu
+				  this.menu = this.waiterMenu;
 					break;
 				case 'customer':
-				  this.menu = this.customerMenu
+				  this.menu = this.customerMenu;
 					break;
 			}
 			if(this.user !== null){
