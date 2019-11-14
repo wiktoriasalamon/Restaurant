@@ -26,9 +26,9 @@ class TableRequest extends FormRequest
     {
         return [
             'size.required'=>'Wielkość jest wymagana',
-            'size.numeric'=>'Błędna wielkość jest wymagana',
-            'size.min'=>'Błędna wielkość jest wymagana',
-            'size.max'=>'Błędna wielkość jest wymagana',
+            'size.numeric'=>'Wielkość stolika musi być liczbą',
+            'size.min'=>'Minimalna wielkość stolika to 1',
+            'size.max'=>'Maksymalna wielkość stolika to 12',
         ];
     }
 }

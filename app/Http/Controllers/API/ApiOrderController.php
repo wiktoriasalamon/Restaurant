@@ -239,13 +239,13 @@ class ApiOrderController extends Controller
                 $items = Check::where('order_id', $order->id)->with('dish')->get();
                 foreach ($items as $item) {
                     array_push($dishes, [
-                        "id" => $item->id,
+                        "id" => $item->dish_id,
                         "name" => $item->dish->name,
                         'price' => (float)$item->dish->price,
                         'amount' => $item->amount]);
                     $sum += (float)$item->dish->price * (float)$item->amount;
                 }
-                return response()->json(["dishes" => $dishes, 'sum' => $sum, 'status'=>$order->status], 200);
+                return response()->json(["dishes" => $dishes, 'sum' => $sum, 'status' => $order->status], 200);
             }
             return response()->json('Wystąpił nieoczekiwany błąd', 500);
         } catch (Exception $e) {
@@ -268,6 +268,7 @@ class ApiOrderController extends Controller
                 abort(403);
             }
             if ($order = Order::where('token', $token)->first()) {
+                (new OrderService())->deleteCheck($order->id);
                 $order->delete();
                 return response()->json("Zamówienie usunięte", 200);
             }
@@ -299,8 +300,10 @@ class ApiOrderController extends Controller
                 (new OrderService())->addItems($order, $request->items);
                 return response()->json("Zamówienie pomyślnie edytowane", 200);
             }
+            dd("here");
             return response()->json('Wystąpił nieoczekiwany błąd', 500);
         } catch (Exception $e) {
+            dd($e);
             Log::notice("Error :" . $e);
             Log::notice("Error :" . $e->getMessage());
             Log::notice("Error :" . $e->getCode());
@@ -321,8 +324,8 @@ class ApiOrderController extends Controller
             }
             if ($order = Order::where('token', $request->token)->first()) {
                 $items = Check::where('order_id', $order->id)->with('dish')->get();
-                if($order->status != StatusTypesInterface::TYPE_ORDERED && $order->status !=
-                    StatusTypesInterface::TYPE_IN_PROGRESS){
+                if ($order->status != StatusTypesInterface::TYPE_ORDERED && $order->status !=
+                    StatusTypesInterface::TYPE_IN_PROGRESS) {
                     return response()->json("Zamówieniezostało już wykonane, edycja nie jest możliwa", 422);
                 }
                 $order->takeaway = $request->takeaway;
