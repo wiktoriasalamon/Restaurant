@@ -4,6 +4,7 @@
 namespace App\Services;
 
 use App\Interfaces\StatusTypesInterface;
+use App\Models\Check;
 use App\Models\Order;
 use App\Models\Reservation;
 use App\Models\Table;
@@ -88,5 +89,33 @@ class OrderService
         $tables = Table::doesnthave('order')->get();
 
         return $this->tablesByDate(Carbon::now()->format('Y-m-d'), $waiterTables->merge($tables));
+    }
+
+    /**
+     * Function to change all order i nthis table to finisched
+     * @param $tableId
+     */
+    public function closeTable($tableId)
+    {
+        $orders = Order::where('table_id', $tableId)->get();
+
+        foreach ($orders as $order){
+            $order->status = StatusTypesInterface::TYPE_FINISHED;
+            $order->save();
+        }
+    }
+
+    /**
+     * Function to delete all check of order
+     * (for delete order purpose)
+     * @param $orderId
+     */
+    public function deleteCheck($orderId)
+    {
+        $items = Check::where('order_id', $orderId)->get();
+
+        foreach ($items as $item){
+            $item->delete();
+        }
     }
 }

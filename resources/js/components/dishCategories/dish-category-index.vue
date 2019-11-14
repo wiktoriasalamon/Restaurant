@@ -29,7 +29,7 @@
                   <v-form
                       ref="form">
                     <v-text-field v-model="editedItem.name" v-bind:rules="[required]"
-                                  label="Nazwa kategorii"></v-text-field>
+                                  label="Nazwa kategorii" v-bind:error-messages="errors.name"></v-text-field>
                   </v-form>
                 </v-row>
               </v-container>
@@ -63,11 +63,12 @@
 </template>
 
 <script>
+  import {notification} from "../../Notifications";
+
   export default {
     name: "dish-category-index",
     data() {
       return {
-        _this: this,
         dialog: false,
         headers: [
           {
@@ -96,6 +97,9 @@
           id: '',
           name: ''
         },
+        errors: {
+          name: [],
+        },
         required: value => !!value || "To pole jest wymagane",
       };
     },
@@ -111,16 +115,33 @@
       deleteItem(item) {
         axios.delete(route('api.dishCategory.delete', item.id))
           .then(response => {
+            notification("Pomyślnie usunięto kategorie", 'success');
             this.fetchCategories();
           }).catch(error => {
+          notification("Wystąpił błąd podczas usuwania kategorii", 'error');
+          console.error(error.response);
         });
       },
       close() {
+        this.clearErrors();
         this.dialog = false;
         setTimeout(() => {
           this.editedItem = Object.assign({}, this.defaultItem);
+          this.$refs.form.reset();
           this.editedIndex = -1;
         }, 300)
+      },
+      fillErrors(data) {
+        let entries = Object.entries(data);
+        for (let [key, value] of entries) {
+          this.errors[key] = value;
+        }
+      },
+      clearErrors() {
+        let keys = Object.keys(this.errors);
+        for (let key of keys) {
+          this.errors[key] = [];
+        }
       },
       save() {
         if (this.$refs.form.validate() !== true) {
@@ -131,16 +152,24 @@
             id: this.editedItem.id,
             name: this.editedItem.name
           }).then(response => {
+            notification("Pomyślnie edytowano kategorię", 'success');
             this.fetchCategories();
             this.close();
           }).catch(error => {
+            this.fillErrors(error.response.data.errors);
+            notification("Wystąpił błąd podczas edytowania kategorii", 'error');
+            console.error(error.response);
           });
         } else {
           axios.post(route('api.dishCategory.store'), {name: this.editedItem.name})
             .then(response => {
+              notification("Pomyślnie dodano kategorie", 'success');
               this.fetchCategories();
               this.close();
             }).catch(error => {
+              this.fillErrors(error.response.data.errors);
+              notification("Wystąpił błąd podczas dodawania kategorii", 'error');
+              console.error(error.response);
           });
         }
       },
@@ -148,6 +177,7 @@
         axios.get(route('api.dishCategory.index')).then(response => {
           this.categories = response.data;
         }).catch(error => {
+          console.error(error.response);
         });
       }
     },

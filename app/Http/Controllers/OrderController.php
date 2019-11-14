@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Models\Dish;
 use App\Models\DishCategory;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class OrderController extends Controller
 {
@@ -55,7 +55,7 @@ class OrderController extends Controller
      */
     public function show($token)
     {
-        return view('order/show', ['token'=>$token]);
+        return view('order/show', compact(['token']));
     }
 
     /**
@@ -64,9 +64,9 @@ class OrderController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function editWaiter($token)
     {
-        //
+        return view('order/editWaiter', compact(['token']));
     }
 
     /**

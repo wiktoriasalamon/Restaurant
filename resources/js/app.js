@@ -85,10 +85,13 @@ Vue.component('waiter-index-reservation', require('./components/reservation/wait
 
 Vue.component('user-menu', require('./components/menu/user-menu').default);
 Vue.component('admin-menu', require('./components/menu/admin-menu').default);
+Vue.component('edit-dish', require('./components/menu/edit-dish').default);
+Vue.component('create-dish', require('./components/menu/create-dish').default);
 
 //TABLES
 Vue.component('admin-tables-index', require('./components/tables/admin-tables-index').default);
 Vue.component('waiter-tables-index', require('./components/tables/waiter-tables-index').default);
+Vue.component('waiter-show', require('./components/tables/waiter-show').default);
 
 //USERS
 Vue.component('my-account', require('./components/users/myAccount').default);
@@ -108,7 +111,9 @@ Vue.component('dish-category-index', require('./components/dishCategories/dish-c
 //ORDERS
 Vue.component('worker-order-index', require('./components/orders/worker-order-index').default);
 Vue.component('worker-order-create', require('./components/orders/worker-order-create').default);
+Vue.component('worker-order-edit', require('./components/orders/worker-order-edit').default);
 Vue.component('customer-order', require('./components/orders/customer-order').default);
+Vue.component('order-show', require('./components/orders/order-show').default);
 
 const app = new Vue({
     el: '#app',
