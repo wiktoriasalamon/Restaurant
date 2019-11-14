@@ -172,7 +172,7 @@
 			save(){
 				let formAddress = this.form.address;
         formAddress = JSON.stringify(formAddress);
-        axios.put(route('api.user.update', this.form.id),{
+        axios.put(route('api.user.updateUserMyAccount', this.form.id),{
           name: this.form.name,
           surname: this.form.surname,
           address: formAddress,
@@ -193,7 +193,7 @@
           })
       },
 			savePassword(){
-        axios.post(route('api.changePassword', this.form.id),{
+        axios.post(route('api.user.changePasswordMyAccount', this.form.id),{
           oldPassword: this.passwordForm.oldPassword,
           newPassword: this.passwordForm.newPassword,
           newPasswordRepeated: this.passwordForm.repeatNewPassword,
