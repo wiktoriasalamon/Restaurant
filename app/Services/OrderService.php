@@ -4,6 +4,7 @@
 namespace App\Services;
 
 use App\Interfaces\StatusTypesInterface;
+use App\Models\Check;
 use App\Models\Order;
 use App\Models\Reservation;
 use App\Models\Table;
@@ -101,6 +102,20 @@ class OrderService
         foreach ($orders as $order){
             $order->status = StatusTypesInterface::TYPE_FINISHED;
             $order->save();
+        }
+    }
+
+    /**
+     * Function to delete all check of order
+     * (for delete order purpose)
+     * @param $orderId
+     */
+    public function deleteCheck($orderId)
+    {
+        $items = Check::where('order_id', $orderId)->get();
+
+        foreach ($items as $item){
+            $item->delete();
         }
     }
 }
