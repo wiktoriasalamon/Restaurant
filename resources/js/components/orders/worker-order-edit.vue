@@ -107,18 +107,31 @@
             this.menuItems = response.data;
             this.menuItems.forEach(item=>{
               item.amount = 0
-            })
+            });
+						console.log(this.menuItems)
           }).catch(error => {
           console.error(error)
         })
       },
 			getOrder(){
+        let length = this.menuItems.length;
         axios.get(route('api.order.loadOrder', this.token))
           .then(response => {
             this.orderedItems = response.data.dishes;
 						this.orderSum = response.data.sum;
 						this.orderStatus = response.data.status;
-            console.log(response)
+						for(let i = 0; i< this.orderedItems.length; i++){
+						  for (let j = 0; j< this.menuItems.length; j++){
+						    if(this.orderedItems[i].id === this.menuItems[j].id){
+						      console.log("tutut");
+									console.log(this.orderedItems[i]);
+									console.log(this.menuItems[j]);
+						      this.menuItems.splice(j-1, 1);
+									console.log(j)
+								}
+							}
+						}
+						console.log(dishes)
           }).catch(error => {
           console.error(error)
         })
@@ -153,7 +166,7 @@
         this.orderedItems.forEach(item=>{
           orderArray.push({amount: item.amount, dishId: item.id});
         });
-        console.log(this.token)
+        console.log(this.token);
         axios.post(route('api.order.updateOrderFromWorker'), {
           token: this.token,
           items: orderArray,
