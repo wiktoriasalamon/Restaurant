@@ -14,7 +14,7 @@ class OrderChangeStatusRequest extends FormRequest
     public function rules(): array
     {
         return[
-            'order_id' => 'required',
+            'token' => 'required',
             'status' => 'required'
         ];
 
@@ -26,7 +26,7 @@ class OrderChangeStatusRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'order_id.required'=>'Id zamówienia jest wymagane',
+            'token.required'=>'Token zamówienia jest wymagany',
             'status.required'=>'Status jest wymagany'
         ];
     }
