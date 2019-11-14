@@ -39,7 +39,7 @@
 							<v-icon @click="showItem(props.item.token)" small>
 								visibility
 							</v-icon>
-							<v-icon @click="deleteItem(props.item)" small>
+							<v-icon @click="deleteItem(props.item.token)" small>
 								delete
 							</v-icon>
 						</td>
@@ -51,6 +51,7 @@
 </template>
 
 <script>
+  import {notification} from '../../Notifications.js';
   export default {
     name: "worker-order-index",
     data() {
@@ -99,11 +100,18 @@
       editItem(token) {
 				window.location.href = route('order.editWaiter', [token])
       },
-      deleteItem(id) {
-
-      }
+      deleteItem(orderToken) {
+          axios.delete(route('api.order.delete', {
+            token: orderToken
+				}))
+            .then(response => {
+              notification(response.data, 'success');
+            }).catch(error => {
+            notification("Wystąpił błąd podczas usuwania zamowienia", 'error');
+            console.error(error.response);
+          });
+        },
     }
-
   }
 </script>
 

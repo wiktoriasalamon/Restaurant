@@ -134,7 +134,6 @@
       addToOrder(dish){
         let add = true
         for(let i=0; i< this.orderedItems.length; i++){
-          console.log("tutu" + this.orderedItems[i].id)
           if(this.orderedItems[i].id === dish.id){
             this.orderedItems[i].amount++
 						add=false
