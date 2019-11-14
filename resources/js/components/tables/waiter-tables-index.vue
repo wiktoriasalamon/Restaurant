@@ -57,6 +57,12 @@
       this.getData()
     },
     methods: {
+			created() {
+				Echo.channel('order')
+					.listen('OrderChanged', (e) => {
+						this.getData()
+					});
+			},
       showItem(id) {
         window.location.href = route('table.showWaiter', [id])
       },

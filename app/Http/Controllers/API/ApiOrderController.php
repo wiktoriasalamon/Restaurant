@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\OrderChanged;
+use App\Events\ReservationChanged;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\NewOrderFromWorkerRequest;
 use App\Http\Requests\Order\NewOrderOnlineRequest;
@@ -134,6 +136,7 @@ class ApiOrderController extends Controller
             if ($order = Order::where('token', $request->token)->first()) {
                 $order->status = $request->status;
                 $order->save();
+                broadcast(new OrderChanged())->toOthers();
                 return response()->json("Status zmieniony", 200);
             }
             return response()->json('Błędne id zamówienia', 500);
@@ -176,6 +179,7 @@ class ApiOrderController extends Controller
             $order->worker()->associate(Auth::user());
             $order->save();
             (new OrderService())->addItems($order, $request->items);
+            broadcast(new OrderChanged())->toOthers();
             return response()->json("Zamówienie złożone", 200);
         } catch (Exception $e) {
             Log::notice("Error :" . $e);
@@ -211,6 +215,7 @@ class ApiOrderController extends Controller
             $order->status = StatusTypesInterface::TYPE_ORDERED;
             $order->save();
             (new OrderService())->addItems($order, $request->items);
+            broadcast(new OrderChanged())->toOthers();
             (new OrderOnlineMail($order->email, $order->token))->sendMail();
             return response()->json("Zamówienie złożone", 200);
         } catch (Exception $e) {
@@ -269,6 +274,7 @@ class ApiOrderController extends Controller
             }
             if ($order = Order::where('token', $token)->first()) {
                 $order->delete();
+                broadcast(new OrderChanged())->toOthers();
                 return response()->json("Zamówienie usunięte", 200);
             }
             return response()->json('Wystąpił nieoczekiwany błąd', 500);
@@ -297,6 +303,7 @@ class ApiOrderController extends Controller
                     $item->delete();
                 }
                 (new OrderService())->addItems($order, $request->items);
+                broadcast(new OrderChanged())->toOthers();
                 return response()->json("Zamówienie pomyślnie edytowane", 200);
             }
             return response()->json('Wystąpił nieoczekiwany błąd', 500);
@@ -334,6 +341,7 @@ class ApiOrderController extends Controller
                     $item->delete();
                 }
                 (new OrderService())->addItems($order, $request->items);
+                broadcast(new OrderChanged())->toOthers();
                 return response()->json("Zamówienie pomyślnie edytowane", 200);
             }
             return response()->json('Wystąpił nieoczekiwany błąd', 500);
