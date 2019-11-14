@@ -22,12 +22,10 @@ Route::get('/order/online', 'OrderController@createOrder')->name('order.create.o
 Auth::routes();
 Route::middleware('auth')->group(function () {
     Route::get('/', 'HomeController@index')->name('home');
-    Route::get('/chat', 'ChatsController@index');
-    Route::get('messages', 'ChatsController@fetchMessages');
-    Route::post('messages', 'ChatsController@sendMessage');
     Route::get('/table-admin', 'TableController@index')->name('table.index')->middleware('permission:tableIndex');
     Route::get('/table/edit/{id}', 'TableController@edit')->name('table.edit')->middleware('permission:tableEdit');
     Route::get('/table/{id}', 'TableController@show')->name('table.show')->middleware('permission:tableShow');
+    Route::get('/table-waiter/{id}', 'TableController@showWaiter')->name('table.showWaiter')->middleware('permission:tableShow');
     Route::get('/dish', 'DishController@index')->name('dish.index')->middleware('permission:dishIndex');
     Route::get('/menu-admin', 'DishController@adminMenu')->name('menu.admin');
     Route::get('/dish/edit/{id}', 'DishController@edit')->name('dish.edit')->middleware('permission:dishEdit');
@@ -49,7 +47,8 @@ Route::middleware('auth')->group(function () {
     });
     Route::get('/orders/waiter-index', 'OrderController@index')->name('order.index');
     Route::get('/orders/waiter-create/{tableId}', 'OrderController@createWaiterOrder')->name('order.createWaiter');
-    Route::get('/order-online-show/{token}', 'OrderController@show')->name('order.onlineShow');
+    Route::get('/orders/waiter-edit/{token}', 'OrderController@editWaiter')->name('order.editWaiter');
+    Route::get('/order-show/{token}', 'OrderController@show')->name('order.show');
     Route::get('/tables/waiter-index', 'TableController@waiterIndex')->name('table.waiterIndex')->middleware('permission:tableIndex');
 });
 
@@ -110,6 +109,11 @@ Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(
         ->middleware('permission:orderCreate');
     Route::get('/order/show/{token}', 'ApiOrderController@loadOrder')->name('order.loadOrder')
         ->middleware('permission:orderShow');
+    Route::delete('/order/delete/{token}', 'ApiOrderController@deleteOrder')->name('order.delete')
+        ->middleware('permission:orderDelete');
+    Route::post('/order/worker/update', 'ApiOrderController@updateOrderFromWorker')->name('order.updateOrderFromWorker')
+        ->middleware('permission:orderEdit');
+    Route::post('/order/online/update', 'ApiOrderController@updateOnlineOrder')->name('order.updateOnlineOrder');
     Route::post('/order/online', 'ApiOrderController@storeNewOrderOnline')->name('order.storeNewOrderOnline');
 
     Route::name('reservation.')->prefix('reservation')->group(function () {

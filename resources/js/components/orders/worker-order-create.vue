@@ -116,13 +116,14 @@
 				this.orderedItems.forEach(item=>{
           orderArray.push({amount: item.amount, dishId: item.id});
 				});
+				let _this=this
         axios.post(route('api.order.storeNewOrderFromWorker'), {
           table_id: this.tableid,
           items: orderArray,
         }).then(
           response => {
             Vue.toasted.success(response.data).goAway(5000);
-            setTimeout(function(){window.location.href=route('order.index')} , 5000);
+            setTimeout(function(){window.location.href =route('table.showWaiter',_this.tableid)} , 5000);
           },
           error => {
             if (error.response.status === 422) {

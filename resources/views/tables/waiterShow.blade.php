@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-    <order-show token="{{$token}}"></order-show>
+    <waiter-show :id="{{$id}}"></waiter-show>
 @endsection

@@ -33,13 +33,13 @@
 						<td class="text-xs-left">{{ props.item.worker_id}}</td>
 						<td class="text-xs-left">{{ props.item.takeaway}}</td>
 						<td class="text-xs-left">
-							<v-icon @click="editItem(props.item.id)" small>
+							<v-icon @click="editItem(props.item.token)" small>
 								edit
 							</v-icon>
-							<v-icon @click="showItem(props.item.id)" small>
+							<v-icon @click="showItem(props.item.token)" small>
 								visibility
 							</v-icon>
-							<v-icon @click="deleteItem(props.item)" small>
+							<v-icon @click="deleteItem(props.item.token)" small>
 								delete
 							</v-icon>
 						</td>
@@ -51,6 +51,7 @@
 </template>
 
 <script>
+  import {notification} from '../../Notifications.js';
   export default {
     name: "worker-order-index",
     data() {
@@ -65,8 +66,20 @@
         ],
         orderSatuses: [],
         orders: [],
+				clicked:''
       }
     },
+		created() {
+			Echo.channel('order')
+				.listen('OrderChanged', (e) => {
+					this.getOrderStatuses()
+					if(this.clicked==="myOrders"){
+						this.getMyOrders()
+					}else{
+						this.getOrders(this.clicked)
+					}
+				});
+		},
     beforeMount() {
       this.getOrderStatuses()
     },
@@ -79,30 +92,40 @@
         });
       },
       getOrders(statusName) {
+      	this.clicked=statusName
         axios.get(route('api.order.orderWithStatus', statusName)).then(response => {
-          this.orders = response.data
+          this.orders = response.data;
+					console.log(response.data)
         }).catch(error => {
           console.error(error)
         });
       },
       getMyOrders(){
+      	this.clicked="myOrders"
         axios.get(route('api.order.myOrder')).then(response => {
           this.orders = response.data
         }).catch(error => {
           console.error(error)
         });
 			},
-      showItem(id) {
-
+      showItem(token) {
+        window.location.href = route('order.show', [token])
       },
-      editItem(id) {
-
+      editItem(token) {
+				window.location.href = route('order.editWaiter', [token])
       },
-      deleteItem(id) {
-
-      }
+      deleteItem(orderToken) {
+          axios.delete(route('api.order.delete', {
+            token: orderToken
+				}))
+            .then(response => {
+              notification(response.data, 'success');
+            }).catch(error => {
+            notification("Wystąpił błąd podczas usuwania zamowienia", 'error');
+            console.error(error.response);
+          });
+        },
     }
-
   }
 </script>
 
