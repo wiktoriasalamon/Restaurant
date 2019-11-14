@@ -302,7 +302,8 @@ export default {
         .post(route("api.order.storeNewOrderOnline"), {
           takeaway: false,
           address: this.form.address,
-          items: this.orderArray
+          items: this.orderArray,
+          email: this.form.email,
         })
         .then(
           response => {
