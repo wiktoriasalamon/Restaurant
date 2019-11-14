@@ -20,7 +20,7 @@ class OrderOnlineMail extends Mailable
     public function __construct(string $email, string $token)
     {
         $this->sendToMail=$email;
-        $this->link=route('order.onlineShow',$token);
+        $this->link=route('order.show',$token);
     }
 
     /**
