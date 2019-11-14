@@ -33,6 +33,14 @@
 		beforeMount(){
       this.getReservations()
 		},
+		created() {
+			Echo.channel('reservation')
+				.listen('ReservationChanged', (e) => {
+						this.getReservations()
+				});
+
+
+		},
 		methods:{
       getReservations(){
         axios.get(route('api.reservation.customerIndex'))
