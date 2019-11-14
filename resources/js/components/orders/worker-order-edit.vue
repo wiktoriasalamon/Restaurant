@@ -114,24 +114,12 @@
         })
       },
 			getOrder(){
-        let length = this.menuItems.length;
         axios.get(route('api.order.loadOrder', this.token))
           .then(response => {
             this.orderedItems = response.data.dishes;
 						this.orderSum = response.data.sum;
 						this.orderStatus = response.data.status;
-						for(let i = 0; i< this.orderedItems.length; i++){
-						  for (let j = 0; j< this.menuItems.length; j++){
-						    if(this.orderedItems[i].id === this.menuItems[j].id){
-						      console.log("tutut");
-									console.log(this.orderedItems[i]);
-									console.log(this.menuItems[j]);
-						      this.menuItems.splice(j-1, 1);
-									console.log(j)
-								}
-							}
-						}
-						console.log(dishes)
+						console.log(this.orderedItems)
           }).catch(error => {
           console.error(error)
         })
@@ -145,7 +133,23 @@
         })
 			},
       addToOrder(dish){
-        this.orderedItems.push(dish);
+        let add = false
+				console.log(dish.id)
+				console.log()
+        for(let i=0; i< this.orderedItems.length; i++){
+          console.log("tutu" + this.orderedItems[i].id)
+          if(this.orderedItems[i].id === dish.id){
+            console.log("tu")
+            this.orderedItems[i].amount++
+					}
+          else{
+            add = true
+					}
+				}
+        console.log(add)
+        if(add === true){
+          this.orderedItems.push(dish);
+				}
         for(let i=0 ;  i < this.menuItems.length; i++) {
           if(this.menuItems[i].id === dish.id){
             this.menuItems.splice(i, 1);
