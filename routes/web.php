@@ -19,6 +19,9 @@ Route::get('/menu', 'DishController@menu')->name('menu');
 Route::post('api/user/store-customer', 'API\ApiUserController@storeCustomer')->name('storeCustomer');
 Route::get('/contact', 'ContactController@index')->name('contact');
 Route::get('/order/online', 'OrderController@createOrder')->name('order.create.online');
+Route::post('/order/online/update', 'ApiOrderController@updateOnlineOrder')->name('order.updateOnlineOrder');
+Route::post('/order/online', 'ApiOrderController@storeNewOrderOnline')->name('order.storeNewOrderOnline');
+
 
 Auth::routes();
 Route::middleware('auth')->group(function () {
@@ -114,8 +117,6 @@ Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(
         ->middleware('permission:orderDelete');
     Route::post('/order/worker/update', 'ApiOrderController@updateOrderFromWorker')->name('order.updateOrderFromWorker')
         ->middleware('permission:orderEdit');
-    Route::post('/order/online/update', 'ApiOrderController@updateOnlineOrder')->name('order.updateOnlineOrder');
-    Route::post('/order/online', 'ApiOrderController@storeNewOrderOnline')->name('order.storeNewOrderOnline');
 
     Route::name('reservation.')->prefix('reservation')->group(function () {
 
