@@ -66,6 +66,8 @@ return[
         "onlineReservationEdit",
         "onlineReservationDelete",
         "onlineReservationIndex",
+        "userOrderIndex",
+        "orderShow",
 
     ]
 ];
