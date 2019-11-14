@@ -36,11 +36,14 @@
 
           </v-card-text>
           <v-card-actions>
-            <v-btn @click="closeTable" text>
+            <v-btn v-if="occupiedSince"@click="closeTable" text>
               Zamknij stolik
             </v-btn>
-            <v-btn @click="openTable" text>
+            <v-btn v-else @click="openTable" text>
               Otwórz stolik
+            </v-btn>
+            <v-btn @click="addOrder" text>
+              Dodaj zamówienie
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -94,10 +97,28 @@
         window.location.href = route("", token)
       },
       openTable(){
-
+        axios.post(route('api.table.openTable',this.table)).then(
+          response => {
+            notification("Stolik został otwarty","success")
+            this.getData()
+          },
+          error => {
+            notification("Wystąpił błąd podczas otwierania stolika","error")
+          })
       },
       closeTable(){
-        
+        axios.post(route('api.table.closeTable',this.table)).then(
+          response => {
+            notification("Stolik został zamknięty","success")
+            setTimeout(function(){
+              window.location.href=route('table.waiterIndex')} , 1500);
+          },
+          error => {
+            notification("Wystąpił błąd podczas zamykania stolika","error")
+          })
+      },
+      addOrder(){
+        window.location.href = route("order.createWaiter", this.table)
       }
     }
   }
