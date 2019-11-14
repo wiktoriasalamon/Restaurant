@@ -58,7 +58,7 @@
     },
     methods: {
       showItem(id) {
-        window.location.href = route('table.show', [id])
+        window.location.href = route('table.showWaiter', [id])
       },
       getData() {
         axios.get(route('api.table.index'))
@@ -76,7 +76,6 @@
 
 			},
 			closeTable(id){
-
 			}
 
     }
