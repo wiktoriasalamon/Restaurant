@@ -75,8 +75,7 @@ export default {
       waiterMenu: [
         { id: 1, text: "Stoliki", link: route("table.waiterIndex") },
         { id: 2, text: "Zamówienia", link: route("order.index") },
-        { id: 3, text: "Zamówienia online", link: route("menu") },
-        { id: 4, text: "Rezerwacje", link: route("reservation.index") }
+        { id: 3, text: "Rezerwacje", link: route("reservation.index") }
       ],
       userMenu: [
         { id: 1, text: "moje zamówienia", link: route("home") },
