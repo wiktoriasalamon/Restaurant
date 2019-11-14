@@ -72,6 +72,8 @@
 </template>
 
 <script>
+  import {notification} from '../../Notifications.js';
+
   export default {
     name: "worker-order-edit",
     props:['token'],
@@ -132,11 +134,11 @@
         })
 			},
       addToOrder(dish){
-        let add = true
+        let add = true;
         for(let i=0; i< this.orderedItems.length; i++){
           if(this.orderedItems[i].id === dish.id){
-            this.orderedItems[i].amount++
-						add=false
+            this.orderedItems[i].amount++;
+						add=false;
 						break
 					}
 				}
@@ -169,14 +171,14 @@
           items: orderArray,
         }).then(
           response => {
-            Vue.toasted.success(response.data).goAway(5000);
+            notification(response.data, 'success');
             setTimeout(function(){window.location.href=route('order.index')} , 5000);
           },
           error => {
             if (error.response.status === 422) {
-              Vue.toasted.error("Podano niepoprawne dane, spróbuj jeszcze raz").goAway(3000);
+              notification("Podano niepoprawne dane, spróbuj jeszcze raz", 'error');
             } else {
-              Vue.toasted.error(error.response.data).goAway(3000);
+              notification(error.response.data, 'error');
             }
           },
         );
@@ -187,13 +189,13 @@
           status: this.orderStatus,
         }).then(
           response => {
-            Vue.toasted.success(response.data).goAway(5000);
+            notification(response.data, 'success');
           },
           error => {
             if (error.response.status === 422) {
-              Vue.toasted.error("Podano niepoprawne dane, spróbuj jeszcze raz").goAway(3000);
+              notification("Podano niepoprawne dane, spróbuj jeszcze raz", 'error');
             } else {
-              Vue.toasted.error(error.response.data).goAway(3000);
+              notification(error.response.data, 'error');
             }
           },
         );
