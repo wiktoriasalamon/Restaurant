@@ -1,33 +1,43 @@
 <template>
-    <v-row class="justify-center align-center">
+  <v-card>
+    <v-col class="justify-center align-center">
+      <v-card-title>
+        Dania
+        <v-spacer></v-spacer>
+        <v-btn @click="addDish">Dodaj danie</v-btn>
+      </v-card-title>
+      <v-card-text>
         <v-data-table
-                :headers="headers"
-                :items="dishes"
-                :items-per-page="-1"
-                class="elevation-1"
+            :headers="headers"
+            :items="menuItems"
+            :items-per-page="-1"
+            class="elevation-1"
         >
-            <template slot="item" slot-scope="props">
-                <tr>
-                    <td class="text-xs-left">{{ props.item.name }}</td>
-                    <td class="text-xs-left">{{ props.item.price}}</td>
-                    <td class="text-xs-center">
-                        <v-icon @click="editItem(props.item.id)" small>
-                            edit
-                        </v-icon>
-                        <v-icon @click="deleteItem(props.item)" small>
-                            delete
-                        </v-icon>
-                    </td>
-                </tr>
-            </template>
+          <template slot="item" slot-scope="props">
+            <tr>
+              <td class="text-xs-left">{{ props.item.name }}</td>
+              <td class="text-xs-left">{{ props.item.price}}</td>
+              <td class="text-xs-center">
+                <v-icon @click="editItem(props.item.id)" small>
+                  edit
+                </v-icon>
+                <v-icon @click="deleteItem(props.item)" small>
+                  delete
+                </v-icon>
+              </td>
+            </tr>
+          </template>
         </v-data-table>
-    </v-row>
+      </v-card-text>
+    </v-col>
+  </v-card>
 </template>
 
 <script>
+  import {notification} from "../../Notifications";
+
   export default {
     name: "admin-menu",
-    props: ['dishes'],
     data() {
       return {
         menuItems: [],
@@ -39,21 +49,33 @@
       }
     },
     beforeMount() {
-      this.menuItems = this.dishes
+      this.getData()
     },
     methods: {
       deleteItem(item) {
         axios.delete(route('api.dish.delete', item.id))
-          .then(function (response) {
-            console.log(response.data)
-			  //todo przeładownie
-          }).catch(function (error) {
-          console.log(error)
+          .then(response => {
+            notification('Pomyślnie usunięto danie', 'success');
+            this.getData()
+          }).catch(error => {
+            notification('Wystąpił błąd podczas usuwania dania', 'error');
+          console.error(error)
         })
 
       },
       editItem(id) {
         window.location.href = route('dish.edit', [id])
+      },
+      getData() {
+        axios.get(route('api.dish.index'))
+          .then(response => {
+            this.menuItems = response.data
+          }).catch(error => {
+          console.error(error)
+        })
+      },
+      addDish() {
+        window.location.replace(route('dish.create'));
       }
     }
   }

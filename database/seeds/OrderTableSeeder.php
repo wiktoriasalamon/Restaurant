@@ -15,16 +15,28 @@ class OrderTableSeeder extends Seeder
 //      zamówienia na miejscu zgodne z zajętymi stolikami w danym momencie
         try {
             foreach ($tables as $table){
-                if ($table->occupied_from) {
+                if ($table->occupied_since) {
                     for ($i = 0; $i < random_int(1, $table->size); $i++) {
                         $order = new \App\Models\Order();
+                        $order->token = uniqid();
                         $order->takeaway = false;
                         $order->worker()->associate(\App\Models\User::find(1));
                         $order->table()->associate($table);
-                        $order->address = json_encode("adres");
+                        $order->address = null;
                         $order->save();
                     }
                 }
+            }
+//zamówienie online zalogowany
+            for ($i = 0; $i < random_int(2, 4); $i++) {
+                $order = new \App\Models\Order();
+                $user = \App\Models\User::find(3);
+                $order->token = uniqid();
+                $order->takeaway = false;
+                $order->email = $user->email;
+                $order->customer()->associate($user);
+                $order->address = json_encode("adres");
+                $order->save();
             }
 
         } catch (Exception $e) {

@@ -65,15 +65,5 @@ class Reservation extends Model
         }
     }
 
-    /**
-     * @param $request
-     */
-    public function setWorkerReservation($request):void
-    {
-        $this->date = $request->date;
-        $this->start_time = $request->startTime;
-        $this->phone = $request->phone;
-        $this->email = $request->email;
-        $this->table()->associate(Table::findOrFail($request->tableId));
-    }
+
 }

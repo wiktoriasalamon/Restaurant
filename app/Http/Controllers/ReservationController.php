@@ -13,8 +13,9 @@ class ReservationController extends Controller
      */
     public function index()
     {
-        //
+        return view('reservations/indexWaiter');
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -23,8 +24,9 @@ class ReservationController extends Controller
      */
     public function create()
     {
-        return view('reservations/create');
+        return view('reservations/createWaiter');
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -62,7 +64,7 @@ class ReservationController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request  $requestreservation
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -91,4 +93,14 @@ class ReservationController extends Controller
     {
         return view('reservations/indexUser');
     }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function createUser()
+    {
+        return view('reservations/createUser');
+    }
+
 }

@@ -11,7 +11,8 @@ import vuetifyPL from 'vuetify/lib/locale/pl';
 import vuetifyEn from 'vuetify/lib/locale/en';
 import 'vuetify/dist/vuetify.min.css'
 import Toasted from 'vue-toasted';
-
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import '@mdi/font/css/materialdesignicons.css'
 
 require('./bootstrap');
 
@@ -36,11 +37,13 @@ const opts = {
     },
 };
 
-Vue.use(Vuetify);
+Vue.use(Vuetify,{
+    iconfont: 'md, mdi',
+});
 const Options = {
-    position: 'top-center'
-}
-Vue.use(Toasted, Options)
+    position: 'top-center',
+};
+Vue.use(Toasted, Options);
 
 
 /**
@@ -64,57 +67,61 @@ Vue.component('ui-footer', require('./components/partials/ui-footer').default);
 
 //AUTH
 Vue.component('login-form', require('./components/auth/login-form').default);
+Vue.component('reset-password-form', require('./components/auth/reset-password-form').default);
+Vue.component('loginpage', require('./components/auth/loginpage').default);
+Vue.component('registerpage', require('./components/auth/registerpage').default);
+Vue.component('forgot-password-mail', require('./components/auth/forgot-password-mail').default);
 
 
 //RESERVATION
 
 Vue.component('user-create-reservation', require('./components/reservation/user-create-reservation').default);
 Vue.component('user-index-reservation', require('./components/reservation/user-index-reservation').default);
+Vue.component('waiter-create-reservation', require('./components/reservation/waiter-create-reservation').default);
+Vue.component('waiter-index-reservation', require('./components/reservation/waiter-index-reservation').default);
 
 
 //MENU
 
 Vue.component('user-menu', require('./components/menu/user-menu').default);
 Vue.component('admin-menu', require('./components/menu/admin-menu').default);
+Vue.component('edit-dish', require('./components/menu/edit-dish').default);
+Vue.component('create-dish', require('./components/menu/create-dish').default);
+
+//TABLES
+Vue.component('admin-tables-index', require('./components/tables/admin-tables-index').default);
+Vue.component('waiter-tables-index', require('./components/tables/waiter-tables-index').default);
+Vue.component('waiter-show', require('./components/tables/waiter-show').default);
+
+//USERS
+Vue.component('my-account', require('./components/users/myAccount').default);
+
+//CONTACT
+Vue.component('contact-page', require('./components/contact/contact').default);
+
+//WORKERS
+Vue.component('workers-index', require('./components/workers/workers-index').default);
+Vue.component('workers-create', require('./components/workers/workers-create').default);
+Vue.component('workers-edit', require('./components/workers/workers-edit').default);
+
+//DISH CATEGORIES
+Vue.component('dish-category-index', require('./components/dishCategories/dish-category-index').default);
 
 
+//ORDERS
+Vue.component('worker-order-index', require('./components/orders/worker-order-index').default);
+Vue.component('worker-order-create', require('./components/orders/worker-order-create').default);
+Vue.component('worker-order-edit', require('./components/orders/worker-order-edit').default);
+Vue.component('customer-order', require('./components/orders/customer-order').default);
+Vue.component('customer-my-orders', require('./components/orders/customer-my-orders').default);
+Vue.component('order-show', require('./components/orders/order-show').default);
 
 const app = new Vue({
     el: '#app',
-    data: {
-        messages: []
-    },
-
-    created() {
-        this.fetchMessages();
-        Echo.channel('chat')
-          .listen('MessageSent', (e) => {
-              this.messages.push({
-                  message: e.message.message,
-                  user: e.user
-              });
-          });
-
-
-    },
-
-    methods: {
-        fetchMessages: function () {
-            axios.get('/messages').then(response => {
-                this.messages = response.data;
-            });
-        },
-
-        addMessage(message) {
-            this.messages.push(message);
-
-            axios.post('/messages', message).then(response => {
-                console.log(response.data);
-            });
-        }
-    },
-    vuetify: new Vuetify(opts),
+    vuetify: new Vuetify(opts)
 });
+
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

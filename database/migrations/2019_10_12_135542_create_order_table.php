@@ -15,7 +15,7 @@ class CreateOrderTable extends Migration
     {
         Schema::create('order', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('worker_id')->unsigned()->index();
+            $table->integer('worker_id')->unsigned()->index()->nullable();
             $table->foreign('worker_id')->references('id')->on('users');
             $table->integer('customer_id')->unsigned()->index()->nullable();
             $table->foreign('customer_id')->references('id')->on('users');
@@ -24,9 +24,10 @@ class CreateOrderTable extends Migration
             $table->boolean('takeaway');
             $table->enum('status', \App\Interfaces\StatusTypesInterface::TYPES)->default(\App\Interfaces\StatusTypesInterface::TYPE_ORDERED);
             $table->json('address')->nullable();
+            $table->string('email')->nullable();
             $table->json('deliverer_location')->nullable();
             $table->text('comment')->nullable();
-            $table->string('token')->nullable();
+            $table->string('token');
             $table->timestamps();
         });
     }

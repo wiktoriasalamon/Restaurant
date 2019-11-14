@@ -7,15 +7,6 @@ use Illuminate\Http\Request;
 
 class DishCategoryController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     /**
      * Show the application dashboard.
@@ -24,7 +15,6 @@ class DishCategoryController extends Controller
      */
     public function index()
     {
-        dd(DishCategory::all());
-        return view('home');
+        return view('dishCategory.index');
     }
 }

@@ -104,8 +104,7 @@
       }
     },
 		beforeMount(){
-      console.log(this.user)
-			this.email = this.user.email
+			this.email = this.user.email;
 			this.phone = this.user.phone
 		},
     methods: {
@@ -115,7 +114,7 @@
         var d = new Date();
         var h = d.getHours();
         var m = d.getMinutes();
-        h+=1
+        h+=1;
 				if(h+1 <= 23 && d.toISOString().substr(0, 10) === this.date){
           if(m > 0 && m<15){
             return h+":15"
@@ -124,7 +123,7 @@
           }else if(m>=30 &&  m<45){
             return h+":45"
           }else{
-            h+=1
+            h+=1;
             return h+":00"
           }
 				}
@@ -146,7 +145,7 @@
         if(this.date === null || this.time === null || this.tableSize === null){
           Vue.toasted.error("Musisz wypełnić wszystkie dane!!!").goAway(7000);
 				}else{
-          axios.post(route('api.reservation.storeAsCitizen'),{
+          axios.post(route('api.reservation.storeAsCustomer'),{
 							date: this.date,
 							startTime: this.time,
 							email: this.email,
@@ -167,14 +166,6 @@
             },
           );
 				}
-        console.log(this.date)
-        console.log(this.time)
-        console.log(this.email)
-        console.log(this.phone)
-        console.log(this.tableSize)
-
-
-
 			}
     },
   }

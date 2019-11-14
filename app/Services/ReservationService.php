@@ -3,6 +3,10 @@
 
 namespace App\Services;
 
+use App\Events\ReservationChanged;
+use App\Http\Requests\Reservation\CustomerReservationRequest;
+use App\Http\Requests\Reservation\WorkerReservationRequest;
+use App\Mails\ReservationMail;
 use App\Models\Reservation;
 use App\Models\Table;
 use App\Models\User;
@@ -86,12 +90,11 @@ class ReservationService
     }
 
     /**
+     * @param $reservations
      * @return array
      */
-    public function reservationWithStatus(): array
+    private function reservationWithStatus($reservations): array
     {
-        $auth=Auth::user();
-        $reservations = Reservation::where('email', $auth->email)->get();
         $reservationWithStatus = [];
         foreach ($reservations as $reservation) {
             $status = self::STATUS_CURRENT;
@@ -111,24 +114,69 @@ class ReservationService
      * @param string $date
      * @return array
      */
-    public function tablesByDate(string $date): array
+    public function workerReservations(string $date): array
     {
-        $tables = Table::all();
-        $tableArray = [];
-        foreach ($tables as $table) {
-            $reservationSince = null;
-            $reservations=Reservation::where('table_id',$table->id)->get();
-            foreach ($reservations as $reservation) {
-                if ($reservation->date == $date) {
-                    $reservationSince = $reservation->start_time;
-                }
-            }
-            array_push($tableArray, [
-                'table' => $table,
-                'reservation_since' => $reservationSince
-            ]);
-        }
-        return $tableArray;
+        return $this->reservationWithStatus(Reservation::where('date', $date)->get());
     }
 
+    /**
+     * @return array
+     */
+    public function customerReservations(): array
+    {
+        $auth = Auth::user();
+        return $this->reservationWithStatus(Reservation::where('email', $auth->email)->get());
+    }
+
+
+    /**
+     * @param string $date
+     * @return mixed
+     */
+    public function freeTablesByDate(string $date)
+    {
+
+        $tables = Table::where('occupied_since', null)->whereDoesntHave('reservation', function ($query) use ($date) {
+            $query->where('date', 'like', $date);
+        })->get();
+
+        return $tables;
+    }
+
+    /**
+     * @param WorkerReservationRequest $request
+     */
+
+    public function storeWorkerReservations(WorkerReservationRequest $request)
+    {
+        foreach ($request->tables as $tableId) {
+            $reservation = new Reservation();
+            $reservation->date = $request->date;
+            $reservation->start_time = $request->startTime;
+            $reservation->phone = $request->phone;
+            $reservation->email = $request->email;
+            $reservation->table()->associate(Table::findOrFail($tableId));
+            $reservation->save();
+        }
+        broadcast(new ReservationChanged())->toOthers();
+    }
+
+    /**
+     * @param CustomerReservationRequest $request
+     * @return bool
+     */
+    public function storeCustomerReservation(CustomerReservationRequest $request): bool
+    {
+        $reservation = new Reservation();
+        $reservation->date = $request->date;
+        $reservation->start_time = $request->startTime;
+        $reservation->setCustomer($request->email, $request->phone);
+        if ($reservation->findTable($request->tableSize) && $reservation->save()) {
+            broadcast(new ReservationChanged())->toOthers();
+            (new ReservationMail($reservation))->sendMail();
+            return true;
+        }
+
+        return false;
+    }
 }
