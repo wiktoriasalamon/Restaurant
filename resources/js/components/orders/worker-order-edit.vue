@@ -48,6 +48,7 @@
 								<td class="text-xs-left">{{ props.item.price}}</td>
 								<td class="text-xs-left">
 									<v-text-field
+										@input="changeTotalSum"
 										v-model="props.item.amount">
 									</v-text-field>
 								</td>
@@ -59,7 +60,13 @@
 							</tr>
 						</template>
 					</v-data-table>
-					<h5 style="margin-top: 2rem;">Suma zamówienia: {{orderSum}}</h5>
+					<h5 style="margin-top: 2rem;">Suma zamówienia:</h5>
+					<v-text-field
+						readonly
+						v-model="orderSum"
+						style="max-width: 5rem">
+
+					</v-text-field>
 				</v-card-text>
 				<v-card-actions>
 					<v-btn @click="updateOrder">
@@ -138,12 +145,15 @@
         for(let i=0; i< this.orderedItems.length; i++){
           if(this.orderedItems[i].id === dish.id){
             this.orderedItems[i].amount++;
+            this.changeTotalSum()
 						add=false;
 						break
 					}
 				}
         if(add === true){
+					dish.amount = 1
           this.orderedItems.push(dish);
+          this.changeTotalSum()
 				}
         for(let i=0 ;  i < this.menuItems.length; i++) {
           if(this.menuItems[i].id === dish.id){
@@ -151,6 +161,12 @@
           }
         }
       },
+      changeTotalSum(){
+        this.orderSum = 0
+        for(let i=0; i< this.orderedItems.length; i++){
+         		this.orderSum += this.orderedItems[i].amount * this.orderedItems[i].price
+        }
+			},
       deleteItem(id){
         for(let i=0 ;  i < this.orderedItems.length; i++) {
           if(this.orderedItems[i].id === id){
@@ -159,6 +175,7 @@
             this.orderedItems.splice(i, 1);
           }
         }
+        this.changeTotalSum()
       },
       updateOrder(){
         let orderArray=[];

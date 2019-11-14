@@ -149,7 +149,7 @@
     },
     methods: {
       getData(){
-        axios.get(route('api.authenticatedUser'))
+        axios.get(route('api.user.authenticatedUser'))
           .then(response => {
             const entries = Object.entries(response.data);
             if (response.data) {

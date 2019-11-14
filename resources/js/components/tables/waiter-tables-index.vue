@@ -8,25 +8,25 @@
 		>
 			<template slot="item" slot-scope="props">
 				<tr>
-					<td class="text-xs-left">{{ props.item.id }}</td>
-					<td class="text-xs-left">{{ props.item.size}}</td>
-					<td class="text-xs-left">{{ props.item.occupied_since}}</td>
-					<td class="text-xs-left">{{ props.item.reservation.length}}</td>
+					<td class="text-xs-left">{{ props.item.table.id }}</td>
+					<td class="text-xs-left">{{ props.item.table.size}}</td>
+					<td class="text-xs-left">{{ props.item.table.occupied_since}}</td>
+					<td class="text-xs-left">{{ props.item.reservation_since}}</td>
 					<td class="text-xs-left">
-						<v-btn @click="addOrder(props.item.id)" v-if="props.item.occupied_since!==null">
+						<v-btn @click="addOrder(props.item.table.id)" v-if="props.item.table.occupied_since!==null">
 							Dodaj
 						</v-btn>
 					</td>
 					<td class="text-xs-left">
-						<v-btn @click="openTable(props.item.id)" v-if="props.item.occupied_since===null">
+						<v-btn @click="openTable(props.item.table.id)" v-if="props.item.table.occupied_since===null">
 							Otwórz stolik
 						</v-btn>
-						<v-btn @click="closeTable(props.item.id)" v-else>
+						<v-btn @click="closeTable(props.item.table.id)" v-else>
 							Zamknij stolik
 						</v-btn>
 					</td>
 					<td class="text-xs-center">
-						<v-icon @click="showItem(props.item.id)" small>
+						<v-icon @click="showItem(props.item.table.id)" small>
 							visibility
 						</v-icon>
 					</td>
@@ -37,6 +37,7 @@
 </template>
 
 <script>
+  import {notification} from '../../Notifications.js';
   export default {
     name: "waiter-tables-index",
     data() {
@@ -67,10 +68,9 @@
         window.location.href = route('table.showWaiter', [id])
       },
       getData() {
-        axios.get(route('api.table.index'))
+        axios.get(route('api.table.myTables'))
           .then(response => {
             this.tables = response.data
-
           }).catch(error => {
           console.error(error)
         })
@@ -78,11 +78,29 @@
       addOrder(tableId){
 				window.location.href = route('order.createWaiter', [tableId])
 			},
-			openTable(id){
-
-			},
-			closeTable(id){
-			}
+      openTable(table){
+        axios.post(route('api.table.openTable',table)).then(
+          response => {
+            notification("Stolik został otwarty","success")
+            this.getData()
+          },
+          error => {
+            console.error(error)
+            notification("Wystąpił błąd podczas otwierania stolika","error")
+          })
+      },
+      closeTable(table){
+        axios.post(route('api.table.closeTable',table)).then(
+          response => {
+            notification("Stolik został zamknięty","success")
+            setTimeout(function(){
+              window.location.href=route('table.waiterIndex')} , 1500);
+          },
+          error => {
+            console.error(error)
+            notification("Wystąpił błąd podczas zamykania stolika","error")
+          })
+      },
 
     }
   }

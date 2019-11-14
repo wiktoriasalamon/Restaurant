@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dish/edit/{id}', 'DishController@edit')->name('dish.edit')->middleware('permission:dishEdit');
     Route::get('/dish/create', 'DishController@create')->name('dish.create')->middleware('permission:dishCreate');
     Route::get('/myAccount', 'UserController@myAccount')->name('user.myAccount');
+    Route::get('/order/myOrders', 'CustomerMyOrdersController@index')->name('orders.myOrders');
 
     Route::name('worker.')->prefix('worker')->group(function () {
         Route::get('/create', 'WorkerController@create')->name('create')->middleware('permission:userCreate');
@@ -100,9 +101,9 @@ Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(
     Route::get('/order/status-types', 'ApiOrderController@fetchOrderStatusTypes')->name('order.fetchOrderStatusTypes')
         ->middleware('permission:orderIndex');
     Route::get('/order/my-order', 'ApiOrderController@myOrder')->name('order.myOrder')
-        ->middleware('permission:orderIndex');
+        ->middleware('permission:userOrderIndex');
     Route::get('/order/customer-index', 'ApiOrderController@customerOrder')->name('order.customerOrder')
-        ->middleware('permission:orderIndex');
+        ->middleware('permission:userOrderIndex');
     Route::get('/order/{type}', 'ApiOrderController@orderWithStatus')->name('order.orderWithStatus')
         ->middleware('permission:orderIndex');
     Route::post('/order/worker', 'ApiOrderController@storeNewOrderFromWorker')->name('order.storeNewOrderFromWorker')
