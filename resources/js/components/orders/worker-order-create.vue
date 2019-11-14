@@ -47,6 +47,13 @@
 						</tr>
 					</template>
 				</v-data-table>
+				<h5 style="margin-top: 2rem;">Suma zamówienia:</h5>
+				<v-text-field
+					readonly
+					v-model="orderSum"
+					style="max-width: 5rem">
+
+				</v-text-field>
 			</v-card-text>
 				<v-card-actions>
 					<v-btn @click="order">
@@ -76,7 +83,8 @@
           { text: 'Ilość', value: '' },
           { text: 'Usuń', value: '' },
         ],
-				orderedItems:[]
+				orderedItems:[],
+        orderSum: ''
       }
     },
     beforeMount(){
@@ -95,12 +103,14 @@
         })
       },
 			addToOrder(dish){
+        dish.amount = 1
 				this.orderedItems.push(dish);
 				for(let i=0 ;  i < this.menuItems.length; i++) {
 				  if(this.menuItems[i].id === dish.id){
             this.menuItems.splice(i, 1);
 					}
 				}
+        this.changeTotalSum()
 			},
 			deleteItem(id){
         for(let i=0 ;  i < this.orderedItems.length; i++) {
@@ -110,7 +120,14 @@
             this.orderedItems.splice(i, 1);
           }
         }
+        this.changeTotalSum()
 			},
+      changeTotalSum(){
+        this.orderSum = 0
+        for(let i=0; i< this.orderedItems.length; i++){
+          this.orderSum += this.orderedItems[i].amount * this.orderedItems[i].price
+        }
+      },
 			order(){
 				let orderArray=[];
 				this.orderedItems.forEach(item=>{
