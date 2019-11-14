@@ -96,6 +96,9 @@ Vue.component('waiter-show', require('./components/tables/waiter-show').default)
 //USERS
 Vue.component('my-account', require('./components/users/myAccount').default);
 
+//CONTACT
+Vue.component('contact-page', require('./components/contact/contact').default);
+
 //WORKERS
 Vue.component('workers-index', require('./components/workers/workers-index').default);
 Vue.component('workers-create', require('./components/workers/workers-create').default);
