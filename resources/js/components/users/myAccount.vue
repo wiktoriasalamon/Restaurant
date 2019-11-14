@@ -193,7 +193,7 @@
           })
       },
 			savePassword(){
-        axios.post(route('api.user.changePasswordMyAccount', this.form.id),{
+        axios.put(route('api.user.changePasswordMyAccount', this.form.id),{
           oldPassword: this.passwordForm.oldPassword,
           newPassword: this.passwordForm.newPassword,
           newPasswordRepeated: this.passwordForm.repeatNewPassword,
