@@ -14,7 +14,7 @@ class NewOrderFromWorkerRequest extends FormRequest
     public function rules(): array
     {
         return[
-            'table_id' => 'required',
+            'token' => 'required',
             'items' => 'required|array'
         ];
     }
@@ -25,7 +25,7 @@ class NewOrderFromWorkerRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'table_id.required'=>'Id stolika jest wymagane',
+            'token.required'=>'Token jest wymagany',
             'items.required'=>'Produkty są wymagane',
             'items.array'=>'Zły format produktów',
         ];
