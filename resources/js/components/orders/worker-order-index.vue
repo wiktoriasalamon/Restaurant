@@ -66,8 +66,20 @@
         ],
         orderSatuses: [],
         orders: [],
+				clicked:''
       }
     },
+		created() {
+			Echo.channel('order')
+				.listen('OrderChanged', (e) => {
+					this.getOrderStatuses()
+					if(this.clicked==="myOrders"){
+						this.getMyOrders()
+					}else{
+						this.getOrders(this.clicked)
+					}
+				});
+		},
     beforeMount() {
       this.getOrderStatuses()
     },
@@ -80,6 +92,7 @@
         });
       },
       getOrders(statusName) {
+      	this.clicked=statusName
         axios.get(route('api.order.orderWithStatus', statusName)).then(response => {
           this.orders = response.data;
 					console.log(response.data)
@@ -88,6 +101,7 @@
         });
       },
       getMyOrders(){
+      	this.clicked="myOrders"
         axios.get(route('api.order.myOrder')).then(response => {
           this.orders = response.data
         }).catch(error => {
