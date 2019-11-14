@@ -7,7 +7,7 @@
             <v-card-title>W-17</v-card-title>
           </v-card>
         </v-col>
-        <v-col cols="6">
+        <v-col cols="9">
           <v-row>
             <v-col v-if="notLogged" class="text-end">
               <v-btn text @click="register">Zarejestruj</v-btn>

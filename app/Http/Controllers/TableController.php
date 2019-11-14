@@ -47,6 +47,17 @@ class TableController extends Controller
         return view('tables/show', compact(['table', 'id']));
     }
 
+    /**
+     * Show the form for show th table.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function showWaiter($id)
+    {
+        return view('tables/waiterShow',compact(["id"]));
+    }
+
 
     /**
      * Show the application dashboard.

@@ -39,6 +39,8 @@
 </template>
 
 <script>
+  import {notification} from "../../Notifications";
+
   export default {
     name: "workers-index",
     data() {
@@ -94,7 +96,7 @@
           }
         }
       }).catch(error => {
-        console.log(error);
+        console.error(error.response);
       });
     },
     methods: {
@@ -106,9 +108,11 @@
       },
       deleteWorker(id) {
         axios.delete(route('api.user.delete', id)).then(response => {
+          notification('Pomyślnie usunięto pracownika', 'success');
           window.location.replace(route('worker.index'));
         }).catch(error => {
-
+          notification('Wystąpił błąd podczas usuwania pracownika', 'error');
+          console.error(error.response);
         });
       }
     }
