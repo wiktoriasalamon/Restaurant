@@ -119,7 +119,6 @@
             this.orderedItems = response.data.dishes;
 						this.orderSum = response.data.sum;
 						this.orderStatus = response.data.status;
-						console.log(this.orderedItems)
           }).catch(error => {
           console.error(error)
         })
@@ -133,20 +132,15 @@
         })
 			},
       addToOrder(dish){
-        let add = false
-				console.log(dish.id)
-				console.log()
+        let add = true
         for(let i=0; i< this.orderedItems.length; i++){
           console.log("tutu" + this.orderedItems[i].id)
           if(this.orderedItems[i].id === dish.id){
-            console.log("tu")
             this.orderedItems[i].amount++
-					}
-          else{
-            add = true
+						add=false
+						break
 					}
 				}
-        console.log(add)
         if(add === true){
           this.orderedItems.push(dish);
 				}
