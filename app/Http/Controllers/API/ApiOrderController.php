@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Events\OrderChanged;
-use App\Events\ReservationChanged;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\EditOrderFromWorkerRequest;
 use App\Http\Requests\Order\NewOrderFromWorkerRequest;
 use App\Http\Requests\Order\NewOrderOnlineRequest;
 use App\Http\Requests\Order\OrderChangeStatusRequest;
@@ -288,10 +288,10 @@ class ApiOrderController extends Controller
     }
 
     /**
-     * @param NewOrderFromWorkerRequest $request
+     * @param EditOrderFromWorkerRequest $request
      * @return JsonResponse
      */
-    public function updateOrderFromWorker(NewOrderFromWorkerRequest $request)
+    public function updateOrderFromWorker(EditOrderFromWorkerRequest $request)
     {
         try {
             $tokens = Order::pluck('token')->toArray();
