@@ -35,9 +35,9 @@ const opts = {
         light: true,
         themes: {
             light: {
-                primary: '#FFD119',
+                primary: '#00311D',
                 accent: '#FF4081',
-                secondary: '#8A5E4E',
+                secondary: '#FFD119',
                 success: '#4CAF50',
                 info: '#2196F3',
                 warning: '#FB8C00',

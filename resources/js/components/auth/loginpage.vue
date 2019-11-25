@@ -28,7 +28,7 @@
 						</v-btn>
 					</v-row>
 					<v-row class="justify-center" style="width: 100%">
-						<v-btn @click="handlePressLogin()" class="yellow_form_button" color="primary" large>Zaloguj się</v-btn>
+						<v-btn @click="handlePressLogin()" class="yellow_form_button" color="secondary" large>Zaloguj się</v-btn>
 					</v-row>
 					<v-row class="justify-center register_button">
 						<v-btn

@@ -10,7 +10,7 @@
 				></v-text-field>
 				<v-card-actions class="justify-space-between">
 					<v-btn @click="goBack" text>Wróć</v-btn>
-					<v-btn @click="send" class="yellow_form_button" color="primary">Wyślij</v-btn>
+					<v-btn @click="send" class="yellow_form_button" color="secondary">Wyślij</v-btn>
 				</v-card-actions>
 			</v-card>
 		</v-col>
