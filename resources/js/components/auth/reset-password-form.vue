@@ -1,7 +1,5 @@
 <template>
-  <v-form
-    ref="resetPasswordForm"
-  >
+  <v-form ref="resetPasswordForm">
     <v-container>
       <v-col md="5">
         <v-text-field :rules="validation.password" label="Hasło" v-model="form.password"></v-text-field>
@@ -39,13 +37,13 @@
     },
     methods: {
       save() {
-        this.$refs.resetPasswordForm.validate()
+        this.$refs.resetPasswordForm.validate();
         axios.post(route('password.update'), {
           'newPassword': this.form.password,
           'newPasswordRepeated': this.form.repeatPassword,
           'token': this.token
         }).then((response) => {
-          notification(response.data, "success")
+          notification(response.data, "success");
           setTimeout(function(){window.location.href="/"} , 2500);
         })
           .catch(error => {
