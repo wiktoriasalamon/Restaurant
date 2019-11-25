@@ -1,108 +1,110 @@
 <template>
-	<div class="register-form">
-		
-		<v-text-field 
-			label="Imię" 
-			outlined
-			v-model="input.firstName"
-			:rules="[rules.required]"
-		></v-text-field>
-		<v-text-field 
-			label="Nazwisko" 
-			outlined
-			v-model="input.lastName"
-			:rules="[rules.required]"
-		></v-text-field>
-		<v-text-field 
-			label="E-mail" 
-			outlined
-			v-model="input.email"
-			:rules="[rules.required, rules.email]"
-		></v-text-field>
-		<v-text-field 
-			label="Numer telefonu" 
-			outlined
-			v-model="input.phoneNumber"
-			:rules="[rules.required, rules.phoneNumber]"
-			prefix="+48"
-		></v-text-field>
-		<v-text-field 
-			label="Ulica" 
-			outlined
-			v-model="input.address.street"
-			:rules="[rules.required]"
-		></v-text-field>
-		<v-text-field 
-			label="Numer domu" 
-			outlined
-			v-model="input.address.homeNumber"
-			:rules="[rules.required]"
-		></v-text-field>
-		<v-text-field 
-			label="Numer mieszkania" 
-			outlined
-			v-model="input.address.flatNumber"
-		></v-text-field>
-		<v-text-field 
-			label="Miejscowość" 
-			outlined
-			v-model="input.address.city"
-			:rules="[rules.required]"
-		></v-text-field>
-		<v-text-field
-			:rules="[rules.required, rules.postCodeFormat]"
-			label="Kod pocztowy"
-			outlined
-			v-model="input.address.postCode">
+	<v-row class="justify-center align-center">
+		<v-col>
+			<v-text-field
+				:rules="[rules.required]"
+				label="Imię"
+				outlined
+				v-model="input.firstName"
+			></v-text-field>
+			<v-text-field
+				:rules="[rules.required]"
+				label="Nazwisko"
+				outlined
+				v-model="input.lastName"
+			></v-text-field>
+			<v-text-field
+				:rules="[rules.required, rules.email]"
+				label="E-mail"
+				outlined
+				v-model="input.email"
+			></v-text-field>
+			<v-text-field
+				:rules="[rules.required, rules.phoneNumber]"
+				label="Numer telefonu"
+				outlined
+				prefix="+48"
+				v-model="input.phoneNumber"
+			></v-text-field>
+			<v-text-field
+				:rules="[rules.required]"
+				label="Ulica"
+				outlined
+				v-model="input.address.street"
+			></v-text-field>
+			<v-text-field
+				:rules="[rules.required]"
+				label="Numer domu"
+				outlined
+				v-model="input.address.homeNumber"
+			></v-text-field>
+			<v-text-field
+				label="Numer mieszkania"
+				outlined
+				v-model="input.address.flatNumber"
+			></v-text-field>
+			<v-text-field
+				:rules="[rules.required]"
+				label="Miejscowość"
+				outlined
+				v-model="input.address.city"
+			></v-text-field>
+			<v-text-field
+				:rules="[rules.required, rules.postCodeFormat]"
+				label="Kod pocztowy"
+				outlined
+				v-model="input.address.postCode">
 
-		</v-text-field>
-		<v-text-field 
-			label="Hasło" 
-			outlined
-			v-model="input.password1"
-			:append-icon="showPassword1 ? 'visibility' : 'visibility_off'"
-			:type="showPassword1 ? 'text' : 'password'"
-			:rules="[rules.required, rules.password]"
-			@click:append="showPassword1 = !showPassword1"
-		></v-text-field>
-		<v-text-field 
-			label="Powtórz hasło" 
-			outlined
-			v-model="input.password2"
-			:append-icon="showPassword2 ? 'visibility' : 'visibility_off'"
-			:type="showPassword2 ? 'text' : 'password'"
-			:rules="[rules.required, rules.passwordMatch]"
-			@click:append="showPassword2 = !showPassword2"
-		></v-text-field>
-		<div class="register-button">
-			<v-btn large @click="handlePressRegister()">Zarejestruj się</v-btn>
-		</div>
-		<v-snackbar
-			v-model="snackbar.show"
-		>
-		{{ text }}
-		<v-btn
-			color="pink"
-			text
-			@click="snackbar.show = false"
-		>
-			Zamknij
-		</v-btn>
-		</v-snackbar>
-		<v-btn 
-			text  
-			@click="handlePressLogin()"
-			class="btn-login">
-			Masz już konto? Zaloguj się!
-		</v-btn>
-	</div>
+			</v-text-field>
+			<v-text-field
+				:append-icon="showPassword1 ? 'visibility' : 'visibility_off'"
+				:rules="[rules.required, rules.password]"
+				:type="showPassword1 ? 'text' : 'password'"
+				@click:append="showPassword1 = !showPassword1"
+				label="Hasło"
+				outlined
+				v-model="input.password1"
+			></v-text-field>
+			<v-text-field
+				:append-icon="showPassword2 ? 'visibility' : 'visibility_off'"
+				:rules="[rules.required, rules.passwordMatch]"
+				:type="showPassword2 ? 'text' : 'password'"
+				@click:append="showPassword2 = !showPassword2"
+				label="Powtórz hasło"
+				outlined
+				v-model="input.password2"
+			></v-text-field>
+			<div class="register-button">
+				<v-btn @click="handlePressRegister()" class="yellow_form_button" color="primary" large>Zarejestruj się</v-btn>
+			</div>
+			<v-snackbar
+				v-model="snackbar.show"
+			>
+				{{ text }}
+				<v-btn
+					@click="snackbar.show = false"
+					color="pink"
+					text
+				>
+					Zamknij
+				</v-btn>
+			</v-snackbar>
+			<v-btn
+				@click="handlePressLogin()"
+				class="btn-login"
+				text>
+				Masz już konto? Zaloguj się!
+			</v-btn>
+		</v-col>
+	</v-row>
+
 </template>
 
 <script>
-import {isEmail, isPassword, isPhoneNumber, passwordMatch, isPostalCode} from '../../validator/DataValidator.js';
-import alertStrings from '../../strings/AlertStrings.js';
+  import {isEmail, isPassword, isPhoneNumber, isPostalCode, passwordMatch} from '../../validator/DataValidator.js';
+  import alertStrings from '../../strings/AlertStrings.js';
 
-export default {
+  export default {
 	name: "loginPage",
 
 	data() {
@@ -158,7 +160,7 @@ export default {
 			}
 		},
 		register() {
-			let address=JSON.stringify(this.input.address)
+			let address=JSON.stringify(this.input.address);
 			axios.post('/api/user/store-customer', {
 				name:this.input.firstName,
 				surname:this.input.lastName,
@@ -213,7 +215,7 @@ export default {
 	.register-form {
 		display: flex;
 		flex-direction: column;
-		float: center;
+		/*align*/
 		/*margin: 10vh 30vw;*/
 		width: 500px;
 		padding: 50px;

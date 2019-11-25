@@ -31,6 +31,20 @@ const opts = {
         },
         scrollbarWidth: 10,
     },
+    theme: {
+        light: true,
+        themes: {
+            light: {
+                primary: '#FFD119',
+                accent: '#FF4081',
+                secondary: '#8A5E4E',
+                success: '#4CAF50',
+                info: '#2196F3',
+                warning: '#FB8C00',
+                error: '#FF5252'
+            },
+        }
+    },
     lang: {
         locales: {vuetifyPL, vuetifyEn},
         current: 'vuetifyPL',
