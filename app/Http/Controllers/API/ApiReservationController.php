@@ -105,7 +105,7 @@ class ApiReservationController extends Controller
      */
     public function fetchReservation(int $id)
     {
-        return response()->json(['reservation' => Reservation::with('table')->findOrFail($id)], 200);
+        return response()->json(['reservation' => (new ReservationService())->fetchReservation($id)], 200);
     }
 
     /**
