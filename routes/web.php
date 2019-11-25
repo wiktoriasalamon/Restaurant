@@ -23,10 +23,10 @@ Route::post('/api/order/online/update', 'API\ApiOrderController@updateOnlineOrde
 Route::post('/api/order/online', 'API\ApiOrderController@storeNewOrderOnline')->name('api.order.storeNewOrderOnline');
 Route::get('/api/order/show/{token}', 'API\ApiOrderController@loadOrder')->name('api.order.loadOrder');
 Route::get('/order-show/{token}', 'OrderController@show')->name('order.show');
+Route::get('/', 'HomeController@index')->name('home');
 
 Auth::routes();
 Route::middleware('auth')->group(function () {
-    Route::get('/', 'HomeController@index')->name('home');
     Route::get('/table-admin', 'TableController@index')->name('table.index')->middleware('permission:tableIndex');
     Route::get('/table/edit/{id}', 'TableController@edit')->name('table.edit')->middleware('permission:tableEdit');
     Route::get('/table/{id}', 'TableController@show')->name('table.show')->middleware('permission:tableShow');
