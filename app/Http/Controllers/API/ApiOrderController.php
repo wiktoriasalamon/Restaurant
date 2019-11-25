@@ -307,10 +307,8 @@ class ApiOrderController extends Controller
                 broadcast(new OrderChanged())->toOthers();
                 return response()->json("Zamówienie pomyślnie edytowane", 200);
             }
-            dd("here");
             return response()->json('Wystąpił nieoczekiwany błąd', 500);
         } catch (Exception $e) {
-            dd($e);
             Log::notice("Error :" . $e);
             Log::notice("Error :" . $e->getMessage());
             Log::notice("Error :" . $e->getCode());
