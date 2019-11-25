@@ -68,7 +68,7 @@
 						</v-col>
 					</v-row>
 				</v-card>
-				<v-btn @click="goToStep2" color="primary">Dalej</v-btn>
+				<v-btn @click="goToStep2" color="secondary">Dalej</v-btn>
 			</v-stepper-content>
 			<v-stepper-content class="background" step="2">
 				<v-card>
@@ -96,7 +96,7 @@
 						</v-form>
 					</v-card-text>
 				</v-card>
-				<v-btn @click="saveAddress" color="primary">Dalej</v-btn>
+				<v-btn @click="saveAddress" color="secondary">Dalej</v-btn>
 				<v-btn @click="e1 = 1" text>Wróć</v-btn>
 			</v-stepper-content>
 			<v-stepper-content class="background" step="3">
@@ -158,7 +158,7 @@
 					</v-row>
 				</v-card>
 
-				<v-btn @click="completeOrderOnline" color="primary">Zamów</v-btn>
+				<v-btn @click="completeOrderOnline" color="secondary">Zamów</v-btn>
 				<v-btn @click="e1 = 2" text>Wróć</v-btn>
 			</v-stepper-content>
 		</v-stepper-items>

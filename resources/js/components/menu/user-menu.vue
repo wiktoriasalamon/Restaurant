@@ -1,6 +1,6 @@
 <template>
-	<v-row class="justify-space-between">
-		<v-col>
+	<v-row class="justify-space-around">
+		<v-col cols="12" sm="7" md="5" lg="4" xl="3">
 			<v-simple-table>
 				<template v-slot:default>
 					<thead>
@@ -19,11 +19,11 @@
 				</template>
 			</v-simple-table>
 		</v-col>
-		<v-col>
+		<v-col cols="12" sm="7" md="6" lg="6" xl="5">
 			<v-data-table
 				:headers="headers"
 				:items="menuItems"
-				:items-per-page="-1"
+				:items-per-page="5"
 				class="elevation-1"
 			>
 				<template slot="item" slot-scope="props">

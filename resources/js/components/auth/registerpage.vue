@@ -77,7 +77,7 @@
 					v-model="input.password2"
 				></v-text-field>
 				<v-card-actions class="justify-center row">
-					<v-btn @click="handlePressRegister()" class="yellow_form_button" color="primary" large>Zarejestruj się</v-btn>
+					<v-btn @click="handlePressRegister()" class="yellow_form_button" color="secondary" large>Zarejestruj się</v-btn>
 					<v-btn
 						@click="handlePressLogin()"
 						class="btn-login"
