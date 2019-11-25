@@ -179,4 +179,14 @@ class ReservationService
 
         return false;
     }
+
+    public function fetchReservation(int $id):array
+    {
+        $reservation= Reservation::with('table')->findOrFail($id);
+        return[
+            "date"=>$reservation->date,
+            "startTime"=>$reservation->start_time,
+            'tableSize'=>$reservation->table->size
+        ];
+    }
 }

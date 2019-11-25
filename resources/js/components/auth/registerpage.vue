@@ -38,7 +38,7 @@
 					:rules="[rules.required]"
 					label="Numer domu"
 					outlined
-					v-model="input.address.homeNumber"
+					v-model="input.address.houseNumber"
 				></v-text-field>
 				<v-text-field
 					label="Numer mieszkania"
@@ -122,7 +122,7 @@
           phoneNumber: "",
           address: {
             street: "",
-            homeNumber: "",
+            houseNumber: "",
             flatNumber: "",
             city: "",
             postCode: ''
@@ -164,12 +164,11 @@
         }
       },
       register() {
-        let address = JSON.stringify(this.input.address);
         axios.post('/api/user/store-customer', {
           name: this.input.firstName,
           surname: this.input.lastName,
           email: this.input.email,
-          address: address,
+          address: this.input.address,
           phone: this.input.phoneNumber,
           password: this.input.password1,
           repeatPassword: this.input.password2
