@@ -69,13 +69,14 @@
 				clicked:''
       }
     },
-		created() {
+		created: function () {
 			Echo.channel('order')
 				.listen('OrderChanged', (e) => {
 					this.getOrderStatuses()
-					if(this.clicked==="myOrders"){
+
+					if (this.clicked === "myOrders") {
 						this.getMyOrders()
-					}else{
+					} else {
 						this.getOrders(this.clicked)
 					}
 				});

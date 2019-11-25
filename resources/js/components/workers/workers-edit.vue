@@ -96,9 +96,6 @@
           let entries = Object.entries(this.form);
           for (let [key, v] of entries) {
             let value = v;
-            if (key == 'address') {
-              value = JSON.stringify(value);
-            }
             data[key] = value;
           }
           axios.put(route('api.user.updateWorker', this.id), data).then(response => {

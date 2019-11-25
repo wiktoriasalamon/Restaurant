@@ -116,7 +116,7 @@ export default {
 				phoneNumber: "",
 				address:{
 					street: "",
-					homeNumber: "",
+					houseNumber: "",
 					flatNumber: "",
 					city: "",
 					postCode: ''
@@ -158,12 +158,11 @@ export default {
 			}
 		},
 		register() {
-			let address=JSON.stringify(this.input.address)
 			axios.post('/api/user/store-customer', {
 				name:this.input.firstName,
 				surname:this.input.lastName,
 				email:this.input.email,
-				address: address,
+				address: this.input.address,
 				phone:this.input.phoneNumber,
 				password:this.input.password1,
 				repeatPassword:this.input.password2
