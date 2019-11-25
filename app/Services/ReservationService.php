@@ -140,15 +140,17 @@ class ReservationService
                 $time=Carbon::now()->format('H:i:s');
                 $tables = Table::where('occupied_since', null)->whereDoesntHave('reservation', function ($query) use ($date, $time) {
                     $query->where('date', 'like', $date)->where('start_time', '>=', $time);
-                });
+                })->get();
 
             } else {
                 $tables = Table::whereDoesntHave('reservation', function ($query) use ($date) {
                     $query->where('date', 'like', $date);
-                });
+                })->get();
+
             }
                 return $tables;
         } catch (\Exception $exception) {
+
         }
         return null;
     }
