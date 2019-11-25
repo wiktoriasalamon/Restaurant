@@ -185,7 +185,7 @@ class ReservationService
         $reservation= Reservation::with('table')->findOrFail($id);
         return[
             "date"=>$reservation->date,
-            "start_time"=>$reservation->start_time,
+            "startTime"=>$reservation->start_time,
             'tableSize'=>$reservation->table->size
         ];
     }
