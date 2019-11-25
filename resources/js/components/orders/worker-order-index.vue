@@ -69,7 +69,7 @@
         orderSatuses: [],
         orders: [],
 				clicked:'',
-				lastToken: '',
+				lastToken: null,
 				loadingTable: false
 
       }
@@ -98,7 +98,7 @@
       },
       getOrders(statusName) {
       	this.loadingTable = true;
-      	this.lastToken = statusName;
+      	this.lastFetch = statusName;
       	this.clicked=statusName;
         axios.get(route('api.order.orderWithStatus', statusName)).then(response => {
           this.orders = response.data;
@@ -110,6 +110,7 @@
 				});
       },
       getMyOrders(){
+      	this.lastFetch = null;
       	this.clicked="myOrders"
         axios.get(route('api.order.myOrder')).then(response => {
           this.orders = response.data
@@ -129,7 +130,11 @@
 				}))
             .then(response => {
               notification(response.data, 'success');
-              this.getOrders(this.lastToken);
+              if (this.lastFetch !== null) {
+								this.getOrders(this.lastFetch);
+							} else {
+              	this.getMyOrders();
+							}
             }).catch(error => {
             notification("Wystąpił błąd podczas usuwania zamowienia", 'error');
             console.error(error.response);
