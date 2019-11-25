@@ -24,7 +24,7 @@
 			Nie pamiętam hasła 
 		</v-btn>
 		<div class="login-button">
-			<v-btn large @click="handlePressLogin()">Zaloguj się</v-btn>
+			<v-btn v-bind:loading="loading" large @click="handlePressLogin()">Zaloguj się</v-btn>
 		</div>
 		<v-snackbar
 			v-model="snackbarShow"
@@ -56,6 +56,7 @@ export default {
 
 	data() {
 		return {
+			loading: false,
 			showPassword: false,
 			input: {
 				email: "",
@@ -84,20 +85,22 @@ export default {
 			}
 		},
 		login() {
+			this.loading = true;
 			axios.post('/login', {
         'email': this.input.email,
         'password': this.input.password,
 			})
 			.then((response)=> {
-        Vue.toasted.success("Zostałeś pomyślnie zalogowany do systemu").goAway(5000);
-        setTimeout(function(){window.location.href="/"} , 3000);
+				window.location.href="/";
 			})
 			.catch(error => {
         if(error.response.status === 422){
           Vue.toasted.error("Podano niepoprawne dane, spróbuj jeszcze raz").goAway(3000);
         }else{
           Vue.toasted.error(error.response.data).goAway(3000);
-        }});
+        }}).finally(() => {
+        	this.loading = false;
+			});
 		},
 		handlePressRegister() {
 			window.location.href = route('register');
