@@ -61,7 +61,6 @@ class ApiTableController extends Controller
             return response()->json((new OrderService)->tableByDate(Carbon::now()->format('Y-m-d'),
                 $table->load('order')), 200);
         } catch (\Exception $e) {
-            dd($e);
             Log::notice("Error deleting data all:" . $e);
             Log::notice("Error deleting data msg:" . $e->getMessage());
             Log::notice("Error deleting data code:" . $e->getCode());

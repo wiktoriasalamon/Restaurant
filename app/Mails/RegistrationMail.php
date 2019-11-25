@@ -5,6 +5,7 @@ namespace App\Mails;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 
@@ -39,7 +40,7 @@ class RegistrationMail extends Mailable
      */
     public function sendMail()
     {
+        Log::notice("Mail registration to:" . $this->sendToMail);
         Mail::to($this->sendToMail)->queue($this);
-
     }
 }
