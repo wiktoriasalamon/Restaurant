@@ -1,22 +1,25 @@
 <template>
-  <v-card>
-    <v-card-title>Resetowanie hasła</v-card-title>
-    <v-card-text>
-      <v-text-field
-          :rules="rules"
-          label="Email"
-          v-model="mail"
-      ></v-text-field>
-    </v-card-text>
-    <v-card-actions>
-      <v-btn @click="goBack">Wróć</v-btn>
-      <v-btn @click="send">Wyślij</v-btn>
-    </v-card-actions>
-  </v-card>
+	<v-row class="justify-center align-center">
+		<v-col
+			cols="12" ld="4" ma-2 md="5" sm="8" xl="3">
+			<v-card class="transparent_form">
+				<v-text-field
+					:rules="rules"
+					label="Email"
+					v-model="mail"
+				></v-text-field>
+				<v-card-actions class="justify-space-between">
+					<v-btn @click="goBack" text>Wróć</v-btn>
+					<v-btn @click="send" class="yellow_form_button" color="primary">Wyślij</v-btn>
+				</v-card-actions>
+			</v-card>
+		</v-col>
+	</v-row>
 </template>
 
 <script>
   import {notification} from '../../Notifications.js';
+
   export default {
     name: "forgot-password-mail",
     data() {
@@ -36,12 +39,12 @@
         axios.post(route('password.email'), {
           'email': this.mail,
         })
-          .then((response)=> {
-            notification(response.data,"success")
+          .then((response) => {
+            notification(response.data, "success")
           })
           .catch(error => {
-            notification(error.response.data,"error")
-           });
+            notification(error.response.data, "error")
+          });
       },
     }
   }

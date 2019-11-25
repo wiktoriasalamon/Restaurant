@@ -42,7 +42,7 @@
             <v-btn v-else @click="openTable" text>
               Otwórz stolik
             </v-btn>
-            <v-btn @click="addOrder" text>
+            <v-btn v-if="occupiedSince" @click="addOrder" text>
               Dodaj zamówienie
             </v-btn>
           </v-card-actions>
