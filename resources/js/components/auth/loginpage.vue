@@ -28,7 +28,7 @@
 						</v-btn>
 					</v-row>
 					<v-row class="justify-center" style="width: 100%">
-						<v-btn @click="handlePressLogin()" class="yellow_form_button" color="secondary" large>Zaloguj się</v-btn>
+						<v-btn v-bind:loading="loading" @click="handlePressLogin()" class="yellow_form_button" color="secondary" large>Zaloguj się</v-btn>
 					</v-row>
 					<v-row class="justify-center register_button">
 						<v-btn
@@ -52,6 +52,7 @@
 
     data() {
       return {
+      	loading: false,
         showPassword: false,
         input: {
           email: "",
@@ -80,15 +81,13 @@
         }
       },
       login() {
+        this.loading = true;
         axios.post('/login', {
           'email': this.input.email,
           'password': this.input.password,
         })
           .then((response) => {
-            Vue.toasted.success("Zostałeś pomyślnie zalogowany do systemu").goAway(5000);
-            setTimeout(function () {
-              window.location.href = "/"
-            }, 3000);
+            window.location.href = "/"
           })
           .catch(error => {
             if (error.response.status === 422) {
@@ -96,6 +95,9 @@
             } else {
               Vue.toasted.error(error.response.data).goAway(3000);
             }
+          })
+          .finally(() => {
+            this.loading = false;
           });
       },
       handlePressRegister() {

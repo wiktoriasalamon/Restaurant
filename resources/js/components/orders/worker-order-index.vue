@@ -25,6 +25,8 @@
 				:items="orders"
 				:items-per-page="-1"
 				class="elevation-1"
+				loading-text="Ładowanie danych..."
+				v-bind:loading="loadingTable"
 			>
 				<template slot="item" slot-scope="props">
 					<tr>
@@ -66,7 +68,10 @@
         ],
         orderSatuses: [],
         orders: [],
-				clicked:''
+				clicked:'',
+				lastToken: null,
+				loadingTable: false
+
       }
     },
 		created() {
@@ -92,15 +97,20 @@
         });
       },
       getOrders(statusName) {
-      	this.clicked=statusName
+      	this.loadingTable = true;
+      	this.lastFetch = statusName;
+      	this.clicked=statusName;
         axios.get(route('api.order.orderWithStatus', statusName)).then(response => {
           this.orders = response.data;
 					console.log(response.data)
         }).catch(error => {
           console.error(error)
-        });
+        }).finally(() => {
+        	this.loadingTable = false;
+				});
       },
       getMyOrders(){
+      	this.lastFetch = null;
       	this.clicked="myOrders"
         axios.get(route('api.order.myOrder')).then(response => {
           this.orders = response.data
@@ -120,6 +130,11 @@
 				}))
             .then(response => {
               notification(response.data, 'success');
+              if (this.lastFetch !== null) {
+								this.getOrders(this.lastFetch);
+							} else {
+              	this.getMyOrders();
+							}
             }).catch(error => {
             notification("Wystąpił błąd podczas usuwania zamowienia", 'error');
             console.error(error.response);
