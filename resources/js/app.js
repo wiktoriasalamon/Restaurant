@@ -91,6 +91,7 @@ Vue.component('forgot-password-mail', require('./components/auth/forgot-password
 
 Vue.component('user-create-reservation', require('./components/reservation/user-create-reservation').default);
 Vue.component('user-index-reservation', require('./components/reservation/user-index-reservation').default);
+Vue.component('user-show-reservation', require('./components/reservation/user-show-reservation').default);
 Vue.component('waiter-create-reservation', require('./components/reservation/waiter-create-reservation').default);
 Vue.component('waiter-index-reservation', require('./components/reservation/waiter-index-reservation').default);
 
