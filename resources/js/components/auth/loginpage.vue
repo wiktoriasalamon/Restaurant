@@ -52,6 +52,7 @@
 
     data() {
       return {
+      	loading: false,
         showPassword: false,
         input: {
           email: "",
