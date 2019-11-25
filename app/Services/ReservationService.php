@@ -84,7 +84,7 @@ class ReservationService
             if ($table) {
                 return true;
             }
-        } catch (\Exception$exception) {
+        } catch (\Exception $exception) {
         }
         return false;
     }
@@ -135,12 +135,22 @@ class ReservationService
      */
     public function freeTablesByDate(string $date)
     {
+        try {
+            if (Carbon::now()->format('Y-m-d') == $date) {
+                $time=Carbon::now()->format('H:i:s');
+                $tables = Table::where('occupied_since', null)->whereDoesntHave('reservation', function ($query) use ($date, $time) {
+                    $query->where('date', 'like', $date)->where('start_time', '>=', $time);
+                });
 
-        $tables = Table::where('occupied_since', null)->whereDoesntHave('reservation', function ($query) use ($date) {
-            $query->where('date', 'like', $date);
-        })->get();
-
-        return $tables;
+            } else {
+                $tables = Table::whereDoesntHave('reservation', function ($query) use ($date) {
+                    $query->where('date', 'like', $date);
+                });
+            }
+                return $tables;
+        } catch (\Exception $exception) {
+        }
+        return null;
     }
 
     /**
