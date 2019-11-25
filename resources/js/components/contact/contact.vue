@@ -1,5 +1,7 @@
 <template>
-      <v-card max-width="375" class="mx-auto">
+  <v-row class="justify-center align-center">
+    <v-col cols="12" ld="4" md="5" sm="8" xl="3" >
+      <v-card class="transparent_form" max-width="375">
         <v-list two-line>
           <v-list-item>
             <v-list-item-icon>
@@ -48,6 +50,8 @@
           </v-list-item>
         </v-list>
       </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -64,3 +68,9 @@ export default {
   },
 };
 </script>
+
+<style>
+  .v-list.v-sheet.v-sheet--tile.theme--light.v-list--two-line{
+    background: none;
+  }
+</style>
