@@ -1,6 +1,6 @@
 <template>
-	<v-row>
-		<v-col>
+	<v-row class="justify-content-around">
+		<v-col cols="12" sm="10" md="8" lg="6" xl="5">
 			<v-data-table
 				:headers="headers"
 				:items="menuItems"
@@ -18,25 +18,29 @@
 				</template>
 			</v-data-table>
 		</v-col>
-		<v-col>
-			<v-card>
+		<v-col cols="12" sm="10" md="8" lg="6" xl="5">
+			<v-card class="transparent_form">
 				<v-card-title>
 					<h2>Edycja zamówienia</h2>
 				</v-card-title>
 				<v-card-text>
 					<h5 >Status zamówienia: </h5>
 
-					<v-row class="mx-1" style="margin-bottom: 2rem; ">
-						<v-select
-							:items="statusItems"
-							item-value = "status"
-							item-text = "status_pl"
-							label="Status"
-							v-model="orderStatus"
-						></v-select>
-						<v-btn @click="changeStatus">
-							Zmień status
-						</v-btn>
+					<v-row class="justify-space-between" style="margin-bottom: 2rem; ">
+						<v-col>
+							<v-select
+								:items="statusItems"
+								item-value = "status"
+								item-text = "status_pl"
+								label="Status"
+								v-model="orderStatus"
+							></v-select>
+						</v-col>
+						<v-col>
+							<v-btn @click="changeStatus" class="yellow_form_button" color="secondary">
+								Zmień status
+							</v-btn>
+						</v-col>
 					</v-row>
 					<v-data-table
 						:headers="orderedItemsHeaders"
@@ -71,9 +75,11 @@
 					</v-text-field>
 				</v-card-text>
 				<v-card-actions>
-					<v-btn @click="updateOrder">
-						Aktualizuj zamówienie
-					</v-btn>
+					<v-row class="justify-center">
+						<v-btn @click="updateOrder" class="yellow_form_button" color="secondary">
+							Aktualizuj zamówienie
+						</v-btn>
+					</v-row>
 				</v-card-actions>
 			</v-card>
 		</v-col>

@@ -100,7 +100,6 @@
       },
       fillErrors(error) {
         this.clearErrors(this.errors);
-        console.error(error.response);
         let entries = Object.entries(error.response.data.errors);
         for (let [key, value] of entries) {
           if (key.includes('address')) {
@@ -124,6 +123,7 @@
             notification(response.data.message, 'success');
             window.location.replace(route('worker.index'));
           }).catch(error => {
+            console.error(error.response);
             if (error.response.statusCode === 500) {
               notification(error.response.data.message, 'error');
             } else {
