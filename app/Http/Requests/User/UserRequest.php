@@ -3,8 +3,6 @@
 
 namespace App\Http\Requests\User;
 
-
-use App\Rules\Address;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserRequest extends FormRequest
@@ -26,16 +24,9 @@ class UserRequest extends FormRequest
                 'regex:/^[+]{1}(48)[0-9]{9}$|^[0-9]{9}$/'
             ]
         ];
-//        $rules['address']=new Address();
-//        $address=(array)json_decode($this->request->get('address'));
-////        dd($address);
-//        $rules[$address['street']]='required';
-//////        $this->validate($address, ['street' => 'required']);
-///
-        $rules['address.street'] = ['required','regex:/^[a-zA-Z ]+$/','max:50'];
-        $rules['address.houseNumber'] = 'required|numeric';
-        $rules['address.flatNumber'] = 'numeric';
-        $rules['address.city'] =  ['required','regex:/^[a-zA-Z ]+$/','max:50'];
+        $rules['address.street'] = ['required','regex:/^[^0-9]+$/','max:50'];
+        $rules['address.houseNumber'] = 'required';
+        $rules['address.city'] =  ['required','regex:/^[^0-9]+$/','max:50'];
         $rules['address.postCode'] = [
             'required',
             'regex:/^\d{2}-\d{3}$/'
@@ -62,8 +53,6 @@ class UserRequest extends FormRequest
             'address.street.regex' => trans('app.field.incorrect'),
             'address.street.max' => trans('app.field.max'),
             'address.houseNumber.required' => trans('app.field.required'),
-            'address.houseNumber.numeric' => trans('app.field.incorrect'),
-            'address.flatNumber.numeric' => trans('app.field.incorrect'),
             'address.city.regex' => trans('app.field.incorrect'),
             'address.city.required' => trans('app.field.required'),
             'address.city.max' => trans('app.field.max'),

@@ -81,6 +81,7 @@
                   :rules="[rules.required, rules.emailRules]"
                   label="E-mail"
                   v-model="form.email"
+                  :disabled="mailDisabled"
               ></v-text-field>
               <v-text-field :rules="[rules.required]" label="Ulica" v-model="form.address.street"></v-text-field>
               <v-text-field :rules="[rules.required]"  label="Numer domu "
@@ -207,6 +208,7 @@
         ],
         categoryItems: [],
         allMenuItems: [],
+        mailDisabled: false,
         form: {
           id: "",
           name: "",
@@ -242,6 +244,7 @@
       this.menuItems = this.dishes;
       this.allMenuItems = this.dishes;
       this.categoryItems = this.categories;
+      this.getData();
     },
 
     watch: {
@@ -260,6 +263,26 @@
       },
     },
     methods: {
+      getData() {
+        axios.get(route('api.user.authenticatedUser'))
+          .then(response => {
+            const entries = Object.entries(response.data);
+            if (response.data !== "unauthenticated") {
+              this.mailDisabled = true;
+              for (let [key, value] of entries) {
+                if (key === 'address') {
+                  let address = Object.entries(JSON.parse(value));
+                  for (let [addressKey, addressValue] of address) {
+                    this.form.address[addressKey] = addressValue
+                  }
+                } else {
+                  this.form[key] = value;
+                }
+
+              }
+            }
+          })
+      },
       calculateSum() {
         this.priceSum = 0;
         this.ordered.forEach(item => {

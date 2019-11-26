@@ -156,8 +156,18 @@ class ApiUserController extends Controller
      * @return JsonResponse
      */
     public function myAccount(){
-        $user = Auth::user();
-        return response()->json($user, 200);
+        try {
+            if ($user = Auth::user()){
+                return response()->json($user, 200);
+            }
+            return response()->json("unauthenticated", 200);
+        } catch (\Exception $e) {
+            Log::notice("Error :" . $e);
+            Log::notice("Error :" . $e->getMessage());
+            Log::notice("Error :" . $e->getCode());
+            return response()->json('Wystąpił nieoczekiwany błąd', 500);
+        }
+
     }
 
 
