@@ -10,7 +10,7 @@
           <template slot="item" slot-scope="props">
             <tr>
               <td class="text-xs-left">{{props.item.id}}</td>
-              <td class="text-xs-left">{{props.item.status}}</td>
+              <td class="text-xs-left">{{props.item.status_pl}}</td>
               <td class="text-xs-left">{{props.item.created_at}}</td>
               <td class="text-xs-left">{{props.item.updated_at}}</td>
               <td class="text-xs-left">
@@ -35,7 +35,7 @@
 
          </v-card-text>
          <v-card-actions>
-           <v-btn @click="closeTable"class="yellow_form_button" color="secondary" v-if="occupiedSince">
+           <v-btn @click="closeTable"class="yellow_form_button" color="secoDndary" v-if="occupiedSince">
              Zamknij stolik
            </v-btn>
            <v-btn @click="openTable" class="yellow_form_button" color="secondary" v-else>
@@ -89,10 +89,10 @@
         });
       },
       editOrder(token) {
-        window.location.href = route("", token) //todo: podpiąć
+        window.location.href = route('order.editWaiter', [token])
       },
       showOrder(token) {
-        window.location.href = route("", token)
+        window.location.href = route('order.show', [token])
       },
       openTable(){
         axios.post(route('api.table.openTable',this.table)).then(
