@@ -58,6 +58,7 @@ return[
         "tableIndex",
         "tableShow",
         "dishIndex",
+        "reservationShow"
 
     ],
     "customer"=>[

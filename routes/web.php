@@ -42,6 +42,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/reservation/index', 'ReservationController@index')->name('reservation.index');
     Route::get('/reservation/user-show/{id}', 'ReservationController@showUser')->name('reservation.showUser')
         ->middleware('permission:onlineReservationShow','myReservation');
+    Route::get('/reservation/show/{id}', 'ReservationController@showWaiter')->name('reservation.showWaiter')
+        ->middleware('permission:reservationShow');
     Route::get('/menu-admin', 'DishController@adminMenu')->name('menu.admin')->middleware('permission:tableIndex');
     Route::get('/dish/edit/{id}', 'DishController@edit')->name('dish.edit')->middleware('permission:dishEdit');
     Route::get('/dish/create', 'DishController@create')->name('dish.create')->middleware('permission:dishCreate');
