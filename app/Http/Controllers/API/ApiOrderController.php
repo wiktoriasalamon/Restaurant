@@ -47,12 +47,14 @@ class ApiOrderController extends Controller
     public function fetchOpenOrderByGivenTable($id)
     {
         try {
-            return response()->json(Order::statusNotEqual(StatusTypesInterface::TYPE_FINISHED)
+            $orders = Order::statusNotEqual(StatusTypesInterface::TYPE_FINISHED)
                 ->orderedLocal()
                 ->where("table_id", $id)
                 ->get()
-                ->load("check"),
-                200);
+                ->load("check");
+            return response()->json(
+                $this->transStatus($orders), 200);
+
         } catch (Exception $e) {
             Log::notice("Error :" . $e);
             Log::notice("Error :" . $e->getMessage());
@@ -69,11 +71,12 @@ class ApiOrderController extends Controller
     public function orderWithStatus($type)
     {
         try {
-            return response()->json(Order::status($type)
+            $orders = Order::status($type)
                 ->statusNotEqual(StatusTypesInterface::TYPE_FINISHED)
                 ->with("check")
-                ->get()
-                , 200);
+                ->get();
+            return response()->json(
+                $this->transStatus($orders), 200);
         } catch (Exception $e) {
             Log::notice("Error :" . $e);
             Log::notice("Error :" . $e->getMessage());
@@ -89,11 +92,12 @@ class ApiOrderController extends Controller
     public function myOrder()
     {
         try {
-            return response()->json(Order::statusNotEqual(StatusTypesInterface::TYPE_FINISHED)
+            $orders = Order::statusNotEqual(StatusTypesInterface::TYPE_FINISHED)
                 ->where('worker_id', Auth::id())
                 ->with("check")
-                ->get()
-                , 200);
+                ->get();
+            return response()->json(
+                $this->transStatus($orders), 200);
         } catch (Exception $e) {
             Log::notice("Error :" . $e);
             Log::notice("Error :" . $e->getMessage());
@@ -109,10 +113,11 @@ class ApiOrderController extends Controller
     public function customerOrder()
     {
         try {
-            return response()->json(Order::where('customer_id', Auth::id())
+            $orders = Order::where('customer_id', Auth::id())
                 ->with("check")
-                ->get()
-                , 200);
+                ->get();
+            return response()->json(
+                $this->transStatus($orders), 200);
         } catch (Exception $e) {
             Log::notice("Error :" . $e);
             Log::notice("Error :" . $e->getMessage());
@@ -155,7 +160,13 @@ class ApiOrderController extends Controller
     public function fetchOrderStatusTypes()
     {
         try {
-            return response()->json(StatusTypesInterface::TYPES, 200);
+            $statuses = StatusTypesInterface::TYPES;
+            $trans = [];
+            foreach ($statuses as $status) {
+                array_push($trans, ["status" => $status,
+                    "status_pl" => trans('app.status.' . $status)]);
+            }
+            return response()->json($trans, 200);
         } catch (Exception $e) {
             Log::notice("Error :" . $e);
             Log::notice("Error :" . $e->getMessage());
@@ -250,7 +261,8 @@ class ApiOrderController extends Controller
                         'amount' => $item->amount]);
                     $sum += (float)$item->dish->price * (float)$item->amount;
                 }
-                return response()->json(["dishes" => $dishes, 'sum' => $sum, 'status' => $order->status], 200);
+                return response()->json(["dishes" => $dishes, 'sum' => $sum, 'status' => $order->status, 'status_pl' =>
+                    trans('app.status.' . $order->status)], 200);
             }
             return response()->json('Wystąpił nieoczekiwany błąd', 500);
         } catch (Exception $e) {
@@ -300,6 +312,9 @@ class ApiOrderController extends Controller
             }
             if ($order = Order::where('token', $request->token)->first()) {
                 $items = Check::where('order_id', $order->id)->with('dish')->get();
+                if ($order->status != StatusTypesInterface::TYPE_ORDERED) {
+                    return response()->json("Zamówieniezostało już wykonane, edycja nie jest możliwa", 422);
+                }
                 foreach ($items as $item) {
                     $item->delete();
                 }
@@ -329,8 +344,7 @@ class ApiOrderController extends Controller
             }
             if ($order = Order::where('token', $request->token)->first()) {
                 $items = Check::where('order_id', $order->id)->with('dish')->get();
-                if ($order->status != StatusTypesInterface::TYPE_ORDERED && $order->status !=
-                    StatusTypesInterface::TYPE_IN_PROGRESS) {
+                if ($order->status != StatusTypesInterface::TYPE_ORDERED) {
                     return response()->json("Zamówieniezostało już wykonane, edycja nie jest możliwa", 422);
                 }
                 $order->takeaway = $request->takeaway;
@@ -352,6 +366,14 @@ class ApiOrderController extends Controller
             Log::notice("Error :" . $e->getCode());
             return response()->json('Wystąpił nieoczekiwany błąd', 500);
         }
+    }
+
+    public function transStatus($orders)
+    {
+        foreach ($orders as $order) {
+            $order['status_pl'] = trans('app.status.' . $order->status);
+        }
+        return $orders;
     }
 }
 

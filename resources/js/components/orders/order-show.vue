@@ -56,7 +56,7 @@
           .then(response => {
             this.orderedItems = response.data.dishes;
             this.orderSum = response.data.sum;
-            this.orderStatus = response.data.status
+            this.orderStatus = response.data.status_pl
             console.log(response)
           }).catch(error => {
           console.error(error)
