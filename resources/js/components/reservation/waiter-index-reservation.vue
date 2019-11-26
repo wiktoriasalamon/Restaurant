@@ -50,7 +50,7 @@
 				<template slot="item" slot-scope="props">
 					<tr>
 						<td class="text-xs-left">{{ props.item.reservation.start_time }}</td>
-						<td class="text-xs-left">{{ props.item.reservation.table_id}}</td>
+						<td class="text-xs-left">{{ props.item.size}}</td>
 						<td class="text-xs-left">{{ props.item.reservation.email}}</td>
 						<td class="text-xs-left">{{ props.item.status}}</td>
 						<td class="text-xs-center">
@@ -83,7 +83,7 @@
 				reservations: [],
         headers: [
           { text: 'Początek rezerwacji', value: 'start_time',},
-          { text: 'Numer stolika', value: 'table_id' },
+          { text: 'Ilość osób', value: 'size' },
           { text: 'Adres e-mail', value: 'email' },
           { text: 'Status', value: 'status' },
           { text: 'Akcje' },
@@ -108,6 +108,7 @@
         axios.get(route('api.reservation.workerIndex', date))
           .then(response => {
             this.reservations = response.data.reservations
+						console.log(this.reservations);
           }).catch(error => {
           console.error(error)
         })
