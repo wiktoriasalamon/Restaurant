@@ -81,6 +81,7 @@
                   :rules="[rules.required, rules.emailRules]"
                   label="E-mail"
                   v-model="form.email"
+                  :disabled="mailDisabled"
               ></v-text-field>
               <v-text-field :rules="[rules.required]" label="Ulica" v-model="form.address.street"></v-text-field>
               <v-text-field :rules="[rules.required]"  label="Numer domu "
