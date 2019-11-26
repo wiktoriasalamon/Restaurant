@@ -27,7 +27,6 @@
               v-model="input.email"
           ></v-text-field>
           <v-text-field
-              :rules="[rules.phoneNumber]"
               label="Numer telefonu"
               outlined
               prefix="+48"
@@ -159,9 +158,6 @@
           },
           email: value => {
             return isEmail(value) || alertStrings.invalidEmail;
-          },
-          phoneNumber: value => {
-            return isPhoneNumber(value) || alertStrings.invalidPhoneNumber;
           },
           password: value => {
             return isPassword(value) || alertStrings.invalidPassword;
