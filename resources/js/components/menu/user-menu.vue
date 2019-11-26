@@ -24,7 +24,7 @@
 				:headers="headers"
 				:items="menuItems"
 				:items-per-page="5"
-				class="elevation-1"
+
 			>
 				<template slot="item" slot-scope="props">
 					<tr>
@@ -53,8 +53,8 @@
       }
     },
     beforeMount() {
-      this.menuItems = this.dishes
-      this.allMenuItems = this.dishes
+      this.menuItems = this.dishes;
+      this.allMenuItems = this.dishes;
       this.categoryItems = this.categories
     },
     methods: {
@@ -62,7 +62,7 @@
         if (id === -1) {
           this.menuItems = this.allMenuItems
         } else {
-          this.menuItems = []
+          this.menuItems = [];
           this.allMenuItems.forEach(item => {
             if (item.category_id === id) {
               this.menuItems.push(item)
@@ -76,6 +76,18 @@
   }
 </script>
 
-<style scoped>
+<style >
+	.v-data-table__wrapper{
+		border-radius: inherit;
+	}
+	.v-data-table.theme--light{
+		background: rgba(227, 203, 177, 0.85) !important;
+		border-radius: 20px;
+	}
+	.v-data-table.elevation-1.theme--light{
+		background: rgba(227, 203, 177, 0.85) !important;
+		border-radius: 20px;
+	}
+
 
 </style>

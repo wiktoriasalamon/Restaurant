@@ -1,5 +1,7 @@
 <template>
 	<v-row class="justify-center align-center">
+		<v-col
+			cols="12" ld="6" ma-2 md="8" sm="12" xl="5">
 		<v-data-table
 			:headers="headers"
 			:items="reservations"
@@ -22,13 +24,14 @@
 				</tr>
 			</template>
 		</v-data-table>
+		</v-col>
 	</v-row>
 </template>
 
 <script>
   import {notification} from "../../Notifications";
 
-	export default {
+  export default {
     name: "user-index-reservation",
     data() {
       return {
