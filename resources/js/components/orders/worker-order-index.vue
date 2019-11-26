@@ -31,6 +31,7 @@
 				<template slot="item" slot-scope="props">
 					<tr>
 						<td class="text-xs-left">{{ props.item.table_id }}</td>
+						<td class="text-xs-left">{{onlyTime(props.item.created_at)}}</td>
 						<td class="text-xs-left">{{ props.item.status}}</td>
 						<td class="text-xs-left">{{ props.item.worker_id}}</td>
 						<td class="text-xs-left">{{ props.item.takeaway}}</td>
@@ -54,6 +55,8 @@
 
 <script>
   import {notification} from '../../Notifications.js';
+  import Moment from 'moment';
+
   export default {
     name: "worker-order-index",
     data() {
@@ -61,6 +64,7 @@
         menuItems: [],
         headers: [
           {text: 'Numer stolika', value: 'table_id',},
+          {text: 'Zamówiono', value: 'created-at',},
           {text: 'Status', value: 'status'},
           {text: 'Kelner', value: 'status'},
           {text: 'Zamówienie na wynos', value: 'takeaway'},
@@ -90,6 +94,9 @@
       this.getOrderStatuses()
     },
     methods: {
+      onlyTime(date){
+		  return Moment(date).format('HH:mm');
+	  },
       getOrderStatuses() {
         axios.get(route('api.order.fetchOrderStatusTypes')).then(response => {
           this.orderSatuses = response.data
