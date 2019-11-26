@@ -21,7 +21,7 @@ class UserRequest extends FormRequest
             'address' => 'required',
             'phone' => [
                 'max:12',
-                'regex:/^[+]{1}(48)[0-9]{9}$|^[0-9]{9}$/'
+                'regex:/^$|^[+]{1}(48)[0-9]{9}$|^[0-9]{9}$/'
             ]
         ];
         $rules['address.street'] = ['required','regex:/^[^0-9]+$/','max:50'];
