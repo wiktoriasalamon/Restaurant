@@ -25,6 +25,7 @@ Route::get('/api/order/show/{token}', 'API\ApiOrderController@loadOrder')->name(
 Route::get('/order-show/{token}', 'OrderController@show')->name('order.show');
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/api/user/auth-user', 'API\ApiUserController@myAccount')->name('api.user.authenticatedUser');
+Route::delete('/order/delete/{token}', 'API\ApiOrderController@deleteOrder')->name('api.order.delete');
 
 Auth::routes();
 Route::middleware('auth')->group(function () {
@@ -118,8 +119,7 @@ Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(
     Route::post('/order/worker', 'ApiOrderController@storeNewOrderFromWorker')->name('order.storeNewOrderFromWorker')
         ->middleware('permission:orderCreate');
 
-    Route::delete('/order/delete/{token}', 'ApiOrderController@deleteOrder')->name('order.delete')
-        ->middleware('permission:orderDelete');
+
     Route::post('/order/worker/update', 'ApiOrderController@updateOrderFromWorker')->name('order.updateOrderFromWorker')
         ->middleware('permission:orderEdit');
 
