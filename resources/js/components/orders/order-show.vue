@@ -2,7 +2,7 @@
 	<v-row class="justify-center">
 		<v-card>
 			<v-card-title>
-				<h2>Edycja zamówienia</h2>
+				<h2>Podgląd zamówienia</h2>
 			</v-card-title>
 			<v-card-text>
 				<h5 style="margin-bottom: 2rem;">Status zamówienia:  {{orderStatus}}</h5>
@@ -20,7 +20,7 @@
 						</tr>
 					</template>
 				</v-data-table>
-				<h5 style="margin-top: 2rem;">Suma zamówienia: {{orderSum}}</h5>
+				<h5 style="margin-top: 2rem;">Suma zamówienia: {{orderSum + ' zł'}}</h5>
 			</v-card-text>
 			<v-card-actions>
 				<v-btn @click="goHome">
@@ -39,7 +39,7 @@
       return {
         orderedItemsHeaders:[
           { text: 'Nazwa', value: 'name',},
-          { text: 'Cena', value: 'price' },
+          { text: 'Cena (zł)', value: 'price' },
           { text: 'Ilość', value: '' },
         ],
         orderedItems:[],
@@ -56,7 +56,7 @@
           .then(response => {
             this.orderedItems = response.data.dishes;
             this.orderSum = response.data.sum;
-            this.orderStatus = response.data.status
+            this.orderStatus = response.data.status_pl
             console.log(response)
           }).catch(error => {
           console.error(error)

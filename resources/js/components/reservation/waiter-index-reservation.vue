@@ -1,8 +1,8 @@
 <template>
 	<v-row>
 		<v-row>
-			<v-col>
-				<v-card>
+			<v-col cols="12" sm="10" md="8" lg="5" xl="4">
+				<v-card class="transparent_form">
 					<v-card-text>
 						<h4>W celu wyszukania rezerwacji podaj datę:</h4>
 						<v-menu
@@ -29,16 +29,18 @@
 								<v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
 							</v-date-picker>
 						</v-menu>
-						<v-btn @click="getReservations(date)">
-							Wyszukaj
-						</v-btn>
+						<v-row class="justify-center">
+							<v-btn @click="getReservations(date)" class="yellow_form_button" color="secondary">
+								Wyszukaj
+							</v-btn>
+						</v-row>
 					</v-card-text>
 				</v-card>
 			</v-col>
-			<v-col>
-				<v-btn @click="addReservation">
-					Dodaj rezerwację
-				</v-btn>
+			<v-col cols="12" sm="10" md="8" lg="5" xl="4" class="button_row">
+					<v-btn @click="addReservation" class="yellow_form_button darker_theme">
+						Nowa rezerwacja
+					</v-btn>
 			</v-col>
 		</v-row>
 		<v-row style="width: 100%">
@@ -50,9 +52,9 @@
 				<template slot="item" slot-scope="props">
 					<tr>
 						<td class="text-xs-left">{{ props.item.reservation.start_time }}</td>
-						<td class="text-xs-left">{{ props.item.reservation.table_id}}</td>
+						<td class="text-xs-left">{{ props.item.size}}</td>
 						<td class="text-xs-left">{{ props.item.reservation.email}}</td>
-						<td class="text-xs-left">{{ props.item.status}}</td>
+						<td class="text-xs-left">{{ props.item.status === 'current' ? "nadchodzący" : "archwilany"}}</td>
 						<td class="text-xs-center">
 							<v-icon @click="editItem(props.item.reservation.id)" small>
 								edit
@@ -83,7 +85,7 @@
 				reservations: [],
         headers: [
           { text: 'Początek rezerwacji', value: 'start_time',},
-          { text: 'Numer stolika', value: 'table_id' },
+          { text: 'Ilość osób', value: 'size' },
           { text: 'Adres e-mail', value: 'email' },
           { text: 'Status', value: 'status' },
           { text: 'Akcje' },
@@ -108,6 +110,7 @@
         axios.get(route('api.reservation.workerIndex', date))
           .then(response => {
             this.reservations = response.data.reservations
+						console.log(this.reservations);
           }).catch(error => {
           console.error(error)
         })
@@ -127,4 +130,11 @@
 
 <style scoped>
 
+	.button_row{
+		align-items: center;
+		display: flex;
+	}
+	.darker_theme{
+		background-color: #BB936D !important;
+	}
 </style>

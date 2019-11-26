@@ -37,7 +37,7 @@ const opts = {
             light: {
                 primary: '#00311D',
                 accent: '#FF4081',
-                secondary: '#FFD119',
+                secondary: '#DEBFA1',
                 success: '#4CAF50',
                 info: '#2196F3',
                 warning: '#FB8C00',
