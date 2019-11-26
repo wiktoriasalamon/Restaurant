@@ -38,7 +38,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn @click="close" color="blue darken-1" text>Anuluj</v-btn>
-              <v-btn @click="save" color="blue darken-1" text v- v-bind:loading="loading">Zapisz</v-btn>
+              <v-btn @click="save" color="blue darken-1" text v-bind:loading="loading">Zapisz</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
