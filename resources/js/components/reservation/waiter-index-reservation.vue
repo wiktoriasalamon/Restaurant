@@ -83,7 +83,7 @@
 				reservations: [],
         headers: [
           { text: 'Początek rezerwacji', value: 'start_time',},
-          { text: 'Numer stolika', value: 'table_id' },
+          { text: 'Wielkość rezerwacji', value: 'size' },
           { text: 'Adres e-mail', value: 'email' },
           { text: 'Status', value: 'status' },
           { text: 'Akcje' },
@@ -108,6 +108,7 @@
         axios.get(route('api.reservation.workerIndex', date))
           .then(response => {
             this.reservations = response.data.reservations
+						console.log(this.reservations);
           }).catch(error => {
           console.error(error)
         })
