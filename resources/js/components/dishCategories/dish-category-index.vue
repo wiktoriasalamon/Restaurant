@@ -1,22 +1,13 @@
 <template>
-  <v-data-table
-      :headers="headers"
-      :items="categories"
-      sort-by="id"
-      class="elevation-1"
-  >
-    <template v-slot:top>
-      <v-toolbar flat color="white">
-        <v-toolbar-title>Kategorie dań</v-toolbar-title>
-        <v-divider
-            class="mx-4"
-            inset
-            vertical
-        ></v-divider>
+  <v-row class="justify-center align-center">
+  <v-col cols="12" lg="5" ma-2 md="8" sm="10" xl="4">
+    <v-card class="transparent_form">
+      <v-card-title>
+        Kategorie dań
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on }">
-            <v-btn color="primary" dark class="mb-2" v-on="on">Dodaj kategorię</v-btn>
+            <v-btn class="yellow_form_button" color="secondary" v-on="on">Dodaj kategorię</v-btn>
           </template>
           <v-card>
             <v-card-title>
@@ -27,8 +18,8 @@
               <v-container>
                 <v-row>
                   <v-form
-                      ref="form">
-                    <v-text-field v-model="editedItem.name" v-bind:rules="[required]"
+                    ref="form">
+                    <v-text-field v-model="editedItem.name" v-bind:rules="[required]" outlined
                                   label="Nazwa kategorii" v-bind:error-messages="errors.name"></v-text-field>
                   </v-form>
                 </v-row>
@@ -36,14 +27,20 @@
             </v-card-text>
 
             <v-card-actions>
+              <v-btn @click="close"  text>Anuluj</v-btn>
               <v-spacer></v-spacer>
-              <v-btn @click="close" color="blue darken-1" text>Anuluj</v-btn>
-              <v-btn @click="save" color="blue darken-1" text v-bind:loading="loading">Zapisz</v-btn>
+              <v-btn @click="save" class="yellow_form_button" color="secondary" v-bind:loading="loading">Zapisz</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
-      </v-toolbar>
-    </template>
+      </v-card-title>
+  <v-data-table
+      :headers="headers"
+      :items="categories"
+      sort-by="id"
+      class="elevation-1"
+  >
+
     <template v-slot:item.action="{ item }">
       <v-icon
           small
@@ -60,6 +57,9 @@
       </v-icon>
     </template>
   </v-data-table>
+    </v-card>
+  </v-col>
+  </v-row>
 </template>
 
 <script>
