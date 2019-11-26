@@ -1,36 +1,42 @@
 <template>
-  <v-card>
-    <v-col class="justify-center align-center">
-      <v-card-title>
-        Dania
-        <v-spacer></v-spacer>
-        <v-btn @click="addDish">Dodaj danie</v-btn>
-      </v-card-title>
-      <v-card-text>
-        <v-data-table
-            :headers="headers"
-            :items="menuItems"
-            :items-per-page="-1"
-            class="elevation-1"
-        >
-          <template slot="item" slot-scope="props">
-            <tr>
-              <td class="text-xs-left">{{ props.item.name }}</td>
-              <td class="text-xs-left">{{ props.item.price}}</td>
-              <td class="text-xs-center">
-                <v-icon @click="editItem(props.item.id)" small>
-                  edit
-                </v-icon>
-                <v-icon @click="deleteItem(props.item)" small>
-                  delete
-                </v-icon>
-              </td>
-            </tr>
-          </template>
-        </v-data-table>
-      </v-card-text>
+  <v-row class="justify-center align-center">
+    <v-col cols="12" lg="5" ma-2 md="8" sm="10" xl="4">
+      <v-card class="transparent_form">
+        <v-col class="justify-center align-center">
+          <v-card-title>
+            Dania
+            <v-spacer></v-spacer>
+            <v-btn @click="addDish" class="yellow_form_button" color="secondary">Dodaj danie</v-btn>
+          </v-card-title>
+          <v-card-text>
+            <v-data-table
+              :headers="headers"
+              :items="menuItems"
+              :items-per-page="5"
+              class="elevation-1"
+            >
+              <template slot="item" slot-scope="props">
+                <tr>
+                  <td class="text-xs-left">{{ props.item.name }}</td>
+                  <td class="text-xs-left">{{ props.item.price}}</td>
+                  <td class="text-xs-center">
+                    <v-icon @click="editItem(props.item.id)" small>
+                      edit
+                    </v-icon>
+                    <v-icon @click="deleteItem(props.item)" small>
+                      delete
+                    </v-icon>
+                  </td>
+                </tr>
+              </template>
+            </v-data-table>
+          </v-card-text>
+        </v-col>
+      </v-card>
     </v-col>
-  </v-card>
+  </v-row>
+
+
 </template>
 
 <script>

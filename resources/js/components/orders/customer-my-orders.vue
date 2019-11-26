@@ -1,7 +1,7 @@
 <template>
 	<v-row class="justify-center align-center">
 		<v-col
-			cols="12" ld="6" ma-2 md="8" sm="12" xl="5">
+			cols="12" lg="6" ma-2 md="8" sm="12" xl="5">
 
 				<v-data-table
 					:expanded.sync="expanded"
