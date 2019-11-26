@@ -29,6 +29,8 @@
 					<v-row class="mx-1" style="margin-bottom: 2rem; ">
 						<v-select
 							:items="statusItems"
+							item-value = "status"
+							item-text = "status_pl"
 							label="Status"
 							v-model="orderStatus"
 						></v-select>
