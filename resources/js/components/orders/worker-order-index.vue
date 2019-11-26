@@ -1,26 +1,8 @@
 <template>
-    <v-row class="justify-space-between">
-<!--        <v-col>-->
-<!--            <v-simple-table>-->
-<!--                <template v-slot:default>-->
-<!--                    <thead>-->
-<!--                    <tr>-->
-<!--                        <th class="text-left">Statusy zamówień</th>-->
-<!--                    </tr>-->
-<!--                    </thead>-->
-<!--                    <tbody>-->
-<!--                    <tr>-->
-<!--                        <td @click="getMyOrders()">Moje zamówienia</td>-->
-<!--                    </tr>-->
-<!--                    <tr :key="item.id" v-for="item in orderSatuses">-->
-<!--                        <td @click="getOrders(item)">{{ item }}</td>-->
-<!--                    </tr>-->
-<!--                    </tbody>-->
-<!--                </template>-->
-<!--            </v-simple-table>-->
-<!--        </v-col>-->
-        <v-col>
+    <v-row class="justify-center align-center" >
+        <v-col cols="12" sm="10" md="8" xl="5" lg="6">
             <v-select
+              class="beige_select"
                     :items="orderSatuses"
                     item-value="status"
                     item-text="status_pl"
