@@ -1,7 +1,8 @@
 <template>
-	<v-row class="justify-space-between">
-		<v-col lg="6" md="8" xl="5">
-			<v-card>
+	<v-row class="justify-space-around">
+		<v-col
+			cols="12" ld="4" ma-2 md="5" sm="8" xl="3">
+			<v-card class="transparent_form">
 				<v-card-title>
 					Moje konto
 				</v-card-title>
@@ -10,58 +11,67 @@
 						<v-text-field
 							:rules="[rules.required]"
 							label="Imię"
+							outlined
 							v-model="form.name">
 						</v-text-field>
 						<v-text-field
 							:rules="[rules.required]"
 							label="Nazwisko"
-							v-model="form.surname">>
+							outlined
+							v-model="form.surname">
 						</v-text-field>
 						<v-text-field
 							:rules="[rules.required, rules.emailRules]"
 							label="E-mail"
+							outlined
 							v-model="form.email">
-
 						</v-text-field>
 						<v-text-field
 							:rules="[rules.required, rules.phoneMax12]"
 							label="Numer telefonu"
+							outlined
 							v-model="form.phone">
-
 						</v-text-field>
 						<v-text-field
 							:rules="[rules.required]"
 							label="Ulica"
+							outlined
 							v-model="form.address.street">
 						</v-text-field>
 						<v-text-field
 							label="Numer domu "
+							outlined
 							v-model="form.address.houseNumber">
 						</v-text-field>
 						<v-text-field
 							label="Numer mieszkania"
+							outlined
 							v-model="form.address.apartmentNumber">
 						</v-text-field>
 						<v-text-field
 							:rules="[rules.required]"
 							label="Miejscowość"
+							outlined
 							v-model="form.address.city">
 						</v-text-field>
 						<v-text-field
 							:rules="[rules.required, rules.postCodeFormat]"
 							label="Kod pocztowy"
+							outlined
 							v-model="form.address.postCode">
-
 						</v-text-field>
-						<v-btn @click="save">
-							Zapisz
-						</v-btn>
+						<v-row class="justify-center">
+							<v-btn @click="save" class="yellow_form_button" color="secondary">
+								Zapisz
+							</v-btn>
+						</v-row>
 					</v-form>
 				</v-card-text>
 			</v-card>
 		</v-col>
-		<v-col>
-			<v-card>
+		<v-col
+			cols="12" ld="4" ma-2 md="5" sm="8" xl="3">
+			<v-card class="transparent_form">
 				<v-card-text>
 					<v-form>
 						<v-text-field
@@ -70,6 +80,7 @@
 							:type="show1 ? 'text' : 'password'"
 							@click:append="show1 = !show1"
 							label="Stare hasło"
+							outlined
 							v-model="passwordForm.oldPassword">
 						</v-text-field>
 						<v-text-field
@@ -78,6 +89,7 @@
 							:type="show2 ? 'text' : 'password'"
 							@click:append="show2 = !show2"
 							label="Nowe hasło"
+							outlined
 							v-model="passwordForm.newPassword">
 						</v-text-field>
 						<v-text-field
@@ -86,11 +98,15 @@
 							:type="show3 ? 'text' : 'password'"
 							@click:append="show3 = !show3"
 							label="Powtórz hasło"
+							outlined
 							v-model="passwordForm.repeatNewPassword">
 						</v-text-field>
-						<v-btn @click="savePassword">
-							Zapisz
-						</v-btn>
+						<v-row class="justify-center">
+							<v-btn @click="savePassword" class="yellow_form_button" color="secondary">
+								Zapisz
+							</v-btn>
+						</v-row>
+
 					</v-form>
 				</v-card-text>
 			</v-card>
@@ -109,20 +125,20 @@
           name: '',
           surname: '',
           email: '',
-					address:{
+          address: {
             street: '',
-						houseNumber: '',
+            houseNumber: '',
             apartmentNumber: '',
             postCode: '',
             city: '',
-					},
+          },
           phone: '',
         },
-        passwordForm:{
+        passwordForm: {
           oldPassword: '',
           newPassword: '',
           repeatNewPassword: ''
-				},
+        },
         errors: {
           name: '',
           surname: '',
@@ -144,24 +160,24 @@
         show3: false,
       }
     },
-    beforeMount(){
+    beforeMount() {
       this.getData()
     },
     methods: {
-      getData(){
+      getData() {
         axios.get(route('api.user.authenticatedUser'))
           .then(response => {
             const entries = Object.entries(response.data);
             if (response.data) {
               for (let [key, value] of entries) {
-                	if(key === 'address'){
-                	  let address = Object.entries(JSON.parse(value));
-                	  for(let [addressKey, addressValue] of address){
-                      this.form.address[addressKey] = addressValue
-										}
-									}else{
-                    this.form[key] = value;
-									}
+                if (key === 'address') {
+                  let address = Object.entries(JSON.parse(value));
+                  for (let [addressKey, addressValue] of address) {
+                    this.form.address[addressKey] = addressValue
+                  }
+                } else {
+                  this.form[key] = value;
+                }
 
               }
             }
@@ -169,8 +185,8 @@
           console.error(error)
         })
       },
-			save(){
-        axios.put(route('api.user.updateUserMyAccount', this.form.id),{
+      save() {
+        axios.put(route('api.user.updateUserMyAccount', this.form.id), {
           name: this.form.name,
           surname: this.form.surname,
           address: this.form.address,
@@ -179,7 +195,9 @@
         }).then(
           response => {
             Vue.toasted.success(response.data.message).goAway(5000);
-            setTimeout(function(){window.location.href=route('home')} , 5000);
+            setTimeout(function () {
+              window.location.href = route('home')
+            }, 5000);
           },
           error => {
             console.log(error.response);
@@ -190,15 +208,17 @@
             }
           })
       },
-			savePassword(){
-        axios.put(route('api.user.changePasswordMyAccount', this.form.id),{
+      savePassword() {
+        axios.put(route('api.user.changePasswordMyAccount', this.form.id), {
           oldPassword: this.passwordForm.oldPassword,
           newPassword: this.passwordForm.newPassword,
           newPasswordRepeated: this.passwordForm.repeatNewPassword,
         }).then(
           response => {
             Vue.toasted.success(response.data.message).goAway(5000);
-            setTimeout(function(){window.location.href=route('home')} , 5000);
+            setTimeout(function () {
+              window.location.href = route('home')
+            }, 5000);
           },
           error => {
             console.log(error.response);
@@ -208,7 +228,7 @@
               Vue.toasted.error(error.response.data).goAway(3000);
             }
           })
-			}
+      }
     }
   }
 </script>

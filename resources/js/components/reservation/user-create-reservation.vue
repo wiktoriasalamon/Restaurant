@@ -1,6 +1,8 @@
 <template>
 	<v-row class="justify-center align-center">
-		<v-card>
+		<v-col
+			cols="12" ld="4" ma-2 md="5" sm="8" xl="3">
+			<v-card class="transparent_form">
 			<v-card-title>
 				Formularz rezerwacji
 			</v-card-title>
@@ -28,6 +30,7 @@
 							label="Wybierz datę"
 							append-icon="event"
 							readonly
+							outlined
 							v-on="on"
 						></v-text-field>
 					</template>
@@ -54,6 +57,7 @@
 								label="Wybierz godzinę"
 								append-icon="access_time"
 								readonly
+								outlined
 								v-on="on"
 							></v-text-field>
 						</template>
@@ -72,10 +76,11 @@
 						></v-time-picker>
 					</v-menu>
 			</v-card-text>
-			<v-card-actions>
-				<v-btn @click="send">Zarezerwuj</v-btn>
+			<v-card-actions class="justify-center">
+				<v-btn @click="send" class="yellow_form_button" color="secondary">Zarezerwuj</v-btn>
 			</v-card-actions>
 		</v-card>
+		</v-col>
 	</v-row>
 </template>
 

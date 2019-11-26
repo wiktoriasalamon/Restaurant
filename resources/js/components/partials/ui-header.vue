@@ -3,7 +3,7 @@
 		<v-col cols="12" >
 			<v-row no-gutters class="justify-space-between">
 				<v-col>
-					<v-row>
+					<v-row class="mx-3">
 						<v-col v-if="notLogged" class="text-end">
 							<v-btn text @click="register">Zarejestruj</v-btn>
 							<v-btn @click="login"  color="#CBA789">Zaloguj się</v-btn>
@@ -12,8 +12,7 @@
 							<v-menu offset-y>
 								<template v-slot:activator="{ on }">
 									<v-btn
-										class="yellow_form_button"
-										text
+										color="#CBA789"
 										v-on="on"
 									>{{loggedUser.name + " "}}{{loggedUser.surname}}
 									</v-btn>
@@ -158,13 +157,17 @@
 
 	.menu {
 		margin-bottom: 0;
-		margin-top: 0;
+		margin-top: -10px;
 	}
 
 	.menu_links.v-sheet.v-sheet--tile.theme--light.v-toolbar {
 		background: none;
 		border: none;
 		box-shadow: none;
+	}
+
+	.menu_links{
+		height: 50px !important;
 	}
 
 	.menu_item{
