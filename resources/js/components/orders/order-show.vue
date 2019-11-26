@@ -2,7 +2,7 @@
 	<v-row class="justify-center">
 		<v-card>
 			<v-card-title>
-				<h2>Edycja zamówienia</h2>
+				<h2>Podgląd zamówienia</h2>
 			</v-card-title>
 			<v-card-text>
 				<h5 style="margin-bottom: 2rem;">Status zamówienia:  {{orderStatus}}</h5>
