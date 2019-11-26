@@ -23,7 +23,7 @@ class ApiReservationController extends Controller
            if($this->getReservationService()->storeCustomerReservation($request)){
                 return response()->json(['message' => "Rezerwacja została pomyślnie zapisana."], 200);
             }
-            return response()->json(['message' => "Brak dostępnego stolika w podanym terminie.", 500]);
+            return response()->json(["Brak dostępnego stolika w podanym terminie."], 500);
         } catch (\Exception $exception) {
             Log::notice("Error :" . $exception);
             Log::notice("Error :" . $exception->getMessage());
@@ -105,7 +105,7 @@ class ApiReservationController extends Controller
      */
     public function fetchReservation(int $id)
     {
-        return response()->json(['reservation' => Reservation::with('table')->findOrFail($id)], 200);
+        return response()->json(['reservation' => (new ReservationService())->fetchReservation($id)], 200);
     }
 
     /**

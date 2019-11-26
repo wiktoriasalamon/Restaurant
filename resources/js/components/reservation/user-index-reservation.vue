@@ -11,6 +11,14 @@
 					<td class="text-xs-left">{{ props.item.reservation.date }}</td>
 					<td class="text-xs-left">{{ props.item.reservation.start_time}}</td>
 					<td class="text-xs-left">{{props.item.reservation.table_id }}</td>
+					<td class="text-xs-left">
+						<v-icon @click="show(props.item.reservation.id)"  small>
+							visibility
+						</v-icon>
+						<v-icon @click="cancelReservation(props.item.reservation.id)"  small>
+							delete
+						</v-icon>
+					</td>
 				</tr>
 			</template>
 		</v-data-table>
@@ -18,7 +26,9 @@
 </template>
 
 <script>
-  export default {
+  import {notification} from "../../Notifications";
+
+	export default {
     name: "user-index-reservation",
     data() {
       return {
@@ -27,6 +37,7 @@
           { text: 'Data', value: 'date',},
           { text: 'Godzina', value: 'start_time' },
           { text: 'Numer stolika', value: 'table_id' },
+          { text: 'Akcje', value: 'action' },
         ],
       }
     },
@@ -38,8 +49,6 @@
 				.listen('ReservationChanged', (e) => {
 						this.getReservations()
 				});
-
-
 		},
 		methods:{
       getReservations(){
@@ -47,8 +56,20 @@
           .then((response) => {
             this.reservations = response.data.reservations
           }).catch((error) => {
-          	console.log(error)
+          	console.error(error)
         })
+			},
+			show(id) {
+      	window.location.replace(route('reservation.showUser', id));
+			},
+			cancelReservation(id) {
+				axios.delete(route('api.reservation.delete', id)).then(response => {
+					notification(response.data, 'success');
+					window.location.replace(route('reservation.indexUser'));
+				}).catch(error => {
+					console.error(error);
+					notification(error.response.data, 'error');
+				})
 			}
 		}
   }

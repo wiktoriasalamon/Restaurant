@@ -4,6 +4,7 @@
 namespace App\Http\Requests\User;
 
 
+use App\Rules\Address;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserRequest extends FormRequest
@@ -19,12 +20,27 @@ class UserRequest extends FormRequest
             'name' => 'required',
             'surname' => 'required',
             'email' => 'required|email',
-            'address' => 'required|json|string',
-            'phone' =>[
+            'address' => 'required',
+            'phone' => [
                 'max:12',
                 'regex:/^[+]{1}(48)[0-9]{9}$|^[0-9]{9}$/'
             ]
         ];
+//        $rules['address']=new Address();
+//        $address=(array)json_decode($this->request->get('address'));
+////        dd($address);
+//        $rules[$address['street']]='required';
+//////        $this->validate($address, ['street' => 'required']);
+///
+        $rules['address.street'] = ['required','regex:/^[a-zA-Z ]+$/','max:50'];
+        $rules['address.houseNumber'] = 'required|numeric';
+        $rules['address.flatNumber'] = 'numeric';
+        $rules['address.city'] =  ['required','regex:/^[a-zA-Z ]+$/','max:50'];
+        $rules['address.postCode'] = [
+            'required',
+            'regex:/^\d{2}-\d{3}$/'
+        ];
+
         return $rules;
 
     }
@@ -34,15 +50,27 @@ class UserRequest extends FormRequest
      */
     public function messages(): array
     {
-        return [
-            'name.required' => 'To pole jest wymagane',
-            'surname.required' => 'To pole jest wymagane',
-            'email.required' => 'To pole jest wymagane',
+        $messages = [
+            'name.required' => trans('app.field.required'),
+            'surname.required' => trans('app.field.required'),
+            'email.required' => trans('app.field.required'),
             'email.email' => 'Niepoprawny adres e-mail',
             'address.required' => 'To pole jest wymagane',
-            'address.json' => 'Nieprawidłowy format',
             'phone.max' => 'Niepoprawna długość numer telefonu',
             'phone.regex' => 'Niepoprawny numer telefonu',
+            'address.street.required' => trans('app.field.required'),
+            'address.street.regex' => trans('app.field.incorrect'),
+            'address.street.max' => trans('app.field.max'),
+            'address.houseNumber.required' => trans('app.field.required'),
+            'address.houseNumber.numeric' => trans('app.field.incorrect'),
+            'address.flatNumber.numeric' => trans('app.field.incorrect'),
+            'address.city.regex' => trans('app.field.incorrect'),
+            'address.city.required' => trans('app.field.required'),
+            'address.city.max' => trans('app.field.max'),
+            'address.postCode.regex' => trans('app.field.incorrect'),
+            'address.postCode.required' => trans('app.field.required'),
+
         ];
+        return $messages;
     }
 }

@@ -111,7 +111,7 @@
           email: '',
 					address:{
             street: '',
-            houseNumber: '',
+						houseNumber: '',
             apartmentNumber: '',
             postCode: '',
             city: '',
@@ -170,12 +170,10 @@
         })
       },
 			save(){
-				let formAddress = this.form.address;
-        formAddress = JSON.stringify(formAddress);
         axios.put(route('api.user.updateUserMyAccount', this.form.id),{
           name: this.form.name,
           surname: this.form.surname,
-          address: formAddress,
+          address: this.form.address,
           phone: this.form.phone,
           email: this.form.email,
         }).then(

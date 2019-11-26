@@ -83,7 +83,7 @@ class User extends Authenticatable implements JWTSubject
         $this->name = $request->name;
         $this->surname = $request->surname;
         $this->email = $request->email;
-        $this->address = $request->address;
+        $this->address = json_encode($request->address);
         $this->phone = $request->phone;
         if (!$this->remember_token) {
             $this->remember_token = Str::random(10);
