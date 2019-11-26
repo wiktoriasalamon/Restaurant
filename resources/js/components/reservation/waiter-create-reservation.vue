@@ -151,9 +151,12 @@
 										max="23:00"
 									></v-time-picker>
 								</v-menu>
-								<v-btn @click="saveReservation">
-									Zarezerwuj
-								</v-btn>
+								<v-row class="justify-center">
+									<v-btn @click="saveReservation" class="yellow_form_button" color="secondary">
+										Zarezerwuj
+									</v-btn>
+								</v-row>
+
 							</v-form>
 						</v-card-text>
 					</v-card>

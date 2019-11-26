@@ -1,27 +1,35 @@
 <template>
-  <v-card md="6">
-    <v-card-title>
-      Rezerwacja
-    </v-card-title>
-    <v-card-text>
-      <v-row md="4">
-        <v-col md="2">
-          <p>Ilośc osób:</p>
-          <p>Godzina rozpoczęcia:</p>
-          <p>Data rezerwacji:</p>
-        </v-col>
-        <v-col md="2">
-          <p>{{ form.tableSize }}</p>
-          <p>{{ form.startTime }}</p>
-          <p>{{ form.date }}</p>
-        </v-col>
-      </v-row>
-    </v-card-text>
-    <v-card-actions>Ż
-      <v-btn @click="goBack">Wróć</v-btn>
-      <v-btn @click="cancelReservation">Odwołaj rezerwację</v-btn>
-    </v-card-actions>
-  </v-card>
+  <v-row class="justify-center align-center">
+    <v-col cols="12" lg="5" md="8" sm="10" xl="4">
+      <v-card class="transparent_form">
+        <v-card-title>
+          Rezerwacja
+        </v-card-title>
+        <v-card-text>
+          <v-row>
+            <v-col cols="12" lg="6" md="8" sm="10" xl="6">
+              <p>Ilośc osób:</p>
+              <p>Godzina rozpoczęcia:</p>
+              <p>Data rezerwacji:</p>
+            </v-col>
+            <v-col cols="12" lg="6" md="8" sm="10" xl="6">
+              <p>{{ form.tableSize }}</p>
+              <p>{{ form.startTime }}</p>
+              <p>{{ form.date }}</p>
+            </v-col>
+          </v-row>
+        </v-card-text>
+        <v-card-actions>
+          <v-row class="justify-space-between">
+            <v-btn @click="goBack" text>Wróć</v-btn>
+            <v-btn @click="cancelReservation" class="yellow_form_button" color="secondary">Odwołaj rezerwację</v-btn>
+          </v-row>
+
+        </v-card-actions>
+      </v-card>
+    </v-col>
+  </v-row>
+
 </template>
 
 <script>
