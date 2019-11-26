@@ -73,7 +73,7 @@
 			</v-col>
 			<v-col cols="12" sm="12" md="12" lg="10" xl="7">
 				<v-row>
-					<v-col>
+					<v-col cols="12" sm="12" md="12" lg="7" xl="6">
 						<v-card class="transparent_form">
 							<v-card-title>
 								Wybrane stoliki
@@ -99,7 +99,7 @@
 							</v-card-text>
 						</v-card>
 					</v-col>
-					<v-col>
+					<v-col cols="12" sm="12" md="12" lg="5" xl="4">
 						<v-card class="transparent_form">
 						<v-card-title>
 							Dane do rezerwacji
@@ -151,9 +151,12 @@
 										max="23:00"
 									></v-time-picker>
 								</v-menu>
-								<v-btn @click="saveReservation">
-									Zarezerwuj
-								</v-btn>
+								<v-row class="justify-center">
+									<v-btn @click="saveReservation" class="yellow_form_button" color="secondary">
+										Zarezerwuj
+									</v-btn>
+								</v-row>
+
 							</v-form>
 						</v-card-text>
 					</v-card>
