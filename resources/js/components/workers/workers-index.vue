@@ -39,7 +39,7 @@
 </template>
 
 <script>
-  import {notification} from "../../Notifications";
+  import {notificationError, notificationSuccess} from "../../Notifications";
 
   export default {
     name: "workers-index",
@@ -108,11 +108,11 @@
       },
       deleteWorker(id) {
         axios.delete(route('api.user.delete', id)).then(response => {
-          notification('Pomyślnie usunięto pracownika', 'success');
+          notificationSuccess(response.data);
           window.location.replace(route('worker.index'));
         }).catch(error => {
-          notification('Wystąpił błąd podczas usuwania pracownika', 'error');
           console.error(error.response);
+          notificationError(error.response.data);
         });
       }
     }

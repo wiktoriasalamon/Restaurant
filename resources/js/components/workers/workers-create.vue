@@ -34,7 +34,7 @@
     </v-card-text>
     <v-card-actions>
       <v-btn @click="cancel">Anuluj</v-btn>
-      <v-btn v-bind:loadin="loading" @click="save">Zapisz</v-btn>
+      <v-btn v-bind:loading="loading" @click="save">Zapisz</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -111,8 +111,8 @@
         }
       },
       save() {
-        this.loading = true;
         if (this.$refs.form.validate()) {
+          this.loading = true;
           let data = {};
           let entries = Object.entries(this.form);
           for (let [key, v] of entries) {
