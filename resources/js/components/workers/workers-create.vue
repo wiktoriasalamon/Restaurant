@@ -111,8 +111,8 @@
         }
       },
       save() {
-        this.loading = true;
         if (this.$refs.form.validate()) {
+          this.loading = true;
           let data = {};
           let entries = Object.entries(this.form);
           for (let [key, v] of entries) {

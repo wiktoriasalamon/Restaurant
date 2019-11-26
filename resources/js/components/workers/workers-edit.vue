@@ -31,7 +31,7 @@
     </v-card-text>
     <v-card-actions>
       <v-btn @click="cancel">Anuluj</v-btn>
-      <v-btn @click="save">Zapisz</v-btn>
+      <v-btn @click="save" v-bind:loading="loading">Zapisz</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -114,6 +114,7 @@
       },
       save() {
         if (this.$refs.form.validate()) {
+          this.loading = true;
           let data = {};
           let entries = Object.entries(this.form);
           for (let [key, v] of entries) {
@@ -121,7 +122,7 @@
             data[key] = value;
           }
           axios.put(route('api.user.updateWorker', this.id), data).then(response => {
-            notification('Pomyślnie edytowano pracownika', 'success');
+            notification(response.data.message, 'success');
             window.location.replace(route('worker.index'));
           }).catch(error => {
             console.error(error.response);
@@ -131,6 +132,8 @@
               notification('Wystąpił błąd podczas dodawania pracownika', 'error');
               this.fillErrors(error);
             }
+          }).finally(() => {
+            this.loading = false;
           });
         }
       }
