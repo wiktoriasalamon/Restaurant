@@ -39,7 +39,7 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn @click="close" color="blue darken-1" text>Anuluj</v-btn>
-                <v-btn @click="save" color="blue darken-1" text>Zapisz</v-btn>
+                <v-btn v-bind:loading="loading" @click="save" color="blue darken-1" text>Zapisz</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -66,12 +66,13 @@
 </template>
 
 <script>
-  import {notification} from "../../Notifications";
+  import {notification, notificationError, notificationSuccess} from "../../Notifications";
 
   export default {
     name: "admin-tables-index",
     data() {
       return {
+        loading: false,
         dialog: false,
         editedIndex: -1,
         tables: [],
@@ -106,10 +107,10 @@
       deleteItem(item) {
         axios.delete(route('api.table.delete', item.id))
           .then(response => {
-						notification("Pomyślnie usunięto stolik", 'success');
+            notificationSuccess(response.data);
             this.getData()
           }).catch(error => {
-					notification("Wystąpił błąd podczas usuwania stolika", 'error');
+					notificationError(error.response.data);
           console.error(error)
         })
 
@@ -152,29 +153,42 @@
         if (this.$refs.form.validate() !== true) {
           return;
         }
+        this.loading = true;
         if (this.editedIndex > -1) {
           axios.post(route('api.table.update'), {
             id: this.editedItem.id,
             size: this.editedItem.size
           }).then(response => {
-						notification("Pomyślnie edytowano stolik", 'success');
+            notificationSuccess(response.data);
             this.getData();
             this.close();
           }).catch(error => {
-            this.fillErrors(error.response.data.errors);
-            notification("Wystąpił błąd podczas edytowania stolika", 'error');
             console.error(error.response);
+            if (error.response.statusCode === 500) {
+              notificationError(error.response.data);
+            } else {
+              notification("Wystąpił błąd podczas edytowania stolika", 'error');
+              this.fillErrors(error.response.data.errors);
+            }
+          }).finally(() => {
+            this.loading = false;
           });
         } else {
           axios.post(route('api.table.store'), {size: this.editedItem.size})
             .then(response => {
-							notification("Pomyślnie dodano stolik", 'success');
+							notificationSuccess(response.data);
               this.getData();
               this.close();
             }).catch(error => {
-							this.fillErrors(error.response.data.errors);
-							notification("Wystąpił błąd podczas dodawania stolika", 'error');
-							console.error(error.response);
+            console.error(error.response);
+            if (error.response.statusCode === 500) {
+              notificationError(error.response.data);
+            } else {
+              notification("Wystąpił błąd podczas dodawania stolika", 'error');
+              this.fillErrors(error.response.data.errors);
+            }
+          }).finally(() => {
+            this.loading = false;
           });
         }
       },

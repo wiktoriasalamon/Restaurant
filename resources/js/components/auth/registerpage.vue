@@ -27,7 +27,7 @@
               v-model="input.email"
           ></v-text-field>
           <v-text-field
-              :rules="[rules.required, rules.phoneNumber]"
+              :rules="[rules.phoneNumber]"
               label="Numer telefonu"
               outlined
               prefix="+48"
