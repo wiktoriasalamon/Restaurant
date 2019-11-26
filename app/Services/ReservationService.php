@@ -24,6 +24,7 @@ class ReservationService
      * @param string $time
      * @param string $date
      * @return bool
+     * @codeCoverageIgnore
      */
     public function timeForSameDay(string $time, string $date): bool
     {
@@ -53,6 +54,7 @@ class ReservationService
     /**
      * @param string $time
      * @return bool
+     * @codeCoverageIgnore
      */
     public function openHours(string $time): bool
     {
