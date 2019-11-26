@@ -8,7 +8,7 @@
       <v-stepper-step step="3">Potwierdź zamówienie</v-stepper-step>
     </v-stepper-header>
     <v-stepper-items>
-      <v-stepper-content class="background" step="1">
+      <v-stepper-content step="1">
         <v-card class="background">
           <v-row class="justify-space-between">
             <v-col>
@@ -67,48 +67,59 @@
               </v-data-table>
             </v-col>
           </v-row>
+          <v-card-actions>
+            <v-row class="justify-space-between" style="margin:0.5rem;">
+              <v-spacer></v-spacer>
+              <v-btn @click="goToStep2" color="secondary">Dalej</v-btn>
+            </v-row>
+          </v-card-actions>
         </v-card>
-        <v-btn @click="goToStep2" color="secondary">Dalej</v-btn>
       </v-stepper-content>
-      <v-stepper-content class="background" step="2">
-        <v-card>
-          <v-card-title>Dane do zamówienia</v-card-title>
-          <v-card-text>
-            <v-form
-              ref="form"
-            >
-              <v-text-field
-                  :rules="[rules.required, rules.emailRules]"
-                  label="E-mail"
-                  v-model="form.email"
-                  :disabled="mailDisabled"
-              ></v-text-field>
-              <v-text-field :rules="[rules.required]" label="Ulica" v-model="form.address.street"></v-text-field>
-              <v-text-field :rules="[rules.required]"  label="Numer domu "
-                            v-model="form.address.houseNumber"></v-text-field>
-              <v-text-field label="Numer mieszkania"
-                            v-model="form.address.apartmentNumber"></v-text-field>
-              <v-text-field
-                  :rules="[rules.required]"
-                  label="Miejscowość"
-                  v-model="form.address.city"
-              ></v-text-field>
-              <v-text-field
-                  :rules="[rules.required, rules.postCodeFormat]"
-                  label="Kod pocztowy"
-                  v-model="form.address.postCode"
-              ></v-text-field>
-            </v-form>
-          </v-card-text>
-        </v-card>
-        <v-btn @click="saveAddress" color="secondary">Dalej</v-btn>
-        <v-btn @click="e1 = 1" text>Wróć</v-btn>
+      <v-stepper-content step="2">
+        <v-row class="justify-center">
+          <v-col cols="12" sm="10" md="8" lg="5" xl="4">
+            <v-card class="transparent_form">
+              <v-card-title>Dane do zamówienia</v-card-title>
+              <v-card-text>
+                <v-form
+                  ref="form"
+                >
+                  <v-text-field
+                    :rules="[rules.required, rules.emailRules]"
+                    label="E-mail"
+                    v-model="form.email"
+                    :disabled="mailDisabled"
+                  ></v-text-field>
+                  <v-text-field :rules="[rules.required]" label="Ulica" v-model="form.address.street"></v-text-field>
+                  <v-text-field :rules="[rules.required]"  label="Numer domu "
+                                v-model="form.address.houseNumber"></v-text-field>
+                  <v-text-field label="Numer mieszkania"
+                                v-model="form.address.apartmentNumber"></v-text-field>
+                  <v-text-field
+                    :rules="[rules.required]"
+                    label="Miejscowość"
+                    v-model="form.address.city"
+                  ></v-text-field>
+                  <v-text-field
+                    :rules="[rules.required, rules.postCodeFormat]"
+                    label="Kod pocztowy"
+                    v-model="form.address.postCode"
+                  ></v-text-field>
+                </v-form>
+              </v-card-text>
+              <v-card-actions>
+                <v-row class="justify-space-between">
+                  <v-btn @click="e1 = 1" text>Wróć</v-btn>
+                  <v-btn @click="saveAddress" color="secondary">Dalej</v-btn>
+                </v-row>
+              </v-card-actions>
+            </v-card>
+          </v-col>
+        </v-row>
       </v-stepper-content>
-      <v-stepper-content class="background" step="3">
-        <v-card class="background">
-          <v-row class="justify-space-between">
-            <v-col>
-              <v-card class="mx-auto" max-width="375">
+      <v-stepper-content step="3">
+          <v-row class="justify-space-around">
+            <v-col cols="12" sm="10" md="7" lg="4" xl="3">
                 <v-list two-line>
                   <v-list-item>
                     <v-list-item-icon>
@@ -153,9 +164,8 @@
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>
-              </v-card>
             </v-col>
-            <v-col>
+            <v-col cols="12" sm="10" md="7" lg="5" xl="4">
               <v-data-table
                   :headers="summaryOrderHeaders"
                   :items="ordered"
@@ -164,10 +174,14 @@
               ></v-data-table>
             </v-col>
           </v-row>
-        </v-card>
 
-        <v-btn @click="completeOrderOnline" color="secondary" v-bind:loading="loading">Zamów</v-btn>
-        <v-btn @click="e1 = 2" text>Wróć</v-btn>
+            <v-row class="justify-space-between" style="margin: 0.5rem">
+              <v-btn @click="e1 = 2" text>Wróć</v-btn>
+              <v-btn @click="completeOrderOnline" color="secondary" v-bind:loading="loading">Zamów</v-btn>
+            </v-row>
+
+
+
       </v-stepper-content>
     </v-stepper-items>
   </v-stepper>
