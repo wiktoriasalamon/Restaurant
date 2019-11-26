@@ -44,6 +44,7 @@
     name: "workers-edit",
     data() {
       return {
+        loading: false,
         rules: {
           required: value => !!value || "To pole jest wymagane",
           emailRules: v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'Niepoprawny adres email',
