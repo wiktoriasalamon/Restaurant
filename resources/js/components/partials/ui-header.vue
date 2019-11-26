@@ -18,7 +18,7 @@
 									</v-btn>
 								</template>
 								<v-list>
-									<v-list-item v-for="(item, id) in userMenu" :key="id" @click="goTo(item.link)">
+									<v-list-item :key="id" @click="goTo(item.link)" v-for="(item, id) in loggedUserMenu">
 										<v-list-item-title>{{ item.text }}</v-list-item-title>
 									</v-list-item>
 								</v-list>
@@ -26,7 +26,7 @@
 						</v-col>
 					</v-row>
 					<v-row class="menu">
-						<v-col>
+						<v-col class="hidden-sm-and-down">
 							<v-toolbar class="menu_links">
 								<v-toolbar-items class="menu_links_full">
 									<v-btn
@@ -39,6 +39,20 @@
 									</v-btn>
 								</v-toolbar-items>
 							</v-toolbar>
+						</v-col>
+						<v-col class="hidden-md-and-up">
+							<v-menu class="responsive_menu" offset-y style="left:0 ;">
+								<template v-slot:activator="{ on }">
+									<v-btn class="responsive_menu_button" v-on="on">
+										<v-icon>menu</v-icon>
+									</v-btn>
+								</template>
+								<v-list class="responsive_menu_list" id="responsive">
+									<v-list-item :key="id" @click="goTo(item.link)" v-for="(item, id) in menu">
+										<v-list-item-title>{{ item.text }}</v-list-item-title>
+									</v-list-item>
+								</v-list>
+							</v-menu>
 						</v-col>
 					</v-row>
 				</v-col>
@@ -89,6 +103,11 @@
           {id: 4, text: "Zarezerwuj", link: route("reservation.createUser")},
           {id: 5, text: "Kontakt", link: route("contact")}
         ],
+				employerMenu: [
+          {id: 1, text: "moje konto", link: route("user.myAccount")},
+          {id: 2, text: "wyloguj", link: "logout"}
+				],
+				loggedUserMenu:[],
         menu: [],
         notLogged: true,
         loggedUser: ""
@@ -98,15 +117,19 @@
       switch (this.role) {
         case "guest":
           this.menu = this.questMenu;
+          this.loggedUserMenu = this.userMenu;
           break;
         case "admin":
           this.menu = this.adminMenu;
+          this.loggedUserMenu = this.employerMenu;
           break;
         case "worker":
           this.menu = this.waiterMenu;
+          this.loggedUserMenu = this.employerMenu;
           break;
         case "customer":
           this.menu = this.customerMenu;
+          this.loggedUserMenu = this.userMenu;
           break;
       }
       if (this.user !== null) {
@@ -138,7 +161,7 @@
   };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 	.v-card__text.header-text {
 		color: white;
 		background-color: #8a5e4e;
@@ -172,15 +195,18 @@
 		color: white !important;
 	}
 
-	.logo_layout{
-		display: flex;
-		justify-content: center;
-		align-items: center;
+	.responsive_menu_button{
+		width: 100%;
+		color: white !important;
+		background-color: #8a5e4e !important;
+		box-shadow: none;
+		border: none;
 	}
-	.logo{
-		height: 80%;
-		margin: auto;
-		border-radius: 1000px !important;
-		width: 8.5rem;
+	#responsive{
+		background-color: #8a5e4e !important;
+		width: 100%;
+		.v-list-item__title{
+			color: white !important;
+		}
 	}
 </style>
