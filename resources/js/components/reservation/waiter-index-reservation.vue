@@ -52,7 +52,7 @@
 						<td class="text-xs-left">{{ props.item.reservation.start_time }}</td>
 						<td class="text-xs-left">{{ props.item.size}}</td>
 						<td class="text-xs-left">{{ props.item.reservation.email}}</td>
-						<td class="text-xs-left">{{ props.item.status === current ? "nadchodzący" : "archwilany"}}</td>
+						<td class="text-xs-left">{{ props.item.status === 'current' ? "nadchodzący" : "archwilany"}}</td>
 						<td class="text-xs-center">
 							<v-icon @click="editItem(props.item.reservation.id)" small>
 								edit
