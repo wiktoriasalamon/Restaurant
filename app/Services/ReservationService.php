@@ -105,7 +105,8 @@ class ReservationService
             if ($nowDate == $reservation->date && Carbon::now()->format('H:i') > $reservation->start_time) {
                 $status = self::STATUS_FINISHED;
             }
-            array_push($reservationWithStatus, ['reservation' => $reservation, 'status' => $status]);
+            $tableSize=Table::findOrFail($reservation->table_id)->size;
+            array_push($reservationWithStatus, ['reservation' => $reservation, 'status' => $status, 'size'=>$tableSize]);
         }
         return $reservationWithStatus;
     }
