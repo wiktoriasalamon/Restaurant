@@ -2,16 +2,11 @@
 	<v-row no-gutters class="header">
 		<v-col cols="12" >
 			<v-row no-gutters class="justify-space-between">
-				<v-col cols="3" class="logo_layout">
-					<v-card class="logo">
-						<v-card-title>W-17</v-card-title>
-					</v-card>
-				</v-col>
-				<v-col cols="9">
+				<v-col>
 					<v-row>
 						<v-col v-if="notLogged" class="text-end">
 							<v-btn text @click="register">Zarejestruj</v-btn>
-							<v-btn @click="login" class="yellow_form_button" color="secondary">Zaloguj się</v-btn>
+							<v-btn @click="login"  color="#CBA789">Zaloguj się</v-btn>
 						</v-col>
 						<v-col v-else class="text-end">
 							<v-menu offset-y>
