@@ -40,7 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/reservation/create-user', 'ReservationController@createUser')->name('reservation.createUser')->middleware('permission:reservationCreate|onlineReservationCreate');;
     Route::get('/reservation/index', 'ReservationController@index')->name('reservation.index');
     Route::get('/reservation/user-show/{id}', 'ReservationController@showUser')->name('reservation.showUser')
-        ->middleware('permission:onlineReservationShow');
+        ->middleware('permission:onlineReservationShow','myReservation');
     Route::get('/menu-admin', 'DishController@adminMenu')->name('menu.admin')->middleware('permission:tableIndex');
     Route::get('/dish/edit/{id}', 'DishController@edit')->name('dish.edit')->middleware('permission:dishEdit');
     Route::get('/dish/create', 'DishController@create')->name('dish.create')->middleware('permission:dishCreate');
@@ -125,7 +125,7 @@ Route::name('api.')->prefix('api')->namespace('API')->middleware('auth')->group(
         Route::post('/store-as-worker', 'ApiReservationController@storeAsWorker')->name('storeAsWorker')->middleware('permission:reservationCreate');
         Route::put('/update-as-worker', 'ApiReservationController@updateAsWorker')->name('updateAsWorker')->middleware('permission:reservationEdit');
         Route::get('/show/{id}', 'ApiReservationController@fetchReservation')->name('show')->middleware('permission:reservationShow|onlineReservationShow');
-        Route::get('/show-user/{id}', 'ApiReservationController@fetchReservation')->name('showUser')->middleware('permission:onlineReservationShow');
+        Route::get('/show-user/{id}', 'ApiReservationController@fetchReservation')->name('showUser')->middleware('permission:onlineReservationShow','myReservation');
         Route::get('/customer-index', 'ApiReservationController@customerIndex')->name('customerIndex')->middleware('permission:onlineReservationIndex');
         Route::get('/worker-index/{date}', 'ApiReservationController@workerIndex')->name('workerIndex')->middleware('permission:reservationIndex');
         Route::get('/tables/{date}', 'ApiReservationController@fetchTablesByDate')->name('fetchTablesByDate')->middleware('permission:reservationIndex');
