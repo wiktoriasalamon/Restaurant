@@ -20,7 +20,7 @@
 						</tr>
 					</template>
 				</v-data-table>
-				<h5 style="margin-top: 2rem;">Suma zamówienia: {{orderSum}}</h5>
+				<h5 style="margin-top: 2rem;">Suma zamówienia: {{orderSum + ' zł'}}</h5>
 			</v-card-text>
 			<v-card-actions>
 				<v-btn @click="goHome">
@@ -39,7 +39,7 @@
       return {
         orderedItemsHeaders:[
           { text: 'Nazwa', value: 'name',},
-          { text: 'Cena', value: 'price' },
+          { text: 'Cena (zł)', value: 'price' },
           { text: 'Ilość', value: '' },
         ],
         orderedItems:[],

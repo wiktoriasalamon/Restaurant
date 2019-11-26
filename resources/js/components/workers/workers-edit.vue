@@ -90,6 +90,28 @@
       cancel() {
         window.location.replace(route('worker.index'));
       },
+      clearErrors(object) {
+        let keys = Object.keys(object);
+        for (let key of keys) {
+          if (key === 'address') {
+            this.clearErrors(object[key]);
+          } else {
+            object[key] = [];
+          }
+        }
+      },
+      fillErrors(error) {
+        this.clearErrors(this.errors);
+        let entries = Object.entries(error.response.data.errors);
+        for (let [key, value] of entries) {
+          if (key.includes('address')) {
+            let realKey = key.split('.')[1];
+            this.errors.address[realKey] = value;
+          } else {
+            this.errors[key] = value;
+          }
+        }
+      },
       save() {
         if (this.$refs.form.validate()) {
           let data = {};
@@ -102,11 +124,12 @@
             notification('Pomyślnie edytowano pracownika', 'success');
             window.location.replace(route('worker.index'));
           }).catch(error => {
-            notification('Wystąpił błąd podczas edytowania pracownika', 'error');
             console.error(error.response);
-            let entries = Object.entries(error.response.data.errors);
-            for (let [key, value] of entries) {
-              this.errors[key] = value;
+            if (error.response.statusCode === 500) {
+              notification(error.response.data.message, 'error');
+            } else {
+              notification('Wystąpił błąd podczas dodawania pracownika', 'error');
+              this.fillErrors(error);
             }
           });
         }

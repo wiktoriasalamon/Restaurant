@@ -165,7 +165,7 @@
           </v-row>
         </v-card>
 
-        <v-btn @click="completeOrderOnline" color="secondary">Zamów</v-btn>
+        <v-btn @click="completeOrderOnline" color="secondary" v-bind:loading="loading">Zamów</v-btn>
         <v-btn @click="e1 = 2" text>Wróć</v-btn>
       </v-stepper-content>
     </v-stepper-items>
@@ -181,6 +181,7 @@
     props: ["dishes", "categories"],
     data() {
       return {
+        loading: false,
         e1: 0,
         search: "",
         selected: [],
@@ -305,6 +306,7 @@
         });
       },
       completeOrderOnline() {
+        this.loading = true;
         this.ordered.forEach(item => {
           this.addItemToNewOrder(item.id, item.amount);
         });
@@ -321,17 +323,17 @@
               this.orderArray = [];
               window.location.href = route('order.create.online');
 
-            },
-            error => {
-              if (error.response.status === 422) {
-                notification("Podano niepoprawne dane, spróbuj jeszcze raz", 'error');
-              } else if (error.response.status === 500) {
-                notification("Nie udało się złożyć zamówienia. Wystąpił błąd na serwerze.", 'error');
-              } else {
-                notification(error.response.data, 'error');
-              }
-            }
-          );
+            }).catch(error => {
+          if (error.response.status === 422) {
+            notification("Podano niepoprawne dane, spróbuj jeszcze raz", 'error');
+          } else if (error.response.status === 500) {
+            notification("Nie udało się złożyć zamówienia. Wystąpił błąd na serwerze.", 'error');
+          } else {
+            notification(error.response.data, 'error');
+          }
+        }).finally(() => {
+          this.loading = false;
+        })
       },
       addItemToNewOrder(dishId, amount) {
         this.orderArray.push({dishId: dishId, amount: amount});
