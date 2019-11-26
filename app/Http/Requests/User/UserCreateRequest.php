@@ -28,6 +28,7 @@ class UserCreateRequest extends UserRequest
     {
         $messages = parent::messages();
         $messages['password.min'] = 'Hasło musi mieć przynajmniej 6 znaków';
+        $messages['email.unique'] = 'Istnieje już konto o podanym adresie email';
         return $messages;
     }
 }

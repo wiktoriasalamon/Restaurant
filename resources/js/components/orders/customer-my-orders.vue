@@ -44,6 +44,7 @@
           {text: "Nr zamówienia", value: "id"},
           {text: "Data i godzina", value: "date"},
           {text: "Adres dostawy", value: "address"},
+          {text: "Status", value: "status_pl"},
           {text: "", value: "data-table-expand"}
         ],
         watchedHeaders: [
@@ -104,6 +105,7 @@
                 id: value.id,
                 address: add,
                 date: value.created_at,
+				status_pl: value.status_pl,
                 token: value.token
               });
             }

@@ -23,7 +23,7 @@
     </v-card-text>
     <v-card-actions>
       <v-btn @click="cancel">Anuluj</v-btn>
-      <v-btn @click="save">Zapisz</v-btn>
+      <v-btn @click="save" v-bind:loading="loading">Zapisz</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -36,6 +36,7 @@
     name: "edit-dish",
     data() {
       return {
+        loading: false,
         rules: {
           required: value => !!value || "To pole jest wymagane",
           numeric: value => /^(\d+|\d+\.\d{1,2})$/.test(value) || 'Nieprawidłowy format ceny'
@@ -73,18 +74,36 @@
       cancel() {
         window.location.replace(route('menu.admin'));
       },
+      clearErrors(object) {
+        let keys = Object.keys(object);
+        for (let key of keys) {
+          object[key] = [];
+        }
+      },
+      fillErrors(error) {
+        this.clearErrors(this.errors);
+        let entries = Object.entries(error.response.data.errors);
+        for (let [key, value] of entries) {
+          this.errors[key] = value;
+        }
+      },
       save() {
         if (this.$refs.form.validate()) {
+          this.loading = true;
+          this.clearErrors(this.errors);
           axios.post(route('api.dish.update'), this.form).then(response => {
             notification('Pomyślnie edytowano danie', 'success');
             window.location.replace(route('menu.admin'));
           }).catch(error => {
-            notification('Wystąpił błąd poczas edytowania dania', 'error');
             console.error(error.response);
-            let entries = Object.entries(error.response.data.errors);
-            for (let [key, value] of entries) {
-              this.errors[key] = value;
+            if (error.response.statusCode === 500) {
+              notificationError(error.response.data);
+            } else {
+              notification('Wystąpił błąd poczas edytowania dania', 'error');
+              this.fillErrors(error);
             }
+          }).finally(() => {
+            this.loading = false;
           })
         }
       },
