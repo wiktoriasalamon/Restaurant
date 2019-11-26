@@ -22,10 +22,16 @@ class MyReservation
         } catch (\Exception $exception) {
             abort(404, 'Not found');
         }
-        if (Auth::user()->email !== $reservation->email) {
+        $auth = Auth::user();
+        if ($auth->hasPermissionTo('reservationShow')) {
+            return $next($request);
+        }
+
+        if ($auth->email !== $reservation->email) {
             abort(403, 'Access denied');
         }
         return $next($request);
+
     }
 
 }
