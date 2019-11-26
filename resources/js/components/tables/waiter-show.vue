@@ -1,53 +1,55 @@
 <template>
-    <v-row class="justify-space-around align-center">
-      <v-col cols="12" lg="6" md="8" sm="10" xl="5">
-        <v-data-table
+  <v-row class="justify-space-around align-center">
+    <v-col cols="12" lg="6" md="8" sm="10" xl="5">
+      <v-data-table
           :headers="headers"
           :items="orders"
           :loading="isLoading"
           :no-data-text="nodata"
-        >
-          <template slot="item" slot-scope="props">
-            <tr>
-              <td class="text-xs-left">{{props.item.id}}</td>
-              <td class="text-xs-left">{{props.item.status_pl}}</td>
-              <td class="text-xs-left">{{props.item.created_at}}</td>
-              <td class="text-xs-left">{{props.item.updated_at}}</td>
-              <td class="text-xs-left">
-                <v-icon @click="editOrder(props.item.token)" small>
-                  edit
-                </v-icon>
-                <v-icon @click="showOrder(props.item.token)" small>
-                  visibility
-                </v-icon>
-              </td>
-            </tr>
-          </template>
-        </v-data-table>
-      </v-col>
-      <v-col cols="12" lg="4" md="6" sm="10" xl="3">
-       <v-card class="transparent_form">
-         <v-card-title>Stolik {{table}}</v-card-title>
-         <v-card-text>
-           <span> Stolik zajęty od: {{occupiedSince}}</span> <br/>
-           <span v-if="reservationSince"> Zarezerwowany od: {{reservationSince}}</span>
-           <span v-else> Brak rezerwacji</span>
+      >
+        <template slot="item" slot-scope="props">
+          <tr>
+            <td class="text-xs-left">{{props.item.id}}</td>
+            <td class="text-xs-left">{{props.item.status_pl}}</td>
+            <td class="text-xs-left">{{props.item.created_at}}</td>
+            <td class="text-xs-left">{{props.item.updated_at}}</td>
+            <td class="text-xs-left">
+              <v-icon @click="editOrder(props.item.token)" small>
+                edit
+              </v-icon>
+              <v-icon @click="showOrder(props.item.token)" small>
+                visibility
+              </v-icon>
+            </td>
+          </tr>
+        </template>
+      </v-data-table>
+    </v-col>
+    <v-col cols="12" lg="4" md="6" sm="10" xl="3">
+      <v-card class="transparent_form">
+        <v-card-title>Stolik {{table}}</v-card-title>
+        <v-card-text>
+          <span> Stolik zajęty od: {{occupiedSince}}</span> <br/>
+          <span v-if="reservationSince"> Zarezerwowany od: {{reservationSince}}</span>
+          <span v-else> Brak rezerwacji</span>
 
-         </v-card-text>
-         <v-card-actions>
-           <v-btn @click="closeTable"class="yellow_form_button" color="secoDndary" v-if="occupiedSince">
-             Zamknij stolik
-           </v-btn>
-           <v-btn @click="openTable" class="yellow_form_button" color="secondary" v-else>
-             Otwórz stolik
-           </v-btn>
-           <v-btn @click="addOrder" class="yellow_form_button" color="secondary" v-if="occupiedSince">
-             Dodaj zamówienie
-           </v-btn>
-         </v-card-actions>
-       </v-card>
-     </v-col>
-    </v-row>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn @click="closeTable" class="yellow_form_button" color="secoDndary" v-bind:loading="loadingButton"
+                 v-if="occupiedSince">
+            Zamknij stolik
+          </v-btn>
+          <v-btn @click="openTable" class="yellow_form_button" color="secondary" v-bind:loading="loadingButton"
+                 v-else>
+            Otwórz stolik
+          </v-btn>
+          <v-btn @click="addOrder" class="yellow_form_button" color="secondary" v-if="occupiedSince">
+            Dodaj zamówienie
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 <script>
   import {notification} from '../../Notifications.js';
@@ -56,6 +58,7 @@
     props: ["id"],
     data() {
       return {
+        loadingButton: false,
         isLoading: true,
         headers: [
           {text: 'Numer zamówienia', align: 'center', value: 'token'},
@@ -66,9 +69,9 @@
         ],
         orders: [],
         nodata: "Brak danych",
-        occupiedSince:'',
-        reservationSince:'',
-        table:''
+        occupiedSince: '',
+        reservationSince: '',
+        table: ''
 
       }
     },
@@ -94,28 +97,35 @@
       showOrder(token) {
         window.location.href = route('order.show', [token])
       },
-      openTable(){
-        axios.post(route('api.table.openTable',this.table)).then(
+      openTable() {
+        this.loadingButton = true;
+        axios.post(route('api.table.openTable', this.table)).then(
           response => {
-            notification("Stolik został otwarty","success");
+            notification("Stolik został otwarty", "success");
             this.getData()
           },
           error => {
-            notification("Wystąpił błąd podczas otwierania stolika","error")
-          })
+            notification("Wystąpił błąd podczas otwierania stolika", "error")
+          }).finally(() => {
+          this.loadingButton = false;
+        })
       },
-      closeTable(){
-        axios.post(route('api.table.closeTable',this.table)).then(
+      closeTable() {
+        this.loadingButton = true;
+        axios.post(route('api.table.closeTable', this.table)).then(
           response => {
-            notification("Stolik został zamknięty","success");
-            setTimeout(function(){
-              window.location.href=route('table.waiterIndex')} , 1500);
+            notification("Stolik został zamknięty", "success");
+            setTimeout(function () {
+              window.location.href = route('table.waiterIndex')
+            }, 1500);
           },
           error => {
-            notification("Wystąpił błąd podczas zamykania stolika","error")
-          })
+            notification("Wystąpił błąd podczas zamykania stolika", "error")
+          }).finally(() => {
+          this.loadingButton = false;
+        })
       },
-      addOrder(){
+      addOrder() {
         window.location.href = route("order.createWaiter", this.table)
       }
     }
