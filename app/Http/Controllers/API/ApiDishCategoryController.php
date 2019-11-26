@@ -53,7 +53,7 @@ class ApiDishCategoryController extends Controller
             $category = new DishCategory();
             $category->name = $request->name;
             $category->save();
-            return response()->json(['message' => "Kategoria została pomyślnie zapisana."], 200);
+            return response()->json("Kategoria została pomyślnie zapisana.", 200);
         } catch (\Exception $e) {
             Log::notice("Error storing data all:" . $e);
             Log::notice("Error storing data msg:" . $e->getMessage());
@@ -72,7 +72,7 @@ class ApiDishCategoryController extends Controller
             $category = DishCategory::findOrFail($request->id);
             $category->name = $request->name;
             $category->save();
-            return response()->json(['message' => "Kategoria została pomyślnie zapisana."], 200);
+            return response()->json("Kategoria została pomyślnie zapisana.", 200);
         } catch (\Exception $e) {
             Log::notice("Error updating data all:" . $e);
             Log::notice("Error updating data msg:" . $e->getMessage());
