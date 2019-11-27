@@ -81,6 +81,7 @@ class OrderService
     /**
      * @return array of tables with order served by auth user
      * and empty tables without any orders
+     * @codeCoverageIgnore
      */
     public function myTablesWithReservation()
     {
