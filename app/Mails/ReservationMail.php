@@ -21,6 +21,11 @@ class ReservationMail extends Mailable
     public $size;
     private const SUBJECT="Rezerwacja w systemie restauracji \"W-17 wydział smaków\"";
 
+    /**
+     * ReservationMail constructor.
+     * @param Reservation $reservation
+     * @codeCoverageIgnore
+     */
     public function __construct(Reservation $reservation)
     {
         $this->sendToMail=$reservation->email;
@@ -32,7 +37,7 @@ class ReservationMail extends Mailable
 
     /**
      * Build the message.
-     *
+     *  @codeCoverageIgnore
      * @return $this
      */
     public function build()
@@ -42,6 +47,7 @@ class ReservationMail extends Mailable
 
     /**
      * sends mail to customer
+     * @codeCoverageIgnore
      */
     public function sendMail()
     {

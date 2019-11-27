@@ -20,6 +20,13 @@ class RegistrationMail extends Mailable
     private $role;
     private const SUBJECT="Rejestracja w systemie restauracji \"W-17 wydział smaków\"";
 
+    /**
+     * RegistrationMail constructor.
+     * @param string $password
+     * @param string $login
+     * @param string $role
+     * @codeCoverageIgnore
+     */
     public function __construct(string $password, string $login, string $role)
     {
         $this->sendToMail=$login;
@@ -30,7 +37,7 @@ class RegistrationMail extends Mailable
 
     /**
      * Build the message.
-     *
+     * @codeCoverageIgnore
      * @return $this
      */
     public function build()
@@ -41,6 +48,7 @@ class RegistrationMail extends Mailable
     /**
      * @return RegistrationMail
      * different mail for customer and worker
+     * @codeCoverageIgnore
      */
     private function checkRole()
     {
@@ -51,6 +59,7 @@ class RegistrationMail extends Mailable
     }
     /**
      * sends mail to customer
+     * @codeCoverageIgnore
      */
     public function sendMail()
     {
