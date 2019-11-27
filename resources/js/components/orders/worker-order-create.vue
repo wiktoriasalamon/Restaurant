@@ -1,22 +1,32 @@
 <template>
   <v-row class="justify-content-around">
     <v-col cols="12" lg="6" md="8" sm="10" xl="5">
-      <v-data-table
-          :headers="headers"
-          :items="menuItems"
-          :items-per-page="-1"
-          class="elevation-1"
-      >
-        <template slot="item" slot-scope="props">
-          <tr>
-            <td class="text-xs-left">{{ props.item.name }}</td>
-            <td class="text-xs-left">{{ props.item.price}}</td>
-            <td class="text-xs-center">
-              <v-btn @click="addToOrder(props.item)">Dodaj do zamówienia</v-btn>
-            </td>
-          </tr>
-        </template>
-      </v-data-table>
+      <v-card class="transparent_form">
+        <v-text-field
+            v-model="search"
+            append-icon="search"
+            label="Search"
+            single-line
+            hide-details
+        ></v-text-field>
+        <v-data-table
+            :headers="headers"
+            :items="menuItems"
+            :items-per-page="5"
+            class="elevation-1"
+            :search="search"
+        >
+          <template slot="item" slot-scope="props">
+            <tr>
+              <td class="text-xs-left">{{ props.item.name }}</td>
+              <td class="text-xs-left">{{ props.item.price}}</td>
+              <td class="text-xs-center">
+                <v-btn @click="addToOrder(props.item)">Dodaj do zamówienia</v-btn>
+              </td>
+            </tr>
+          </template>
+        </v-data-table>
+      </v-card>
     </v-col>
     <v-col cols="12" lg="6" md="8" sm="10" xl="5">
       <v-card class="transparent_form">
@@ -65,6 +75,7 @@
     props: ['tableid'],
     data() {
       return {
+        search: '',
         loading: false,
         menuItems: [],
         headers: [
@@ -87,7 +98,7 @@
       this.getData()
     },
     watch: {
-      orderedItems: function (){
+      orderedItems: function () {
         this.changeTotalSum();
       }
     },
@@ -133,7 +144,7 @@
         for (let i = 0; i < this.orderedItems.length; i++) {
           this.orderSum += this.orderedItems[i].amount * this.orderedItems[i].price
         }
-        this.orderSum=this.orderSum.toFixed(2);
+        this.orderSum = this.orderSum.toFixed(2);
       },
       order() {
         this.loading = true;
