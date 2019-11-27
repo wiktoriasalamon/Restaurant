@@ -40,6 +40,7 @@
 				:headers="headers"
 				:items="reservations"
 				:items-per-page="5"
+				:no-data-text="nodata"
 			>
 				<template slot="item" slot-scope="props">
 					<tr>
@@ -48,9 +49,6 @@
 						<td class="text-xs-left">{{ props.item.reservation.email}}</td>
 						<td class="text-xs-left">{{ props.item.status === 'current' ? "nadchodzący" : "archwilany"}}</td>
 						<td class="text-xs-center">
-							<v-icon @click="showItem(props.item.reservation.id)" small>
-								visibility
-							</v-icon>
 							<v-icon @click="deleteItem(props.item.reservation.id)" small>
 								delete
 							</v-icon>
@@ -94,7 +92,8 @@
           {text: 'Akcje'},
         ],
         disabledButton: true,
-				loading: false
+				loading: false,
+				nodata:"Brak danych"
       }
     },
     created() {
@@ -116,15 +115,15 @@
         axios.get(route('api.reservation.workerIndex', date))
           .then(response => {
             this.reservations = response.data.reservations;
+
+            	this.nodata="Brak rezerwacji"
+
             console.log(this.reservations);
           }).catch(error => {
           console.error(error)
         }).finally(()=>{
           this.loading = false
 				})
-      },
-      showItem(id) {
-        window.location.href = route('reservation.showWaiter', [id])
       },
       deleteItem(id) {
         axios.delete(route('api.reservation.delete', {

@@ -99,6 +99,14 @@
     beforeMount() {
       this.getData()
     },
+		created() {
+			Echo.channel('table')
+				.listen('TableChanged', (e) => {
+					this.getData()
+				});
+
+
+		},
     methods: {
       deleteItem(item) {
         axios.delete(route('api.table.delete', item.id))

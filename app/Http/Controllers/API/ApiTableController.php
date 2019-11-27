@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\TableChanged;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TableRequest;
 use App\Models\Dish;
@@ -40,6 +41,7 @@ class ApiTableController extends Controller
             if ($reservation = Reservation::where('table_id', $table->id)->first()) {
                 return response()->json('Stolik posiada rezerwacje', 419);
             }
+            broadcast(new TableChanged())->toOthers();
             $table->delete();
             return response()->json("Stolik usunięty", 201);
         } catch (\Exception $e) {
@@ -94,6 +96,7 @@ class ApiTableController extends Controller
             $table->size = $request->size;
             $table->occupied_since = null;
             $table->save();
+            broadcast(new TableChanged())->toOthers();
             return response()->json("Stolik został pomyślnie zapisany.", 200);
         } catch (\Exception $e) {
             Log::notice("Error storing data all:" . $e);
@@ -114,6 +117,7 @@ class ApiTableController extends Controller
             $table->size = $request->size;
             $table->occupied_since = null;
             $table->save();
+            broadcast(new TableChanged())->toOthers();
             return response()->json("Stolik został pomyślnie zapisany.", 200);
         } catch (\Exception $e) {
             Log::notice("Error updating data all:" . $e);
@@ -144,6 +148,7 @@ class ApiTableController extends Controller
             }
             $table->occupied_since = Carbon::now();
             $table->save();
+            broadcast(new TableChanged())->toOthers();
             return response()->json(['message' => "Stolik został pomyślnie otworzony."], 200);
         } catch (\Exception $e) {
             Log::notice("Error updating data all:" . $e);
@@ -163,6 +168,7 @@ class ApiTableController extends Controller
             $table->occupied_since = null;
             (new OrderService())->closeTable($table->id);
             $table->save();
+            broadcast(new TableChanged())->toOthers();
             return response()->json(['message' => "Stolik został pomyślnie zamknięty."], 200);
         } catch (\Exception $e) {
             Log::notice("Error updating data all:" . $e);
