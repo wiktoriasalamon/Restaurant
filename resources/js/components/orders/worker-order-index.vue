@@ -1,6 +1,11 @@
 <template>
     <v-row class="justify-center align-center" >
         <v-col cols="12" sm="10" md="8" xl="5" lg="6">
+           <v-card class="component-header">
+        <v-card-title>
+          <h1>Zamówienia</h1>
+        </v-card-title>
+      </v-card>
             <v-select
               class="beige_select"
                     :items="orderSatuses"

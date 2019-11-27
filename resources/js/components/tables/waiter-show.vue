@@ -1,6 +1,11 @@
 <template>
   <v-row class="justify-space-around align-center">
     <v-col cols="12" lg="6" md="10" sm="12" xl="5">
+       <v-card class="component-header">
+        <v-card-title>
+          <h1>Zamówienia dla stolika nr {{table}}</h1>
+        </v-card-title>
+      </v-card>
       <v-data-table
           :headers="headers"
           :items="orders"

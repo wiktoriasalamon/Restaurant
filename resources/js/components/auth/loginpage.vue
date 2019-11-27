@@ -3,6 +3,9 @@
 		<v-col
 			cols="12" lg="4" ma-2 md="5" sm="8" xl="3">
 			<v-card class="transparent_form">
+        <v-card-title>
+          <h1>Logowanie</h1>
+        </v-card-title>
 				<v-text-field
 					:rules="[rules.required, rules.email]"
 					label="E-mail"

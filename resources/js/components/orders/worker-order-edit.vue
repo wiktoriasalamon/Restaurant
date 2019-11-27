@@ -1,6 +1,11 @@
 <template>
 	<v-row class="justify-content-around">
 		<v-col cols="12" sm="10" md="8" lg="6" xl="5" v-if="this.statusOrder === 'ordered'">
+       <v-card class="component-header">
+        <v-card-title>
+          <h1>Dania</h1>
+        </v-card-title>
+      </v-card>
 			<v-data-table
 				:headers="headers"
 				:items="menuItems"

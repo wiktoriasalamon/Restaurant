@@ -1,6 +1,11 @@
 <template>
   <v-row class="justify-content-around">
     <v-col cols="12" lg="6" md="8" sm="10" xl="5">
+       <v-card class="component-header">
+        <v-card-title>
+          <h1>Dania</h1>
+        </v-card-title>
+      </v-card>
       <v-data-table
           :headers="headers"
           :items="menuItems"
