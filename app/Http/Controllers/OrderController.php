@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Dish;
 use App\Models\DishCategory;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -66,7 +67,9 @@ class OrderController extends Controller
      */
     public function editWaiter($token)
     {
-        return view('order/editWaiter', compact(['token']));
+        $order = Order::where('token', $token)->first();
+        $status = $order->status;
+        return view('order/editWaiter', compact(['token', 'status']));
     }
 
     /**

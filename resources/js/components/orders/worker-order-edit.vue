@@ -1,6 +1,6 @@
 <template>
 	<v-row class="justify-content-around">
-		<v-col cols="12" sm="10" md="8" lg="6" xl="5">
+		<v-col cols="12" sm="10" md="8" lg="6" xl="5" v-if="this.statusOrder === 'ordered'">
 			<v-data-table
 				:headers="headers"
 				:items="menuItems"
@@ -37,7 +37,7 @@
 							></v-select>
 						</v-col>
 						<v-col>
-							<v-btn @click="changeStatus" class="yellow_form_button" color="secondary">
+							<v-btn @click="changeStatus" v-bind:loading="statusLoading" class="yellow_form_button" color="secondary">
 								Zmień status
 							</v-btn>
 						</v-col>
@@ -48,22 +48,12 @@
 						:items-per-page="-1"
 						class="elevation-1"
 					>
-						<template slot="item" slot-scope="props">
-							<tr>
-								<td class="text-xs-left">{{ props.item.name }}</td>
-								<td class="text-xs-left">{{ props.item.price}}</td>
-								<td class="text-xs-left">
-									<v-text-field
-										@input="changeTotalSum"
-										v-model="props.item.amount">
-									</v-text-field>
-								</td>
-								<td class="text-xs-center">
-									<v-icon @click="deleteItem(props.item.id)">
-										delete
-									</v-icon>
-								</td>
-							</tr>
+						<template v-slot:item.changeAmount="{ item }">
+							<v-icon @click="minusItem(item)" :disabled="orderChangeDisabled">indeterminate_check_box</v-icon>
+							<v-icon @click="plusItem(item)" :disabled="orderChangeDisabled">add_box</v-icon>
+						</template>
+						<template v-slot:item.delete="{ item }">
+							<v-icon @click="deleteItem(item)" :disabled="orderChangeDisabled" >delete</v-icon>
 						</template>
 					</v-data-table>
 					<h5 style="margin-top: 2rem;">Suma zamówienia:</h5>
@@ -76,7 +66,7 @@
 				</v-card-text>
 				<v-card-actions>
 					<v-row class="justify-center">
-						<v-btn @click="updateOrder" class="yellow_form_button" color="secondary">
+						<v-btn @click="updateOrder" :disabled="orderChangeDisabled" v-bind:loading="orderLoading" class="yellow_form_button" color="secondary">
 							Aktualizuj zamówienie
 						</v-btn>
 					</v-row>
@@ -91,31 +81,45 @@
 
   export default {
     name: "worker-order-edit",
-    props:['token'],
+    props:['token', 'status'],
     data() {
       return {
         menuItems:[],
         headers: [
-          { text: 'Nazwa', value: 'name',},
-          { text: 'Cena', value: 'price' },
-          { text: 'Akcje', value: '' },
+          {text: 'Nazwa', value: 'name',},
+          {text: 'Cena (zł)', value: 'price'},
+          {text: 'Akcje', value: ''},
         ],
-        orderedItemsHeaders:[
-          { text: 'Nazwa', value: 'name',},
-          { text: 'Cena', value: 'price' },
-          { text: 'Ilość', value: '' },
-          { text: 'Usuń', value: '' },
+        orderedItemsHeaders: [
+          {text: 'Nazwa', value: 'name',},
+          {text: 'Cena (zł)', value: 'price'},
+          {text: 'Ilość', value: 'amount'},
+          {text: "Zmień ilość", value: "changeAmount"},
+          {text: 'Usuń', value: 'delete'},
         ],
         orderedItems:[],
 				statusItems: [],
 				orderStatus:'',
-				orderSum: ''
+				orderSum: '',
+				statusLoading: false,
+				orderLoading: false,
+        orderChangeDisabled: false,
+				statusOrder: ''
       }
     },
+		mounted(){
+      this.statusOrder = this.status
+		},
     beforeMount(){
+
       this.getMenuData();
 			this.getOrder();
 			this.getStatusItems()
+    },
+    watch: {
+      orderedItems: function (){
+        this.changeTotalSum();
+      }
     },
     methods: {
       getMenuData(){
@@ -136,6 +140,8 @@
             this.orderedItems = response.data.dishes;
 						this.orderSum = response.data.sum;
 						this.orderStatus = response.data.status;
+						console.log(this.orderStatus)
+						this.orderChangeDisabled = this.orderStatus !== "ordered";
           }).catch(error => {
           console.error(error)
         })
@@ -148,10 +154,10 @@
           console.error(error)
         })
 			},
-      addToOrder(dish){
+      addToOrder(item){
         let add = true;
         for(let i=0; i< this.orderedItems.length; i++){
-          if(this.orderedItems[i].id === dish.id){
+          if(this.orderedItems[i].id === item.id){
             this.orderedItems[i].amount++;
             this.changeTotalSum()
 						add=false;
@@ -159,12 +165,17 @@
 					}
 				}
         if(add === true){
-					dish.amount = 1
-          this.orderedItems.push(dish);
+          var newItem = {
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            amount: 1
+          };
+          this.orderedItems.push(newItem);
           this.changeTotalSum()
 				}
         for(let i=0 ;  i < this.menuItems.length; i++) {
-          if(this.menuItems[i].id === dish.id){
+          if(this.menuItems[i].id === item.id){
             this.menuItems.splice(i, 1);
           }
         }
@@ -174,10 +185,11 @@
         for(let i=0; i< this.orderedItems.length; i++){
          		this.orderSum += this.orderedItems[i].amount * this.orderedItems[i].price
         }
+        this.orderSum=this.orderSum.toFixed(2);
 			},
-      deleteItem(id){
+      deleteItem(item){
         for(let i=0 ;  i < this.orderedItems.length; i++) {
-          if(this.orderedItems[i].id === id){
+          if(this.orderedItems[i].id === item.id){
             this.orderedItems[i].amount = 0;
             this.menuItems.push(this.orderedItems[i]);
             this.orderedItems.splice(i, 1);
@@ -186,6 +198,7 @@
         this.changeTotalSum()
       },
       updateOrder(){
+        this.orderLoading = true
         let orderArray=[];
         this.orderedItems.forEach(item=>{
           orderArray.push({amount: item.amount, dishId: item.id});
@@ -206,9 +219,12 @@
               notification(error.response.data, 'error');
             }
           },
-        );
+        ).finally(() => {
+          this.orderLoading = false;
+        });
       },
 			changeStatus(){
+        this.statusLoading = true
         axios.post(route('api.order.changeStatusOrder'), {
           token: this.token,
           status: this.orderStatus,
@@ -223,8 +239,25 @@
               notification(error.response.data, 'error');
             }
           },
-        );
-			}
+        ).finally(() => {
+          this.statusLoading = false;
+					this.statusOrder = this.orderStatus
+          this.orderChangeDisabled = this.orderStatus !== "ordered";
+        });
+
+			},
+      minusItem(item) {
+        if (item.amount > 1) {
+          item.amount = item.amount - 1;
+          this.changeTotalSum();
+        }
+      },
+      plusItem(item) {
+        if (item.amount < 15) {
+          item.amount = item.amount + 1;
+          this.changeTotalSum();
+        }
+      },
     }
   }
 </script>
