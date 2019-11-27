@@ -62,7 +62,7 @@
         axios.get(route('api.order.loadOrder', this.token))
           .then(response => {
             this.orderedItems = response.data.dishes;
-            this.orderSum = response.data.sum;
+            this.orderSum = response.data.sum.toFixed(2);
             this.orderStatus = response.data.status_pl
             this.orderStatusEn = response.data.status
             console.log(response)

@@ -1,41 +1,45 @@
 <template>
-  <v-card>
-    <v-card-title>
-      Pracownikcy
-      <v-spacer></v-spacer>
-      <v-text-field
-          v-model="search"
-          append-icon="search"
-          label="Search"
-          single-line
-          hide-details
-      ></v-text-field>
-      <v-spacer></v-spacer>
-      <v-btn @click="addWorker">Dodaj pracownika</v-btn>
-    </v-card-title>
-    <v-data-table
-        :headers="headers"
-        :items="workers"
-        :search="search"
-    >
-      <template v-slot:item.action="{ item }">
-        <v-icon
-            small
-            class="mr-2"
-            @click="editWorker(item.id)"
-        >
-          edit
-        </v-icon>
-        <v-icon
-            small
-            @click="deleteWorker(item.id)"
-        >
-          delete
-        </v-icon>
-      </template>
+	<v-row class="justify-center align-center">
+		<v-col cols="12" lg="8" ma-2 md="10" sm="12" xl="6">
+			<v-card class="transparent_form">
+				<v-card-title>
+					Pracownicy
+					<v-spacer></v-spacer>
+					<v-text-field
+						v-model="search"
+						append-icon="search"
+						label="Wyszukaj"
+						single-line
+						hide-details
+					></v-text-field>
+					<v-spacer></v-spacer>
+					<v-btn @click="addWorker" class="yellow_form_button" color="secondary">Dodaj pracownika</v-btn>
+				</v-card-title>
+				<v-data-table
+					:headers="headers"
+					:items="workers"
+					:search="search"
+				>
+					<template v-slot:item.action="{ item }">
+						<v-icon
+							small
+							class="mr-2"
+							@click="editWorker(item.id)"
+						>
+							edit
+						</v-icon>
+						<v-icon
+							small
+							@click="deleteWorker(item.id)"
+						>
+							delete
+						</v-icon>
+					</template>
 
-    </v-data-table>
-  </v-card>
+				</v-data-table>
+			</v-card>
+		</v-col>
+	</v-row>
 </template>
 
 <script>

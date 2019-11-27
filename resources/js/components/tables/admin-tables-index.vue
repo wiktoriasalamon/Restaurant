@@ -1,68 +1,64 @@
 <template>
-  <v-row class="justify-center align-center">
-    <v-data-table
-        :headers="headers"
-        :items="tables"
-        :items-per-page="-1"
-        class="elevation-1"
-    >
-      <template v-slot:top>
-        <v-toolbar color="white" flat>
-          <v-toolbar-title>Stoliki</v-toolbar-title>
-          <v-divider
-              class="mx-4"
-              inset
-              vertical
-          ></v-divider>
-          <v-spacer></v-spacer>
-          <v-dialog max-width="500px" v-model="dialog">
-            <template v-slot:activator="{ on }">
-              <v-btn class="mb-2" color="primary" dark v-on="on">Dodaj stolik</v-btn>
-            </template>
-            <v-card>
-              <v-card-title>
-                <span class="headline">{{ formTitle }}</span>
-              </v-card-title>
-
-              <v-card-text>
-                <v-container>
-                  <v-row>
-                    <v-form
-                        ref="form">
-                      <v-text-field label="Wielkość stolika" v-bind:rules="rules"
-                                    v-bind:error-messages="errors.size" v-model="editedItem.size"></v-text-field>
-                    </v-form>
-                  </v-row>
-                </v-container>
-              </v-card-text>
-
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn @click="close" color="blue darken-1" text>Anuluj</v-btn>
-                <v-btn v-bind:loading="loading" @click="save" color="blue darken-1" text>Zapisz</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </v-toolbar>
-      </template>
-      <template slot="item" slot-scope="props">
-        <tr>
-          <td class="text-xs-left">{{ props.item.id }}</td>
-          <td class="text-xs-left">{{ props.item.size}}</td>
-          <td class="text-xs-left">{{ props.item.occupied_since}}</td>
-          <td class="text-xs-left">{{ props.item.reservation.length}}</td>
-          <td class="text-xs-center">
-            <v-icon @click="editItem(props.item)" small>
-              edit
-            </v-icon>
-            <v-icon @click="deleteItem(props.item)" small>
-              delete
-            </v-icon>
-          </td>
-        </tr>
-      </template>
-    </v-data-table>
-  </v-row>
+	<v-row class="justify-center align-center">
+		<v-col cols="12" lg="7" ma-2 md="10" sm="12" xl="5">
+			<v-card class="transparent_form">
+				<v-card-title>
+					Stoliki
+					<v-spacer></v-spacer>
+					<v-dialog max-width="500px" v-model="dialog">
+						<template v-slot:activator="{ on }">
+							<v-btn class="yellow_form_button" color="secondary" v-on="on">Dodaj stolik</v-btn>
+						</template>
+						<v-card>
+							<v-card-title>
+								<span class="headline">{{ formTitle }}</span>
+							</v-card-title>
+							<v-card-text>
+								<v-container>
+									<v-row>
+										<v-form
+											ref="form">
+											<v-text-field label="Wielkość stolika" v-bind:rules="rules" outlined
+																		v-bind:error-messages="errors.size" v-model="editedItem.size"></v-text-field>
+										</v-form>
+									</v-row>
+								</v-container>
+							</v-card-text>
+							<v-card-actions>
+								<v-btn @click="close" text>Anuluj</v-btn>
+								<v-spacer></v-spacer>
+								<v-btn v-bind:loading="loading" @click="save" class="yellow_form_button" color="secondary">Zapisz
+								</v-btn>
+							</v-card-actions>
+						</v-card>
+					</v-dialog>
+				</v-card-title>
+				<v-data-table
+					:headers="headers"
+					:items="tables"
+					:items-per-page="10"
+					class="elevation-1"
+				>
+					<template slot="item" slot-scope="props">
+						<tr>
+							<td class="text-xs-left">{{ props.item.id }}</td>
+							<td class="text-xs-left">{{ props.item.size}}</td>
+							<td class="text-xs-left">{{ props.item.occupied_since}}</td>
+							<td class="text-xs-left">{{ props.item.reservation.length}}</td>
+							<td class="text-xs-center">
+								<v-icon @click="editItem(props.item)" small>
+									edit
+								</v-icon>
+								<v-icon @click="deleteItem(props.item)" small>
+									delete
+								</v-icon>
+							</td>
+						</tr>
+					</template>
+				</v-data-table>
+			</v-card>
+		</v-col>
+	</v-row>
 </template>
 
 <script>
@@ -110,7 +106,7 @@
             notificationSuccess(response.data);
             this.getData()
           }).catch(error => {
-					notificationError(error.response.data);
+          notificationError(error.response.data);
           console.error(error)
         })
 
@@ -176,7 +172,7 @@
         } else {
           axios.post(route('api.table.store'), {size: this.editedItem.size})
             .then(response => {
-							notificationSuccess(response.data);
+              notificationSuccess(response.data);
               this.getData();
               this.close();
             }).catch(error => {

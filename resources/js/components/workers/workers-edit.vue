@@ -1,39 +1,48 @@
 <template>
-  <v-card>
-    <v-card-title>Edytowanie pracownika</v-card-title>
-    <v-card-text>
-      <v-container>
-        <v-form
-            ref="form"
-        >
-          <v-text-field :rules="[rules.required]" label="Imię" v-bind:error-messages="errors.name"
-                        v-model="form.name"></v-text-field>
-          <v-text-field :rules="[rules.required]" label="Nazwisko" v-bind:error-messages="errors.surname"
-                        v-model="form.surname"></v-text-field>
-          <v-text-field :rules="[rules.required, rules.emailRules]" label="Email" v-bind:error-messages="errors.email"
-                        v-model="form.email"></v-text-field>
-          <v-text-field :rules="[rules.required]" label="Ulica" v-bind:error-messages="errors.address"
-                        v-model="form.address.street"></v-text-field>
-          <v-text-field :rules="[rules.required]" label="Numer domu"
-                        v-bind:error-messages="errors.address"
-                        v-model="form.address.houseNumber"></v-text-field>
-          <v-text-field :rules="[rules.required]" label="Numer apartamentu"
-                        v-bind:error-messages="errors.address"
-                        v-model="form.address.apartmentNumber"></v-text-field>
-          <v-text-field :rules="[rules.required]" label="Miasto" v-bind:error-messages="errors.address"
-                        v-model="form.address.city"></v-text-field>
-          <v-text-field :rules="[rules.required, rules.postCodeFormat]" label="Kod pocztowy"
-                        v-bind:error-messages="errors.address" v-model="form.address.postCode"></v-text-field>
-          <v-text-field :rules="[rules.phoneMax12]" label="Telefon"
-                        v-bind:error-messages="errors.phone" v-model="form.phone"></v-text-field>
-        </v-form>
-      </v-container>
-    </v-card-text>
-    <v-card-actions>
-      <v-btn @click="cancel">Anuluj</v-btn>
-      <v-btn @click="save" v-bind:loading="loading">Zapisz</v-btn>
-    </v-card-actions>
-  </v-card>
+	<v-row class="justify-space-around">
+		<v-col
+			cols="12" lg="4" ma-2 md="5" sm="8" xl="3">
+			<v-card class="transparent_form">
+				<v-card-title>Edytowanie pracownika</v-card-title>
+				<v-card-text>
+					<v-container>
+						<v-form
+							ref="form"
+						>
+							<v-text-field :rules="[rules.required]" label="Imię" v-bind:error-messages="errors.name" outlined
+														v-model="form.name"></v-text-field>
+							<v-text-field :rules="[rules.required]" label="Nazwisko" v-bind:error-messages="errors.surname" outlined
+														v-model="form.surname"></v-text-field>
+							<v-text-field :rules="[rules.required, rules.emailRules]" outlined label="Email"
+														v-bind:error-messages="errors.email"
+														v-model="form.email"></v-text-field>
+							<v-text-field :rules="[rules.required]" label="Ulica" v-bind:error-messages="errors.address" outlined
+														v-model="form.address.street"></v-text-field>
+							<v-text-field :rules="[rules.required]" label="Numer domu" outlined
+														v-bind:error-messages="errors.address"
+														v-model="form.address.houseNumber"></v-text-field>
+							<v-text-field :rules="[rules.required]" label="Numer apartamentu" outlined
+														v-bind:error-messages="errors.address"
+														v-model="form.address.apartmentNumber"></v-text-field>
+							<v-text-field :rules="[rules.required]" label="Miasto" v-bind:error-messages="errors.address" outlined
+														v-model="form.address.city"></v-text-field>
+							<v-text-field :rules="[rules.required, rules.postCodeFormat]" label="Kod pocztowy" outlined
+														v-bind:error-messages="errors.address" v-model="form.address.postCode"></v-text-field>
+							<v-text-field :rules="[rules.phoneMax12]" label="Telefon" outlined
+														v-bind:error-messages="errors.phone" v-model="form.phone"></v-text-field>
+						</v-form>
+					</v-container>
+				</v-card-text>
+				<v-card-actions>
+					<v-row class="justify-space-between">
+						<v-btn @click="cancel">Anuluj</v-btn>
+						<v-btn @click="save" v-bind:loading="loading" class="yellow_form_button" color="secondary">Zapisz</v-btn>
+					</v-row>
+
+				</v-card-actions>
+			</v-card>
+		</v-col>
+	</v-row>
 </template>
 
 <script>

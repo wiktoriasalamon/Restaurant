@@ -1,6 +1,6 @@
 <template>
   <v-row class="justify-center align-center">
-    <v-col cols="12" ld="4" md="5" sm="8" xl="3" >
+    <v-col cols="12" lg="4" md="5" sm="8" xl="3" >
       <v-card class="transparent_form" max-width="375">
         <v-list two-line>
           <v-list-item>
