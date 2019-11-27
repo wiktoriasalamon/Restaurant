@@ -70,6 +70,10 @@
 				.listen('TableChanged', (e) => {
 					this.getData()
 				});
+			Echo.channel('reservation')
+				.listen('ReservationChanged', (e) => {
+					this.getData()
+				});
 		},
     methods: {
 
