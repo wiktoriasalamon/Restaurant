@@ -1,6 +1,6 @@
 <template>
   <v-row class="justify-space-around align-center">
-    <v-col cols="12" lg="6" md="8" sm="10" xl="5">
+    <v-col cols="12" lg="6" md="10" sm="12" xl="5">
       <v-data-table
           :headers="headers"
           :items="orders"
@@ -25,7 +25,7 @@
         </template>
       </v-data-table>
     </v-col>
-    <v-col cols="12" lg="4" md="6" sm="10" xl="3">
+    <v-col cols="12" lg="5" md="8" sm="10" xl="4">
       <v-card class="transparent_form">
         <v-card-title>Stolik {{table}}</v-card-title>
         <v-card-text>
@@ -35,17 +35,19 @@
 
         </v-card-text>
         <v-card-actions>
-          <v-btn @click="closeTable" class="yellow_form_button" color="secoDndary" v-bind:loading="loadingButton"
-                 v-if="occupiedSince">
-            Zamknij stolik
-          </v-btn>
-          <v-btn @click="openTable" class="yellow_form_button" color="secondary" v-bind:loading="loadingButton"
-                 v-else>
-            Otwórz stolik
-          </v-btn>
-          <v-btn @click="addOrder" class="yellow_form_button" color="secondary" v-if="occupiedSince">
-            Dodaj zamówienie
-          </v-btn>
+          <v-row wrap>
+            <v-btn @click="closeTable" class="yellow_form_button" color="secoDndary" v-bind:loading="loadingButton"
+                   v-if="occupiedSince">
+              Zamknij stolik
+            </v-btn>
+            <v-btn @click="openTable" class="yellow_form_button" color="secondary" v-bind:loading="loadingButton"
+                   v-else>
+              Otwórz stolik
+            </v-btn>
+            <v-btn @click="addOrder" class="yellow_form_button" color="secondary" v-if="occupiedSince">
+              Dodaj zamówienie
+            </v-btn>
+          </v-row>
         </v-card-actions>
       </v-card>
     </v-col>
