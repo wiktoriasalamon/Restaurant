@@ -26,7 +26,7 @@
         <v-card-text>
           <v-data-table
               :headers="orderedItemsHeaders"
-              :items="orderedItems"
+              v-bind:items="orderedItems"
               :items-per-page="-1"
               class="elevation-1"
           >
@@ -35,11 +35,11 @@
                 <td class="text-xs-left">{{ props.item.name }}</td>
                 <td class="text-xs-left">{{ props.item.price}}</td>
                 <td class="text-xs-left">
-                  <!--									//TODO zmienić na strzałeczki-->
-                  <v-text-field
-                      @change="changeTotalSum"
-                      v-model="props.item.amount">
-                  </v-text-field>
+                  <v-text-field readonly v-model="props.item.amount"></v-text-field>
+                </td>
+                <td class="text-xs-left">
+                  <v-icon @click="minusItem(props.item)">indeterminate_check_box</v-icon>
+                  <v-icon @click="plusItem(props.item)">add_box</v-icon>
                 </td>
                 <td class="text-xs-center">
                   <v-icon @click="deleteItem(props.item.id)">
@@ -87,6 +87,7 @@
           {text: 'Nazwa', value: 'name',},
           {text: 'Cena', value: 'price'},
           {text: 'Ilość', value: ''},
+          {text: "Zmień ilość", value: "changeAmount"},
           {text: 'Usuń', value: ''},
         ],
         orderedItems: [],
@@ -159,7 +160,25 @@
         ).finally(() => {
           this.loading = false;
         })
-      }
+      },
+      minusItem(item) {
+        console.log(item.amount);
+        if (item.amount > 1) {
+          item.amount = item.amount - 1;
+          this.changeTotalSum();
+        }
+        console.log(item.amount);
+      },
+      plusItem(item) {
+        console.log(item.amount);
+
+        if (item.amount < 15) {
+          item.amount = item.amount + 1;
+          this.changeTotalSum();
+        }
+        console.log(item.amount);
+
+      },
     }
   }
 </script>
