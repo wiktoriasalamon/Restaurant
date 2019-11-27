@@ -1,7 +1,7 @@
 <template>
   <v-row class="justify-space-around">
     <v-col
-        cols="12" ld="4" ma-2 md="5" sm="8" xl="3">
+        cols="12" lg="4" ma-2 md="5" sm="8" xl="3">
       <v-card class="transparent_form">
         <v-card-title>
           Moje konto
@@ -80,7 +80,7 @@
       </v-card>
     </v-col>
     <v-col
-        cols="12" ld="4" ma-2 md="5" sm="8" xl="3">
+        cols="12" lg="4" ma-2 md="5" sm="8" xl="3">
       <v-card class="transparent_form">
         <v-card-text>
           <v-form
