@@ -87,22 +87,25 @@
                   <v-text-field
                     :rules="[rules.required, rules.emailRules]"
                     label="E-mail"
+                    outlined
                     v-model="form.email"
                     :disabled="mailDisabled"
                   ></v-text-field>
-                  <v-text-field :rules="[rules.required]" label="Ulica" v-model="form.address.street"></v-text-field>
-                  <v-text-field :rules="[rules.required]"  label="Numer domu "
+                  <v-text-field :rules="[rules.required]" label="Ulica" outlined v-model="form.address.street"></v-text-field>
+                  <v-text-field :rules="[rules.required]"  label="Numer domu "outlined
                                 v-model="form.address.houseNumber"></v-text-field>
-                  <v-text-field label="Numer mieszkania"
+                  <v-text-field label="Numer mieszkania" outlined
                                 v-model="form.address.apartmentNumber"></v-text-field>
                   <v-text-field
                     :rules="[rules.required]"
                     label="Miejscowość"
+                    outlined
                     v-model="form.address.city"
                   ></v-text-field>
                   <v-text-field
                     :rules="[rules.required, rules.postCodeFormat]"
                     label="Kod pocztowy"
+                    outlined
                     v-model="form.address.postCode"
                   ></v-text-field>
                 </v-form>
