@@ -8,11 +8,13 @@ use App\Models\User;
 use App\Services\ReservationService;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Tests\TestCase;
 
 class ReservationTest extends TestCase
 {
     use RefreshDatabase;
+    use WithoutMiddleware;
 
     /**
      * reservation for today, no other reservation for the table and table is not occupied
@@ -123,10 +125,9 @@ class ReservationTest extends TestCase
     public function testFreeTablesByDate()
     {
         $this->fakeTables();
-        $now=Carbon::now();
-        $this->fakeModel(Reservation::class,['table_id' => 3, 'date' => $now->subDay()->format('Y-m-d')]);
-        $this->fakeModel(Reservation::class,['table_id' => 4, 'date' => $now->addDay()->format('Y-m-d')]);
-        $tables=$this->getReservationService()->freeTablesByDate($now->format('Y-m-d'));
+        $this->fakeModel(Reservation::class,['table_id' => 3, 'date' => '2019-11-21']);
+        $this->fakeModel(Reservation::class,['table_id' => 4, 'date' => '2019-11-23']);
+        $tables=$this->getReservationService()->freeTablesByDate('2019-11-22');
         $this->assertEquals($tables[0]->id,1);
         $this->assertEquals($tables[1]->id,2);
         $this->assertEquals($tables[2]->id,3);
