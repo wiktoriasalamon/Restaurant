@@ -67,7 +67,7 @@ export default {
             .then(response => {
               const entries = Object.entries(response.data);
               if (response.data) {
-                this.watchedSum = response.data.sum;
+                this.watchedSum = response.data.sum.toFixed(2);
                 response.data.dishes.forEach(item => {
                   var newItem = {
                     name: item.name,

@@ -92,7 +92,7 @@
                     :disabled="mailDisabled"
                   ></v-text-field>
                   <v-text-field :rules="[rules.required]" label="Ulica" outlined v-model="form.address.street"></v-text-field>
-                  <v-text-field :rules="[rules.required]"  label="Numer domu "outlined
+                  <v-text-field :rules="[rules.required]"  label="Numer domu " outlined
                                 v-model="form.address.houseNumber"></v-text-field>
                   <v-text-field label="Numer mieszkania" outlined
                                 v-model="form.address.apartmentNumber"></v-text-field>
@@ -126,7 +126,7 @@
                 <v-list two-line>
                   <v-list-item>
                     <v-list-item-icon>
-                      <v-icon color="indigo">monetization_on</v-icon>
+                      <v-icon color="primary">monetization_on</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-title>{{this.priceSum + ' zł'}}</v-list-item-title>
@@ -135,7 +135,7 @@
                   </v-list-item>
                   <v-list-item>
                     <v-list-item-icon>
-                      <v-icon color="indigo">mail</v-icon>
+                      <v-icon color="primary">mail</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-title>{{this.form.email}}</v-list-item-title>
@@ -144,7 +144,7 @@
                   </v-list-item>
                   <v-list-item>
                     <v-list-item-icon>
-                      <v-icon color="indigo">room</v-icon>
+                      <v-icon color="primary">room</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-title v-if="this.form.address.apartmentNumber">
