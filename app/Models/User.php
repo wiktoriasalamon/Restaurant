@@ -68,6 +68,7 @@ class User extends Authenticatable
 
     /**
      * @param $request
+     * @codeCoverageIgnore
      */
     public function fillUser($request)
     {
@@ -97,6 +98,7 @@ class User extends Authenticatable
     }
 
     /**
+     * @codeCoverageIgnore
      * @return bool
      */
     public function ifAuth(): bool
@@ -105,6 +107,7 @@ class User extends Authenticatable
     }
 
     /**
+     * @codeCoverageIgnore
      * @param string $password
      */
     public function setPassword(string $password)

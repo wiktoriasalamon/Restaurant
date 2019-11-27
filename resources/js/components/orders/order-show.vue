@@ -1,6 +1,7 @@
 <template>
     <v-row class="justify-center">
-        <v-card>
+        <v-col cols="12" sm="12" md="8" lg="6" xl="4">
+        <v-card class="transparent_form">
             <v-card-title>
                 <h2>Podgląd zamówienia</h2>
             </v-card-title>
@@ -23,14 +24,16 @@
                 <h5 style="margin-top: 2rem;">Suma zamówienia: {{orderSum + ' zł'}}</h5>
             </v-card-text>
             <v-card-actions>
-                <v-btn @click="goHome">
+                <v-btn @click="goHome" text>
                     Powrót do strony głównej
                 </v-btn>
-                <v-btn @click="cancelOrder()" :disabled="orderStatusEn !== 'ordered'" v-bind:loading="loading">
+                <v-spacer></v-spacer>
+                <v-btn @click="cancelOrder()" :disabled="orderStatusEn !== 'ordered'" v-bind:loading="loading" class="yellow_form_button" color="secondary">
                     Anuluj zamówienie
                 </v-btn>
             </v-card-actions>
         </v-card>
+        </v-col>
     </v-row>
 </template>
 
