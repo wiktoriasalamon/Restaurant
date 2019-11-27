@@ -46,7 +46,7 @@
         menuItems: [],
         headers: [
           {text: 'Nazwa', value: 'name',},
-          {text: 'Cena', value: 'price'},
+          {text: 'Cena (zł)', value: 'price'},
         ],
         categoryItems: [],
         allMenuItems: [],
