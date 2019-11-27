@@ -30,7 +30,7 @@ class ReservationMail extends Mailable
     {
         $this->sendToMail=$reservation->email;
         $this->date=$reservation->date;
-        $this->link=route('reservation.indexUser');//todo: route do podglądu
+        $this->link=route('reservation.showUser', $reservation->id);
         $this->time=$reservation->start_time;
         $this->size=$reservation->table->size;
     }
