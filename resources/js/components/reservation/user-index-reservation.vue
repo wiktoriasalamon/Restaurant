@@ -1,11 +1,11 @@
 <template>
   <v-row class="justify-center align-center">
     <v-col cols="12" lg="6" ma-2 md="8" sm="12" xl="5">
-      <v-card class="component-header">
+      <v-card class="transparent_form">
         <v-card-title>
-          <h1>Moje zamówienia</h1>
+          <h1>Moje rezerwacje</h1>
         </v-card-title>
-      </v-card>
+      
       <v-data-table
         :headers="headers"
         :items="reservations"
@@ -24,6 +24,7 @@
           </tr>
         </template>
       </v-data-table>
+	  </v-card>
     </v-col>
   </v-row>
 </template>
