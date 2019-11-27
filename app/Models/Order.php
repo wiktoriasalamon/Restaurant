@@ -20,21 +20,33 @@ class Order extends Model
         'comment'
     ];
 
+    /**
+    * @codeCoverageIgnore
+    */
     public function check()
     {
         return $this->hasMany(Check::class);
     }
 
+    /**
+    * @codeCoverageIgnore
+    */
     public function worker()
     {
         return $this->belongsTo(User::class,  'worker_id', 'id');
     }
 
+    /**
+    * @codeCoverageIgnore
+    */
     public function customer()
     {
         return $this->belongsTo(User::class,  'customer_id', 'id');
     }
 
+    /**
+    * @codeCoverageIgnore
+    */
     public function table()
     {
         return $this->belongsTo(Table::class);

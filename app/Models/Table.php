@@ -16,11 +16,17 @@ class Table extends Model
         'occupied_since'
     ];
 
+    /**
+    * @codeCoverageIgnore
+    */
     public function reservation()
     {
         return $this->hasMany(Reservation::class);
     }
 
+    /**
+    * @codeCoverageIgnore
+    */
     public function order()
     {
         return $this->hasMany(Order::class);

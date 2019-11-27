@@ -14,11 +14,17 @@ class Check extends Model
         'dish_id'
     ];
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function dish()
     {
         return $this->belongsTo(Dish::class,  'dish_id', 'id');
     }
 
+    /**
+    * @codeCoverageIgnore
+    */
     public function order()
     {
         return $this->belongsTo(Order::class,  'order_id', 'id');

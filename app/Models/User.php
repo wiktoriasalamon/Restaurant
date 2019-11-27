@@ -46,9 +46,10 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
     /**
      * A user can have many messages
-     *
+     * @codeCoverageIgnore
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function messages()
@@ -57,19 +58,33 @@ class User extends Authenticatable implements JWTSubject
     }
 
 
+    /**
+    * @codeCoverageIgnore
+    */
     public function orderWorker()
     {
-        return $this->hasMany(Order::class, 'id', 'worker_id' );
+        return $this->hasMany(Order::class, 'id', 'worker_id');
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function orderCustomer()
     {
         return $this->hasMany(Order::class, 'id', 'customer_id');
     }
+
+    /**
+     * @codeCoverageIgnore
+     */
     public function getJWTIdentifier()
     {
         return $this->getKey();
     }
+
+    /**
+     * @codeCoverageIgnore
+     */
     public function getJWTCustomClaims()
     {
         return [];
@@ -77,6 +92,7 @@ class User extends Authenticatable implements JWTSubject
 
     /**
      * @param $request
+     * @codeCoverageIgnore 
      */
     public function fillUser($request)
     {
@@ -93,9 +109,9 @@ class User extends Authenticatable implements JWTSubject
     /**
      * @return array
      */
-    public function fetchUserData():array
+    public function fetchUserData(): array
     {
-        return[
+        return [
             'id' => $this->id,
             'name' => $this->name,
             'surname' => $this->surname,
@@ -106,14 +122,16 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
+     * @codeCoverageIgnore
      * @return bool
      */
-    public function ifAuth():bool
+    public function ifAuth(): bool
     {
-       return $this===Auth::user();
+        return $this === Auth::user();
     }
 
     /**
+     * @codeCoverageIgnore
      * @param string $password
      */
     public function setPassword(string $password)

@@ -17,11 +17,17 @@ class Dish extends Model
         'price'
     ];
 
+    /**
+    * @codeCoverageIgnore
+    */
     public function check()
     {
         return $this->hasMany(Check::class);
     }
 
+    /**
+    * @codeCoverageIgnore
+    */
     public function category()
     {
         return $this->belongsTo(Dish::class);

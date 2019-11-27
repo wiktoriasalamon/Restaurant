@@ -16,6 +16,9 @@ class DishCategory extends Model
         'name'
     ];
 
+    /**
+    * @codeCoverageIgnore
+    */
     public function dish()
     {
         return $this->hasMany(Dish::class);

@@ -21,7 +21,7 @@ class ReservationTest extends TestCase
      */
     public function testTableWithoutReservationAndNotOccupiedIsAvailable()
     {
-        $this->fakeModel(Table::class,[]);
+        $this->fakeModel(Table::class, []);
         $now = Carbon::now();
         $free = $this->getReservationService()->isTableAvailable(1, $now->format('Y-m-d'), '10:00:00');
         self::assertTrue($free);
@@ -32,15 +32,14 @@ class ReservationTest extends TestCase
      */
     public function testTableWithReservationTodayAndNotOccupiedIsAvailableToday()
     {
-        $this->fakeModel(Table::class,[]);
+        $this->fakeModel(Table::class, []);
         $tableId = 1;
-        $date =Carbon::now()->format('Y-m-d');
-        $startTime ='08:00:00';
-            $this->fakeModel(Reservation::class, ['table_id' => $tableId, 'date' => $date, 'start_time' => $startTime]);
-        $free = $this->getReservationService()->isTableAvailable($tableId, $date,'10:00:00');
+        $date = Carbon::now()->format('Y-m-d');
+        $startTime = '08:00:00';
+        $this->fakeModel(Reservation::class, ['table_id' => $tableId, 'date' => $date, 'start_time' => $startTime]);
+        $free = $this->getReservationService()->isTableAvailable($tableId, $date, '10:00:00');
         self::assertTrue($free);
     }
-
 
 
     /**
@@ -48,10 +47,10 @@ class ReservationTest extends TestCase
      */
     public function testTableWithReservationTodayAndNotOccupiedIsNotAvailableToday()
     {
-        $this->fakeModel(Table::class,[]);
+        $this->fakeModel(Table::class, []);
         $tableId = 1;
-        $date =Carbon::now()->format('Y-m-d');
-        $startTime ='13:00:00';
+        $date = Carbon::now()->format('Y-m-d');
+        $startTime = '13:00:00';
         $this->fakeModel(Reservation::class, ['table_id' => $tableId, 'date' => $date, 'start_time' => $startTime]);
         $free = $this->getReservationService()->isTableAvailable($tableId, $date, '10:00:00');
         self::assertFalse($free);
@@ -62,10 +61,10 @@ class ReservationTest extends TestCase
      */
     public function testTableWithReservationIsAvailableNotToday()
     {
-        $tableId=1;
+        $tableId = 1;
         $this->fakeTableReservationNotToday($tableId);
-        $now=Carbon::now();
-        $free = $this->getReservationService()->isTableAvailable($tableId, $now->addDay()->format('Y-m-d'),'10:00:00');
+        $now = Carbon::now();
+        $free = $this->getReservationService()->isTableAvailable($tableId, $now->addDay()->format('Y-m-d'), '10:00:00');
         self::assertTrue($free);
     }
 
@@ -74,9 +73,9 @@ class ReservationTest extends TestCase
      */
     public function testTableWithReservationIsNotAvailableNotToday()
     {
-        $tableId=1;
+        $tableId = 1;
         $this->fakeTableReservationNotToday($tableId);
-        $now=Carbon::now();
+        $now = Carbon::now();
         $free = $this->getReservationService()->isTableAvailable($tableId, $now->subDay()->format('Y-m-d'), '10:00:00');
         self::assertFalse($free);
     }
@@ -86,10 +85,10 @@ class ReservationTest extends TestCase
      * fake reservation not for today
      * @param int $tableId
      */
-    private function fakeTableReservationNotToday(int $tableId):void
+    private function fakeTableReservationNotToday(int $tableId): void
     {
-        $this->fakeModel(Table::class,[]);
-        $date =Carbon::now()->subDay()->format('Y-m-d');
+        $this->fakeModel(Table::class, []);
+        $date = Carbon::now()->subDay()->format('Y-m-d');
         $this->fakeModel(Reservation::class, ['table_id' => $tableId, 'date' => $date]);
     }
 
@@ -110,6 +109,7 @@ class ReservationTest extends TestCase
             $this->fakeModel(Table::class, ['size' => $i]);
         }
     }
+
     /*
      * get reservation service
      */
@@ -118,22 +118,21 @@ class ReservationTest extends TestCase
         return (new ReservationService());
     }
 
-//todo asia fix
-//    /*
-//     * test function freeTablesByDate
-//     */
-//    public function testFreeTablesByDate()
-//    {
-//        $this->fakeTables();
-//        $now=Carbon::now();
-//        $this->fakeModel(Reservation::class,['table_id' => 3, 'date' => $now->subDay()->format('Y-m-d')]);
-//        $this->fakeModel(Reservation::class,['table_id' => 4, 'date' => $now->addDay()->format('Y-m-d')]);
-//        $tables=$this->getReservationService()->freeTablesByDate($now->format('Y-m-d'));
-//        $this->assertEquals($tables[0]->id,1);
-//        $this->assertEquals($tables[1]->id,2);
-//        $this->assertEquals($tables[2]->id,3);
-//        $this->assertEquals($tables[3]->id,4);
-//    }
+
+    /*
+     * test function freeTablesByDate
+     */
+    public function testFreeTablesByDate()
+    {
+        $this->fakeTables();
+        $this->fakeModel(Reservation::class, ['table_id' => 3, 'date' => '2019-11-21']);
+        $this->fakeModel(Reservation::class, ['table_id' => 4, 'date' => '2019-11-23']);
+        $tables = $this->getReservationService()->freeTablesByDate('2019-11-22');
+        $this->assertEquals($tables[0]->id, 1);
+        $this->assertEquals($tables[1]->id, 2);
+        $this->assertEquals($tables[2]->id, 3);
+        $this->assertEquals($tables[3]->id, 4);
+    }
 
 
     /*
@@ -141,20 +140,20 @@ class ReservationTest extends TestCase
      */
     public function testFetchReservation()
     {
-        $tableSize=6;
-        $tableId=1;
-        $date='2019-11-26';
-        $startTime='10:00:00';
-        $this->fakeModel(Table::class,['size'=>$tableSize]);
+        $tableSize = 6;
+        $tableId = 1;
+        $date = '2019-11-26';
+        $startTime = '10:00:00';
+        $this->fakeModel(Table::class, ['size' => $tableSize]);
         $this->fakeModel(Reservation::class, ['table_id' => $tableId, 'date' => $date, 'start_time' => $startTime]);
-        $reservation=$this->getReservationService()->fetchReservation(1);
+        $reservation = $this->getReservationService()->fetchReservation(1);
         $this->assertIsArray($reservation);
-        $this->assertArrayHasKey('date',$reservation);
-        $this->assertArrayHasKey('startTime',$reservation);
-        $this->assertArrayHasKey('tableSize',$reservation);
-        $this->assertEquals($reservation['date'],$date);
-        $this->assertEquals($reservation['startTime'],$startTime);
-        $this->assertEquals($reservation['tableSize'],$tableSize);
+        $this->assertArrayHasKey('date', $reservation);
+        $this->assertArrayHasKey('startTime', $reservation);
+        $this->assertArrayHasKey('tableSize', $reservation);
+        $this->assertEquals($reservation['date'], $date);
+        $this->assertEquals($reservation['startTime'], $startTime);
+        $this->assertEquals($reservation['tableSize'], $tableSize);
 
     }
 
@@ -163,11 +162,45 @@ class ReservationTest extends TestCase
      */
     public function testOneADayReservation()
     {
-        $email='test@test.pl';
-        $date='2019-11-26';
-        $this->fakeModel(User::class,['email'=>$email]);
-        $this->fakeModel(Reservation::class,['email'=>$email,'date' => $date]);
-        $one=$this->getReservationService()->oneADay($date,$email);
+        $email = 'test@test.pl';
+        $date = '2019-11-26';
+        $this->fakeModel(User::class, ['email' => $email]);
+        $this->fakeModel(Reservation::class, ['email' => $email, 'date' => $date]);
+        $one = $this->getReservationService()->oneADay($date, $email);
         $this->assertFalse($one);
+    }
+
+    public function testFindTableBySizeTableAvailable()
+    {
+        $this->fakeTables();
+        $first = $this->fakeModel(Reservation::class, ['date' => '2019-11-26', 'table_id' => 1]);
+        $second = $this->fakeModel(Reservation::class, ['date' => '2019-11-24', 'table_id' => 3]);
+        $this->assertTrue($first->findTable(2));
+        $this->assertFalse($first->findTable(1));
+        $this->assertFalse($second->findTable(3));
+        $this->assertTrue($second->findTable(4));
+    }
+
+    public function testWorkerReservationsReturnsArray()
+    {
+        $this->assertIsArray($this->getReservationService()->workerReservations('2019-11-26'));
+    }
+
+    public function testWorkerReservationsStatusFinished()
+    {
+        $this->fakeModel(Table::class, []);
+        $this->fakeModel(Reservation::class, ['date' => '2019-11-21', 'table_id' => 1]);
+        $this->fakeModel(Reservation::class, ['date' => '2019-11-21', 'table_id' => 1]);
+        $this->fakeModel(Reservation::class, ['date' => '2019-11-21', 'table_id' => 1]);
+        $this->fakeModel(Reservation::class, ['date' => '2019-11-23', 'table_id' => 1]);
+        $reservations = $this->getReservationService()->workerReservations('2019-11-21');
+        $this->assertIsArray($reservations);
+        $this->assertCount(3,$reservations);
+        $this->assertArrayHasKey('status',$reservations[0]);
+        $this->assertEquals($reservations[0]['status'],'finished');
+        $this->assertArrayHasKey('status',$reservations[1]);
+        $this->assertEquals($reservations[0]['status'],'finished');
+        $this->assertArrayHasKey('status',$reservations[2]);
+        $this->assertEquals($reservations[0]['status'],'finished');
     }
 }
