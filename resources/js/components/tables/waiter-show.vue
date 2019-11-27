@@ -85,6 +85,21 @@
     beforeMount() {
       this.getData()
     },
+    created() {
+      Echo.channel('table')
+        .listen('TableChanged', (e) => {
+          this.getData()
+        });
+      Echo.channel('order')
+        .listen('OrderChanged', (e) => {
+          this.getData()
+        });
+      Echo.channel('reservation')
+        .listen('ReservationChanged', (e) => {
+          this.getData()
+        });
+
+    },
     methods: {
       getData() {
         axios.get(route('api.table.loadTableForWaiter', this.id)).then(response => {
