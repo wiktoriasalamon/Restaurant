@@ -11,34 +11,45 @@
       <v-stepper-content step="1">
         <v-card class="background">
           <v-row class="justify-space-between">
-            <v-col>
-              <v-simple-table>
-                <template v-slot:default>
-                  <thead>
-                  <tr>
-                    <th class="text-left">Kategorie</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr>
-                    <td @click="setMenuItems(-1)">Wszystkie</td>
-                  </tr>
-                  <tr :key="item.id" v-for="item in categoryItems">
-                    <td @click="setMenuItems(item.id)">{{ item.name }}</td>
-                  </tr>
-                  </tbody>
-                </template>
-              </v-simple-table>
-            </v-col>
+            <!--            <v-col>-->
+            <!--              <v-simple-table>-->
+            <!--                <template v-slot:default>-->
+            <!--                  <thead>-->
+            <!--                  <tr>-->
+            <!--                    <th class="text-left">Kategorie</th>-->
+            <!--                  </tr>-->
+            <!--                  </thead>-->
+            <!--                  <tbody>-->
+            <!--                  <tr>-->
+            <!--                    <td @click="setMenuItems(-1)">Wszystkie</td>-->
+            <!--                  </tr>-->
+            <!--                  <tr :key="item.id" v-for="item in categoryItems">-->
+            <!--                    <td @click="setMenuItems(item.id)">{{ item.name }}</td>-->
+            <!--                  </tr>-->
+            <!--                  </tbody>-->
+            <!--                </template>-->
+            <!--              </v-simple-table>-->
+            <!--            </v-col>-->
             <v-col>
               <v-card-title>
-                <v-text-field
-                    append-icon="search"
-                    hide-details
-                    label="Szukaj"
-                    single-line
-                    v-model="search"
-                ></v-text-field>
+                <v-col>
+                  <v-select
+                      :items="categoryItems"
+                      item-text="name"
+                      item-value="id"
+                      label="Wybierz kategorię"
+                      outlined
+                      v-model="selectedCategory"
+                      @change="setMenuItems"
+                  ></v-select>
+                  <v-text-field
+                      append-icon="search"
+                      hide-details
+                      label="Szukaj"
+                      single-line
+                      v-model="search"
+                  ></v-text-field>
+                </v-col>
               </v-card-title>
               <v-data-table
                   :headers="headers"
@@ -199,6 +210,7 @@
     props: ["dishes", "categories"],
     data() {
       return {
+        selectedCategory: -1,
         loading: false,
         e1: 0,
         search: "",
@@ -308,7 +320,9 @@
         });
         this.priceSum = this.priceSum.toFixed(2);
       },
-      setMenuItems(id) {
+      setMenuItems() {
+        let id = this.selectedCategory;
+        console.log(id);
         if (id === -1) {
           this.menuItems = this.allMenuItems;
         } else {
