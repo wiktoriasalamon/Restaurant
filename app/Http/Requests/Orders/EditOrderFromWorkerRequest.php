@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Order;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class NewOrderFromWorkerRequest extends FormRequest
+class EditOrderFromWorkerRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,7 +14,7 @@ class NewOrderFromWorkerRequest extends FormRequest
     public function rules(): array
     {
         return[
-            'table_id' => 'required',
+            'token' => 'required',
             'items' => 'required|array'
         ];
     }
@@ -25,7 +25,7 @@ class NewOrderFromWorkerRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'table_id.required'=>'Id stolika jest wymagane',
+            'token.required'=>'Token jest wymagany',
             'items.required'=>'Produkty są wymagane',
             'items.array'=>'Zły format produktów',
         ];

@@ -15,6 +15,12 @@ services:
     build:
       - npm install
 
+
 tooling:
   npm:
     service: node
+
+  phpunit:
+    service: appserver
+    description: "Run PHP Unit tests: lando phpunit"
+    cmd: /app/vendor/bin/phpunit

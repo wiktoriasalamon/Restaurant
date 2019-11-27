@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -15,6 +16,7 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
     use HasRoles;
+    use SoftDeletes;
     protected $guard_name = 'web';
 //    protected $table = 'users';
 
@@ -81,7 +83,7 @@ class User extends Authenticatable implements JWTSubject
         $this->name = $request->name;
         $this->surname = $request->surname;
         $this->email = $request->email;
-        $this->address = $request->address;
+        $this->address = json_encode($request->address);
         $this->phone = $request->phone;
         if (!$this->remember_token) {
             $this->remember_token = Str::random(10);

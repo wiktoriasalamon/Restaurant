@@ -61,7 +61,6 @@ class ApiTableController extends Controller
             return response()->json((new OrderService)->tableByDate(Carbon::now()->format('Y-m-d'),
                 $table->load('order')), 200);
         } catch (\Exception $e) {
-            dd($e);
             Log::notice("Error deleting data all:" . $e);
             Log::notice("Error deleting data msg:" . $e->getMessage());
             Log::notice("Error deleting data code:" . $e->getCode());
@@ -95,7 +94,7 @@ class ApiTableController extends Controller
             $table->size = $request->size;
             $table->occupied_since = null;
             $table->save();
-            return response()->json(['message' => "Stolik został pomyślnie zapisany."], 200);
+            return response()->json("Stolik został pomyślnie zapisany.", 200);
         } catch (\Exception $e) {
             Log::notice("Error storing data all:" . $e);
             Log::notice("Error storing data msg:" . $e->getMessage());
@@ -115,7 +114,7 @@ class ApiTableController extends Controller
             $table->size = $request->size;
             $table->occupied_since = null;
             $table->save();
-            return response()->json(['message' => "Stolik został pomyślnie zapisany."], 200);
+            return response()->json("Stolik został pomyślnie zapisany.", 200);
         } catch (\Exception $e) {
             Log::notice("Error updating data all:" . $e);
             Log::notice("Error updating data msg:" . $e->getMessage());

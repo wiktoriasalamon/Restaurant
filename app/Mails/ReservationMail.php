@@ -6,6 +6,7 @@ use App\Models\Reservation;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 
@@ -44,7 +45,7 @@ class ReservationMail extends Mailable
      */
     public function sendMail()
     {
+        Log::notice("Mail reservation to:" . $this->sendToMail);
         Mail::to($this->sendToMail)->queue($this);
-
     }
 }

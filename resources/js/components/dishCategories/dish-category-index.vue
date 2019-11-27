@@ -1,22 +1,13 @@
 <template>
-  <v-data-table
-      :headers="headers"
-      :items="categories"
-      sort-by="id"
-      class="elevation-1"
-  >
-    <template v-slot:top>
-      <v-toolbar flat color="white">
-        <v-toolbar-title>Kategorie dań</v-toolbar-title>
-        <v-divider
-            class="mx-4"
-            inset
-            vertical
-        ></v-divider>
+  <v-row class="justify-center align-center">
+  <v-col cols="12" lg="5" ma-2 md="8" sm="10" xl="4">
+    <v-card class="transparent_form">
+      <v-card-title>
+        Kategorie dań
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on }">
-            <v-btn color="primary" dark class="mb-2" v-on="on">Dodaj kategorię</v-btn>
+            <v-btn class="yellow_form_button" color="secondary" v-on="on">Dodaj kategorię</v-btn>
           </template>
           <v-card>
             <v-card-title>
@@ -27,8 +18,8 @@
               <v-container>
                 <v-row>
                   <v-form
-                      ref="form">
-                    <v-text-field v-model="editedItem.name" v-bind:rules="[required]"
+                    ref="form">
+                    <v-text-field v-model="editedItem.name" v-bind:rules="[required]" outlined
                                   label="Nazwa kategorii" v-bind:error-messages="errors.name"></v-text-field>
                   </v-form>
                 </v-row>
@@ -36,14 +27,20 @@
             </v-card-text>
 
             <v-card-actions>
+              <v-btn @click="close"  text>Anuluj</v-btn>
               <v-spacer></v-spacer>
-              <v-btn @click="close" color="blue darken-1" text>Anuluj</v-btn>
-              <v-btn @click="save" color="blue darken-1" text>Zapisz</v-btn>
+              <v-btn @click="save" class="yellow_form_button" color="secondary" v-bind:loading="loading">Zapisz</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
-      </v-toolbar>
-    </template>
+      </v-card-title>
+  <v-data-table
+      :headers="headers"
+      :items="categories"
+      sort-by="id"
+      class="elevation-1"
+  >
+
     <template v-slot:item.action="{ item }">
       <v-icon
           small
@@ -60,15 +57,19 @@
       </v-icon>
     </template>
   </v-data-table>
+    </v-card>
+  </v-col>
+  </v-row>
 </template>
 
 <script>
-  import {notification} from "../../Notifications";
+  import {notification, notificationError, notificationSuccess} from "../../Notifications";
 
   export default {
     name: "dish-category-index",
     data() {
       return {
+        loading: false,
         dialog: false,
         headers: [
           {
@@ -115,10 +116,10 @@
       deleteItem(item) {
         axios.delete(route('api.dishCategory.delete', item.id))
           .then(response => {
-            notification("Pomyślnie usunięto kategorie", 'success');
+            notificationSuccess(response.data);
             this.fetchCategories();
           }).catch(error => {
-          notification("Wystąpił błąd podczas usuwania kategorii", 'error');
+          notificationError(error.response.data);
           console.error(error.response);
         });
       },
@@ -147,29 +148,41 @@
         if (this.$refs.form.validate() !== true) {
           return;
         }
+        this.loading = true;
         if (this.editedIndex > -1) {
           axios.post(route('api.dishCategory.update', this.editedItem.id), {
             id: this.editedItem.id,
             name: this.editedItem.name
           }).then(response => {
-            notification("Pomyślnie edytowano kategorię", 'success');
+            notification(response.data, 'success');
             this.fetchCategories();
             this.close();
           }).catch(error => {
-            this.fillErrors(error.response.data.errors);
-            notification("Wystąpił błąd podczas edytowania kategorii", 'error');
-            console.error(error.response);
+            console.error(error);
+            if (error.response.statusCode === 500) {
+              notificationError(error.response.data);
+            } else {
+              notification('Wystąpił błąd podczas edytowania kategorii dania', 'error');
+              this.fillErrors(error.response.data.errors);
+            }
+          }).finally(() => {
+            this.loading = false;
           });
         } else {
-          axios.post(route('api.dishCategory.store'), {name: this.editedItem.name})
-            .then(response => {
-              notification("Pomyślnie dodano kategorie", 'success');
-              this.fetchCategories();
-              this.close();
-            }).catch(error => {
+          axios.post(route('api.dishCategory.store'), {name: this.editedItem.name}).then(response => {
+            notification(response.data, 'success');
+            this.fetchCategories();
+            this.close();
+          }).catch(error => {
+            console.error(error);
+            if (error.response.statusCode === 500) {
+              notificationError(error.response.data);
+            } else {
+              notification('Wystąpił błąd podczas dodawania kategorii', 'error');
               this.fillErrors(error.response.data.errors);
-              notification("Wystąpił błąd podczas dodawania kategorii", 'error');
-              console.error(error.response);
+            }
+          }).finally(() => {
+            this.loading = false;
           });
         }
       },

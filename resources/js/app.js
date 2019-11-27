@@ -31,6 +31,20 @@ const opts = {
         },
         scrollbarWidth: 10,
     },
+    theme: {
+        light: true,
+        themes: {
+            light: {
+                primary: '#00311D',
+                accent: '#FF4081',
+                secondary: '#DEBFA1',
+                success: '#4CAF50',
+                info: '#2196F3',
+                warning: '#FB8C00',
+                error: '#FF5252'
+            },
+        }
+    },
     lang: {
         locales: {vuetifyPL, vuetifyEn},
         current: 'vuetifyPL',
@@ -77,6 +91,7 @@ Vue.component('forgot-password-mail', require('./components/auth/forgot-password
 
 Vue.component('user-create-reservation', require('./components/reservation/user-create-reservation').default);
 Vue.component('user-index-reservation', require('./components/reservation/user-index-reservation').default);
+Vue.component('user-show-reservation', require('./components/reservation/user-show-reservation').default);
 Vue.component('waiter-create-reservation', require('./components/reservation/waiter-create-reservation').default);
 Vue.component('waiter-index-reservation', require('./components/reservation/waiter-index-reservation').default);
 

@@ -1,39 +1,48 @@
 <template>
-  <v-card>
-    <v-card-title>Edytowanie pracownika</v-card-title>
-    <v-card-text>
-      <v-container>
-        <v-form
-            ref="form"
-        >
-          <v-text-field :rules="[rules.required]" label="Imię" v-bind:error-messages="errors.name"
-                        v-model="form.name"></v-text-field>
-          <v-text-field :rules="[rules.required]" label="Nazwisko" v-bind:error-messages="errors.surname"
-                        v-model="form.surname"></v-text-field>
-          <v-text-field :rules="[rules.required, rules.emailRules]" label="Email" v-bind:error-messages="errors.email"
-                        v-model="form.email"></v-text-field>
-          <v-text-field :rules="[rules.required]" label="Ulica" v-bind:error-messages="errors.address"
-                        v-model="form.address.street"></v-text-field>
-          <v-text-field :rules="[rules.required]" label="Numer domu"
-                        v-bind:error-messages="errors.address"
-                        v-model="form.address.houseNumber"></v-text-field>
-          <v-text-field :rules="[rules.required]" label="Numer apartamentu"
-                        v-bind:error-messages="errors.address"
-                        v-model="form.address.apartmentNumber"></v-text-field>
-          <v-text-field :rules="[rules.required]" label="Miasto" v-bind:error-messages="errors.address"
-                        v-model="form.address.city"></v-text-field>
-          <v-text-field :rules="[rules.required, rules.postCodeFormat]" label="Kod pocztowy"
-                        v-bind:error-messages="errors.address" v-model="form.address.postCode"></v-text-field>
-          <v-text-field :rules="[rules.phoneMax12]" label="Telefon"
-                        v-bind:error-messages="errors.phone" v-model="form.phone"></v-text-field>
-        </v-form>
-      </v-container>
-    </v-card-text>
-    <v-card-actions>
-      <v-btn @click="cancel">Anuluj</v-btn>
-      <v-btn @click="save">Zapisz</v-btn>
-    </v-card-actions>
-  </v-card>
+	<v-row class="justify-space-around">
+		<v-col
+			cols="12" lg="4" ma-2 md="5" sm="8" xl="3">
+			<v-card class="transparent_form">
+				<v-card-title>Edytowanie pracownika</v-card-title>
+				<v-card-text>
+					<v-container>
+						<v-form
+							ref="form"
+						>
+							<v-text-field :rules="[rules.required]" label="Imię" v-bind:error-messages="errors.name" outlined
+														v-model="form.name"></v-text-field>
+							<v-text-field :rules="[rules.required]" label="Nazwisko" v-bind:error-messages="errors.surname" outlined
+														v-model="form.surname"></v-text-field>
+							<v-text-field :rules="[rules.required, rules.emailRules]" outlined label="Email"
+														v-bind:error-messages="errors.email"
+														v-model="form.email"></v-text-field>
+							<v-text-field :rules="[rules.required]" label="Ulica" v-bind:error-messages="errors.address" outlined
+														v-model="form.address.street"></v-text-field>
+							<v-text-field :rules="[rules.required]" label="Numer domu" outlined
+														v-bind:error-messages="errors.address"
+														v-model="form.address.houseNumber"></v-text-field>
+							<v-text-field :rules="[rules.required]" label="Numer apartamentu" outlined
+														v-bind:error-messages="errors.address"
+														v-model="form.address.apartmentNumber"></v-text-field>
+							<v-text-field :rules="[rules.required]" label="Miasto" v-bind:error-messages="errors.address" outlined
+														v-model="form.address.city"></v-text-field>
+							<v-text-field :rules="[rules.required, rules.postCodeFormat]" label="Kod pocztowy" outlined
+														v-bind:error-messages="errors.address" v-model="form.address.postCode"></v-text-field>
+							<v-text-field :rules="[rules.phoneMax12]" label="Telefon" outlined
+														v-bind:error-messages="errors.phone" v-model="form.phone"></v-text-field>
+						</v-form>
+					</v-container>
+				</v-card-text>
+				<v-card-actions>
+					<v-row class="justify-space-between">
+						<v-btn @click="cancel">Anuluj</v-btn>
+						<v-btn @click="save" v-bind:loading="loading" class="yellow_form_button" color="secondary">Zapisz</v-btn>
+					</v-row>
+
+				</v-card-actions>
+			</v-card>
+		</v-col>
+	</v-row>
 </template>
 
 <script>
@@ -44,6 +53,7 @@
     name: "workers-edit",
     data() {
       return {
+        loading: false,
         rules: {
           required: value => !!value || "To pole jest wymagane",
           emailRules: v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'Niepoprawny adres email',
@@ -90,27 +100,50 @@
       cancel() {
         window.location.replace(route('worker.index'));
       },
+      clearErrors(object) {
+        let keys = Object.keys(object);
+        for (let key of keys) {
+          if (key === 'address') {
+            this.clearErrors(object[key]);
+          } else {
+            object[key] = [];
+          }
+        }
+      },
+      fillErrors(error) {
+        this.clearErrors(this.errors);
+        let entries = Object.entries(error.response.data.errors);
+        for (let [key, value] of entries) {
+          if (key.includes('address')) {
+            let realKey = key.split('.')[1];
+            this.errors.address[realKey] = value;
+          } else {
+            this.errors[key] = value;
+          }
+        }
+      },
       save() {
         if (this.$refs.form.validate()) {
+          this.loading = true;
           let data = {};
           let entries = Object.entries(this.form);
           for (let [key, v] of entries) {
             let value = v;
-            if (key == 'address') {
-              value = JSON.stringify(value);
-            }
             data[key] = value;
           }
           axios.put(route('api.user.updateWorker', this.id), data).then(response => {
-            notification('Pomyślnie edytowano pracownika', 'success');
+            notification(response.data.message, 'success');
             window.location.replace(route('worker.index'));
           }).catch(error => {
-            notification('Wystąpił błąd podczas edytowania pracownika', 'error');
             console.error(error.response);
-            let entries = Object.entries(error.response.data.errors);
-            for (let [key, value] of entries) {
-              this.errors[key] = value;
+            if (error.response.statusCode === 500) {
+              notification(error.response.data.message, 'error');
+            } else {
+              notification('Wystąpił błąd podczas dodawania pracownika', 'error');
+              this.fillErrors(error);
             }
+          }).finally(() => {
+            this.loading = false;
           });
         }
       }

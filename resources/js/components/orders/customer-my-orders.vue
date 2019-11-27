@@ -1,32 +1,37 @@
 <template>
-  <v-card>
-    <v-data-table
-      :headers="headers"
-      :items="myOrders"
-      :items-per-page="-1"
-      class="elevation-1"
-      single-expand
-      :expanded.sync="expanded"
-      show-expand
-    >
-      <template v-slot:expanded-item="{ headers }">
-        <v-data-table
-        :headers="watchedHeaders"
-          :items="watchedOrder"
-          class="elevation-1"
-          hide-default-footer>
-          
-        </v-data-table>
-        <tr>
-          <td>Cena łącznie: {{watchedSum}}</td>
-        </tr>
-      </template>
-    </v-data-table>
-  </v-card>
+  <v-row class="justify-center align-center">
+    <v-col cols="12" lg="6" ma-2 md="8" sm="12" xl="5">
+      <v-data-table
+        :expanded.sync="expanded"
+        :headers="headers"
+        :items="myOrders"
+        :items-per-page="-1"
+        class="elevation-1"
+        show-expand
+        single-expand
+      >
+        <template v-slot:expanded-item="{ headers }">
+          <td :colspan="headers.length">
+              <v-data-table
+                :headers="watchedHeaders"
+                :items="watchedOrder"
+                class="elevation-1"
+                hide-default-footer
+              ></v-data-table>
+              <v-spacer/>
+            <tr>
+                <v-card-text>
+                  Cena łącznie: {{watchedSum}} zł
+                </v-card-text>
+              </tr>
+          </td>
+        </template>
+      </v-data-table>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
-import { log } from "util";
 export default {
   name: "customer-my-orders",
   data() {
@@ -39,19 +44,20 @@ export default {
         { text: "Nr zamówienia", value: "id" },
         { text: "Data i godzina", value: "date" },
         { text: "Adres dostawy", value: "address" },
+        { text: "Status", value: "status_pl" },
         { text: "", value: "data-table-expand" }
       ],
       watchedHeaders: [
         { text: "Nazwa", value: "name" },
         { text: "Cena", value: "price" },
-        { text: "Ilość", value: "amount" },
+        { text: "Ilość", value: "amount" }
       ]
     };
   },
   watch: {
     expanded: function(list) {
-      if (this.expanded.length>0) {
-        this.watchedOrder = [],
+      if (this.expanded.length > 0) {
+        (this.watchedOrder = []),
           axios
             .get(
               route("api.order.loadOrder", {
@@ -61,7 +67,7 @@ export default {
             .then(response => {
               const entries = Object.entries(response.data);
               if (response.data) {
-                this.watchedSum = response.data.sum;
+                this.watchedSum = response.data.sum.toFixed(2);
                 response.data.dishes.forEach(item => {
                   var newItem = {
                     name: item.name,
@@ -99,6 +105,7 @@ export default {
               id: value.id,
               address: add,
               date: value.created_at,
+              status_pl: value.status_pl,
               token: value.token
             });
           }

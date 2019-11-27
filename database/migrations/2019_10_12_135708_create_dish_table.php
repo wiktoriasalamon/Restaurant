@@ -19,6 +19,7 @@ class CreateDishTable extends Migration
             $table->double('price');
             $table->integer('category_id')->unsigned()->index();
             $table->foreign('category_id')->references('id')->on('dish_category');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -1,8 +1,8 @@
 <template>
 	<div>
-		<v-row class="justify-center" style="max-width:45rem;">
-			<v-col>
-				<v-card>
+		<v-row class="justify-center">
+			<v-col cols="12" sm="10" md="8" lg="5" xl="4">
+				<v-card class="transparent_form">
 					<v-card-text>
 						<h4>W celu znalezienia wolnych stolików do  rezerwacji wybierz datę:</h4>
 						<v-menu
@@ -20,6 +20,7 @@
 									label="Wybierz datę"
 									append-icon="event"
 									readonly
+									outlined
 									v-on="on"
 								></v-text-field>
 							</template>
@@ -29,125 +30,141 @@
 								<v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
 							</v-date-picker>
 						</v-menu>
-						<v-btn @click="getAvailableTables(date)">
-							Wyszukaj
-						</v-btn>
+						<v-row class="justify-center">
+							<v-btn @click="getAvailableTables(date)" class="yellow_form_button" color="secondary">
+								Wyszukaj
+							</v-btn>
+						</v-row>
 					</v-card-text>
 				</v-card>
 			</v-col>
 		</v-row>
-		<v-row class="justify-space-between">
-			<v-col>
-				<v-card>
-					<v-card-title>
-						Dostępne stoliki
-					</v-card-title>
-					<v-card-text>
-						<v-data-table
-							:headers="headers"
-							:items="availableTables"
-							:items-per-page="-1"
-						>
-							<template slot="item" slot-scope="props">
-								<tr>
-									<td class="text-xs-left">{{ props.item.id }}</td>
-									<td class="text-xs-left">{{ props.item.size}}</td>
-									<td class="text-xs-center">
-										<v-btn @click="makeReservation(props.item.id)" >
-											Zarezerwuj stolik
-										</v-btn>
-									</td>
-								</tr>
-							</template>
-						</v-data-table>
-					</v-card-text>
-				</v-card>
-			</v-col>
-			<v-col>
-				<v-row style="margin-bottom: 4rem;">
-					<v-card>
-						<v-card-title>
-							Wybrane stoliki
-						</v-card-title>
-						<v-card-text>
-							<v-data-table
-								:headers="headers"
-								:items="choosenTables"
-								:items-per-page="-1"
-							>
-								<template slot="item" slot-scope="props">
-									<tr>
-										<td class="text-xs-left">{{ props.item.id }}</td>
-										<td class="text-xs-left">{{ props.item.size}}</td>
-										<td class="text-xs-center">
-											<v-btn @click="cancelReservationTable(props.item.id)">
-												Anuluj
-											</v-btn>
-										</td>
-									</tr>
-								</template>
-							</v-data-table>
-						</v-card-text>
-					</v-card>
-				</v-row>
+		<v-row class="justify-space-around">
+			<v-col cols="12" sm="10" md="8" lg="5" xl="4">
 				<v-row>
-					<v-card>
+					<v-col>
+						<v-card class="transparent_form">
+							<v-card-title>
+								Dostępne stoliki
+							</v-card-title>
+							<v-card-text>
+								<v-data-table
+									:headers="headers"
+									:items="availableTables"
+									:items-per-page="5"
+								>
+									<template slot="item" slot-scope="props">
+										<tr>
+											<td class="text-xs-left">{{ props.item.id }}</td>
+											<td class="text-xs-left">{{ props.item.size}}</td>
+											<td class="text-xs-center">
+												<v-btn @click="makeReservation(props.item.id)" >
+													Zarezerwuj stolik
+												</v-btn>
+											</td>
+										</tr>
+									</template>
+								</v-data-table>
+							</v-card-text>
+						</v-card>
+					</v-col>
+
+				</v-row>
+
+			</v-col>
+			<v-col cols="12" sm="12" md="12" lg="10" xl="7">
+				<v-row>
+					<v-col cols="12" sm="12" md="12" lg="7" xl="6">
+						<v-card class="transparent_form">
+							<v-card-title>
+								Wybrane stoliki
+							</v-card-title>
+							<v-card-text>
+								<v-data-table
+									:headers="headers"
+									:items="choosenTables"
+									:items-per-page="-1"
+								>
+									<template slot="item" slot-scope="props">
+										<tr>
+											<td class="text-xs-left">{{ props.item.id }}</td>
+											<td class="text-xs-left">{{ props.item.size}}</td>
+											<td class="text-xs-center">
+												<v-btn @click="cancelReservationTable(props.item.id)">
+													Anuluj
+												</v-btn>
+											</td>
+										</tr>
+									</template>
+								</v-data-table>
+							</v-card-text>
+						</v-card>
+					</v-col>
+					<v-col cols="12" sm="12" md="12" lg="5" xl="4">
+						<v-card class="transparent_form">
 						<v-card-title>
 							Dane do rezerwacji
 						</v-card-title>
 						<v-card-text>
 							<v-form>
-									<v-text-field
-										:rules="[rules.required, rules.emailRules]"
-										label="E-mail"
-										v-model="form.email">
+								<v-text-field
+									:rules="[rules.required, rules.emailRules]"
+									label="E-mail"
+									outlined
+									v-model="form.email">
 
-									</v-text-field>
-									<v-text-field
-										:rules="[rules.required, rules.phoneMax12]"
-										label="Numer telefonu"
-										v-model="form.phone">
 								</v-text-field>
-									<v-menu
-										ref="menu2"
-										v-model="menu2"
-										:close-on-content-click="false"
-										:nudge-right="40"
-										:return-value.sync="time"
-										transition="scale-transition"
-										offset-y
-										max-width="290px"
-										min-width="290px"
-									>
-										<template v-slot:activator="{ on }">
-											<v-text-field
-												v-model="time"
-												label="Wybierz godzinę"
-												append-icon="access_time"
-												readonly
-												v-on="on"
-											></v-text-field>
-										</template>
-										<v-time-picker
-											v-if="menu2"
+								<v-text-field
+									:rules="[rules.required, rules.phoneMax12]"
+									label="Numer telefonu"
+									outlined
+									v-model="form.phone">
+								</v-text-field>
+								<v-menu
+									ref="menu2"
+									v-model="menu2"
+									:close-on-content-click="false"
+									:nudge-right="40"
+									:return-value.sync="time"
+									transition="scale-transition"
+									offset-y
+									max-width="290px"
+									min-width="290px"
+								>
+									<template v-slot:activator="{ on }">
+										<v-text-field
 											v-model="time"
-											full-width
-											@click:minute="$refs.menu2.save(time)"
-											:allowed-hours="allowedHours"
-											:allowed-minutes="allowedStep"
-											class="mt-4"
-											format="24hr"
-											scrollable
-											:min="setMinTime()"
-											max="23:00"
-										></v-time-picker>
-									</v-menu>
-								<v-btn @click="saveReservation">
-									Zarezerwuj
-								</v-btn>
+											label="Wybierz godzinę"
+											append-icon="access_time"
+											readonly
+											outlined
+											v-on="on"
+										></v-text-field>
+									</template>
+									<v-time-picker
+										v-if="menu2"
+										v-model="time"
+										full-width
+										@click:minute="$refs.menu2.save(time)"
+										:allowed-hours="allowedHours"
+										:allowed-minutes="allowedStep"
+										class="mt-4"
+										format="24hr"
+										scrollable
+										:min="setMinTime()"
+										max="23:00"
+									></v-time-picker>
+								</v-menu>
+								<v-row class="justify-center">
+									<v-btn @click="saveReservation" class="yellow_form_button" color="secondary">
+										Zarezerwuj
+									</v-btn>
+								</v-row>
+
 							</v-form>
 						</v-card-text>
 					</v-card>
+					</v-col>
 				</v-row>
 			</v-col>
 		</v-row>

@@ -17,6 +17,7 @@ class CreateTableTable extends Migration
             $table->bigIncrements('id');
             $table->integer('size')->index();
             $table->time('occupied_since')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
