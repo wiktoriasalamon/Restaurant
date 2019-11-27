@@ -8,11 +8,13 @@ use App\Models\User;
 use App\Services\ReservationService;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Tests\TestCase;
 
 class ReservationTest extends TestCase
 {
     use RefreshDatabase;
+    use WithoutMiddleware;
 
     /**
      * reservation for today, no other reservation for the table and table is not occupied
