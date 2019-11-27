@@ -74,6 +74,10 @@
 				.listen('ReservationChanged', (e) => {
 					this.getData()
 				});
+			Echo.channel('order')
+				.listen('OrderChanged', (e) => {
+					this.getData()
+				});
 		},
     methods: {
 
