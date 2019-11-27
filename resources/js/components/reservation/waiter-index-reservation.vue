@@ -40,6 +40,7 @@
 				:headers="headers"
 				:items="reservations"
 				:items-per-page="5"
+				:no-data-text="nodata"
 			>
 				<template slot="item" slot-scope="props">
 					<tr>
@@ -91,7 +92,8 @@
           {text: 'Akcje'},
         ],
         disabledButton: true,
-				loading: false
+				loading: false,
+				nodata:"Brak danych"
       }
     },
     created() {
@@ -113,6 +115,9 @@
         axios.get(route('api.reservation.workerIndex', date))
           .then(response => {
             this.reservations = response.data.reservations;
+
+            	this.nodata="Brak rezerwacji"
+							
             console.log(this.reservations);
           }).catch(error => {
           console.error(error)
