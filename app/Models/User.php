@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +13,7 @@ use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable
 {
     use Notifiable;
     use HasRoles;
@@ -46,33 +47,23 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
     /**
-     * A user can have many messages
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @codeCoverageIgnore
+     * @return HasMany
      */
-    public function messages()
-    {
-        return $this->hasMany(Message::class);
-    }
-
-
     public function orderWorker()
     {
-        return $this->hasMany(Order::class, 'id', 'worker_id' );
+        return $this->hasMany(Order::class, 'id', 'worker_id');
     }
 
+    /**
+     * @codeCoverageIgnore
+     * @return HasMany
+     */
     public function orderCustomer()
     {
         return $this->hasMany(Order::class, 'id', 'customer_id');
-    }
-    public function getJWTIdentifier()
-    {
-        return $this->getKey();
-    }
-    public function getJWTCustomClaims()
-    {
-        return [];
     }
 
     /**
@@ -93,9 +84,9 @@ class User extends Authenticatable implements JWTSubject
     /**
      * @return array
      */
-    public function fetchUserData():array
+    public function fetchUserData(): array
     {
-        return[
+        return [
             'id' => $this->id,
             'name' => $this->name,
             'surname' => $this->surname,
@@ -108,9 +99,9 @@ class User extends Authenticatable implements JWTSubject
     /**
      * @return bool
      */
-    public function ifAuth():bool
+    public function ifAuth(): bool
     {
-       return $this===Auth::user();
+        return $this === Auth::user();
     }
 
     /**
