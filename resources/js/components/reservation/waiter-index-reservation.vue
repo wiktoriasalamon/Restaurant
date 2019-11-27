@@ -120,7 +120,7 @@
             this.reservations = response.data.reservations;
 
             	this.nodata="Brak rezerwacji"
-							
+
             console.log(this.reservations);
           }).catch(error => {
           console.error(error)
