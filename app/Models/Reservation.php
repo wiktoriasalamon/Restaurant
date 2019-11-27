@@ -19,6 +19,7 @@ class Reservation extends Model
         'phone'
     ];
 
+
     public function table()
     {
         return $this->belongsTo(Table::class);
@@ -50,6 +51,7 @@ class Reservation extends Model
 
     /**
      * @param  $email
+     * @codeCoverageIgnore
      * @param  $phone
      */
     public function setCustomer($email,$phone)
