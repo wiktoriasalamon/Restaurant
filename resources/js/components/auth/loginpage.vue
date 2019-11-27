@@ -46,8 +46,9 @@
 <script>
   import {isEmail} from '../../validator/DataValidator.js';
   import alertStrings from '../../strings/AlertStrings.js';
+  import {notificationError} from "../../Notifications";
 
-  export default {
+	export default {
     name: "loginPage",
 
     data() {
@@ -73,9 +74,9 @@
     methods: {
       handlePressLogin() {
         if (this.input.email === "" || this.input.password === "") {
-          Vue.toasted.error(alertStrings.emptyField);
+          notificationError()r(alertStrings.emptyField);
         } else if (!isEmail(this.input.email)) {
-          Vue.toasted.error(alertStrings.invalidData);
+          notificationError(alertStrings.invalidData);
         } else {
           this.login()
         }
@@ -91,9 +92,9 @@
           })
           .catch(error => {
             if (error.response.status === 422) {
-              Vue.toasted.error("Podano niepoprawne dane, spróbuj jeszcze raz").goAway(3000);
+              notificationError("Podano niepoprawne dane, spróbuj jeszcze raz");
             } else {
-              Vue.toasted.error(error.response.data).goAway(3000);
+              notificationError(error.response.data);
             }
           })
           .finally(() => {
