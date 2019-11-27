@@ -19,10 +19,6 @@ class UserRequest extends FormRequest
             'surname' => 'required',
             'email' => 'required|email',
             'address' => 'required',
-            'phone' => [
-                'max:12',
-                'regex:/^[+]{1}(48)[0-9]{9}$|^[0-9]{9}$/'
-            ]
         ];
         $rules['address.street'] = ['required','regex:/^[^0-9]+$/','max:50'];
         $rules['address.houseNumber'] = 'required';
@@ -31,7 +27,9 @@ class UserRequest extends FormRequest
             'required',
             'regex:/^\d{2}-\d{3}$/'
         ];
-
+        if ($this->request->get('phone') != "") {
+            $rules['phone'] = array('max:12', 'regex:/^[+]{1}(48)[0-9]{9}$|^[0-9]{9}$/');
+        }
         return $rules;
 
     }

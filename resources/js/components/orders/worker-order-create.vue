@@ -47,7 +47,7 @@
 							</tr>
 						</template>
 					</v-data-table>
-					<h5 style="margin-top: 2rem;">Suma zamówienia:</h5>
+					<h5 style="margin-top: 2rem;">Suma zamówienia (zł):</h5>
 					<v-text-field
 						readonly
 						style="max-width: 5rem"
@@ -76,12 +76,12 @@
         menuItems: [],
         headers: [
           {text: 'Nazwa', value: 'name',},
-          {text: 'Cena', value: 'price'},
+          {text: 'Cena (zł)', value: 'price'},
           {text: 'Akcje', value: ''},
         ],
         orderedItemsHeaders: [
           {text: 'Nazwa', value: 'name',},
-          {text: 'Cena', value: 'price'},
+          {text: 'Cena (zł)', value: 'price'},
           {text: 'Ilość', value: ''},
           {text: 'Usuń', value: ''},
         ],
@@ -91,6 +91,11 @@
     },
     beforeMount() {
       this.getData()
+    },
+    watch: {
+      orderedItems: function (){
+        this.changeTotalSum();
+      }
     },
     methods: {
       getData() {
@@ -129,6 +134,7 @@
         for (let i = 0; i < this.orderedItems.length; i++) {
           this.orderSum += this.orderedItems[i].amount * this.orderedItems[i].price
         }
+        this.orderSum=this.orderSum.toFixed(2);
       },
       order() {
         let orderArray = [];

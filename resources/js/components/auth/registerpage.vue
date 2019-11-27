@@ -1,7 +1,7 @@
 <template>
   <v-row class="justify-center align-center">
     <v-col
-        cols="12" ld="4" ma-2 md="5" sm="8" xl="3">
+        cols="12" lg="4" ma-2 md="5" sm="8" xl="3">
       <v-card class="transparent_form">
         <v-form
             ref="form">
@@ -27,7 +27,6 @@
               v-model="input.email"
           ></v-text-field>
           <v-text-field
-              :rules="[rules.required, rules.phoneNumber]"
               label="Numer telefonu"
               outlined
               prefix="+48"
@@ -159,9 +158,6 @@
           },
           email: value => {
             return isEmail(value) || alertStrings.invalidEmail;
-          },
-          phoneNumber: value => {
-            return isPhoneNumber(value) || alertStrings.invalidPhoneNumber;
           },
           password: value => {
             return isPassword(value) || alertStrings.invalidPassword;

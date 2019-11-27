@@ -1,31 +1,39 @@
 <template>
-  <v-card>
-    <v-card-title>Edytowanie dania</v-card-title>
-    <v-card-text>
-      <v-form
-          ref="form">
-        <v-text-field :rules="[rules.required]" label="Nazwa" v-bind:error-messages="errors.name"
-                      v-model="form.name"
-        ></v-text-field>
-        <v-text-field :rules="[rules.required, rules.numeric]" label="Cena" v-bind:error-messages="errors.price"
-                      v-model="form.price"
-        ></v-text-field>
-        <v-select
-            :rules="[rules.required]"
-            item-text="name"
-            item-value="id"
-            label="Kategoria"
-            v-bind:error-messages="errors.category_id"
-            v-bind:items="dishCategory"
-            v-model="form.category_id">
-        </v-select>
-      </v-form>
-    </v-card-text>
-    <v-card-actions>
-      <v-btn @click="cancel">Anuluj</v-btn>
-      <v-btn @click="save" v-bind:loading="loading">Zapisz</v-btn>
-    </v-card-actions>
-  </v-card>
+	<v-row class="justify-center align-center">
+		<v-col cols="12" lg="5" ma-2 md="8" sm="10" xl="4">
+			<v-card class="transparent_form">
+				<v-card-title>Edytowanie dania</v-card-title>
+				<v-card-text>
+					<v-form
+						ref="form">
+						<v-text-field :rules="[rules.required]" label="Nazwa" v-bind:error-messages="errors.name"
+													v-model="form.name" outlined
+						></v-text-field>
+						<v-text-field :rules="[rules.required, rules.numeric]" label="Cena" v-bind:error-messages="errors.price"
+													v-model="form.price" outlined
+						></v-text-field>
+						<v-select
+							:rules="[rules.required]"
+							item-text="name"
+							item-value="id"
+							label="Kategoria"
+              outlined
+							v-bind:error-messages="errors.category_id"
+							v-bind:items="dishCategory"
+							v-model="form.category_id">
+						</v-select>
+					</v-form>
+				</v-card-text>
+				<v-card-actions>
+					<v-row class="justify-space-between">
+						<v-btn @click="cancel" text>Anuluj</v-btn>
+						<v-btn @click="save" v-bind:loading="loading" class="yellow_form_button" color="secondary">Zapisz</v-btn>
+					</v-row>
+
+				</v-card-actions>
+			</v-card>
+		</v-col>
+	</v-row>
 </template>
 
 <script>
