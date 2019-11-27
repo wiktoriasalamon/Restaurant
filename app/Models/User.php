@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +13,7 @@ use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable
 {
     use Notifiable;
     use HasRoles;
@@ -48,19 +49,9 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     /**
-     * A user can have many messages
      * @codeCoverageIgnore
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function messages()
-    {
-        return $this->hasMany(Message::class);
-    }
-
-
-    /**
-    * @codeCoverageIgnore
-    */
     public function orderWorker()
     {
         return $this->hasMany(Order::class, 'id', 'worker_id');
@@ -68,6 +59,7 @@ class User extends Authenticatable implements JWTSubject
 
     /**
      * @codeCoverageIgnore
+     * @return HasMany
      */
     public function orderCustomer()
     {
@@ -75,24 +67,8 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
-     * @codeCoverageIgnore
-     */
-    public function getJWTIdentifier()
-    {
-        return $this->getKey();
-    }
-
-    /**
-     * @codeCoverageIgnore
-     */
-    public function getJWTCustomClaims()
-    {
-        return [];
-    }
-
-    /**
      * @param $request
-     * @codeCoverageIgnore 
+     * @codeCoverageIgnore
      */
     public function fillUser($request)
     {

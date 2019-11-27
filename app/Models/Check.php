@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Check extends Model
 {
@@ -16,6 +17,7 @@ class Check extends Model
 
     /**
      * @codeCoverageIgnore
+     * @return BelongsTo
      */
     public function dish()
     {
@@ -23,8 +25,9 @@ class Check extends Model
     }
 
     /**
-    * @codeCoverageIgnore
-    */
+     * @codeCoverageIgnore
+     * @return BelongsTo
+     */
     public function order()
     {
         return $this->belongsTo(Order::class,  'order_id', 'id');

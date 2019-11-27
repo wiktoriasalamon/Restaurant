@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Dish extends Model
@@ -18,16 +20,18 @@ class Dish extends Model
     ];
 
     /**
-    * @codeCoverageIgnore
-    */
+     * @codeCoverageIgnore
+     * @return HasMany
+     */
     public function check()
     {
         return $this->hasMany(Check::class);
     }
 
     /**
-    * @codeCoverageIgnore
-    */
+     * @codeCoverageIgnore
+     * @return BelongsTo
+     */
     public function category()
     {
         return $this->belongsTo(Dish::class);
