@@ -26,28 +26,35 @@
         <v-card-text>
           <v-data-table
               :headers="orderedItemsHeaders"
-              v-bind:items="orderedItems"
+              :items="orderedItems"
               :items-per-page="-1"
               class="elevation-1"
           >
-            <template slot="item" slot-scope="props">
-              <tr>
-                <td class="text-xs-left">{{ props.item.name }}</td>
-                <td class="text-xs-left">{{ props.item.price}}</td>
-                <td class="text-xs-left">
-                  <v-text-field readonly v-model="props.item.amount"></v-text-field>
-                </td>
-                <td class="text-xs-left">
-                  <v-icon @click="minusItem(props.item)">indeterminate_check_box</v-icon>
-                  <v-icon @click="plusItem(props.item)">add_box</v-icon>
-                </td>
-                <td class="text-xs-center">
-                  <v-icon @click="deleteItem(props.item.id)">
-                    delete
-                  </v-icon>
-                </td>
-              </tr>
+            <template v-slot:item.changeAmount="{ item }">
+              <v-icon @click="minusItem(item)">indeterminate_check_box</v-icon>
+              <v-icon @click="plusItem(item)">add_box</v-icon>
             </template>
+            <template v-slot:item.delete="{ item }">
+              <v-icon @click="deleteItem(item)">delete</v-icon>
+            </template>
+<!--            <template slot="item" slot-scope="props">-->
+<!--              <tr>-->
+<!--                <td class="text-xs-left">{{ props.item.name }}</td>-->
+<!--                <td class="text-xs-left">{{ props.item.price}}</td>-->
+<!--                <td class="text-xs-left">-->
+<!--                  <v-text-field readonly v-model="props.item.amount"></v-text-field>-->
+<!--                </td>-->
+<!--                <td class="text-xs-left">-->
+<!--                  <v-icon @click="minusItem(props.item)">indeterminate_check_box</v-icon>-->
+<!--                  <v-icon @click="plusItem(props.item)">add_box</v-icon>-->
+<!--                </td>-->
+<!--                <td class="text-xs-center">-->
+<!--                  <v-icon @click="deleteItem(props.item.id)">-->
+<!--                    delete-->
+<!--                  </v-icon>-->
+<!--                </td>-->
+<!--              </tr>-->
+<!--            </template>-->
           </v-data-table>
           <h5 style="margin-top: 2rem;">Suma zamówienia (zł):</h5>
           <v-text-field
@@ -86,9 +93,9 @@
         orderedItemsHeaders: [
           {text: 'Nazwa', value: 'name',},
           {text: 'Cena', value: 'price'},
-          {text: 'Ilość', value: ''},
+          {text: 'Ilość', value: 'amount'},
           {text: "Zmień ilość", value: "changeAmount"},
-          {text: 'Usuń', value: ''},
+          {text: 'Usuń', value: 'delete'},
         ],
         orderedItems: [],
         orderSum: ''
@@ -109,19 +116,24 @@
           console.error(error)
         })
       },
-      addToOrder(dish) {
-        dish.amount = 1;
-        this.orderedItems.push(dish);
+      addToOrder(item) {
+        var newItem = {
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          amount: 1
+        };
+        this.orderedItems.push(newItem);
         for (let i = 0; i < this.menuItems.length; i++) {
-          if (this.menuItems[i].id === dish.id) {
+          if (this.menuItems[i].id === item.id) {
             this.menuItems.splice(i, 1);
           }
         }
         this.changeTotalSum()
       },
-      deleteItem(id) {
+      deleteItem(item) {
         for (let i = 0; i < this.orderedItems.length; i++) {
-          if (this.orderedItems[i].id === id) {
+          if (this.orderedItems[i].id === item.id) {
             this.orderedItems[i].amount = 0;
             this.menuItems.push(this.orderedItems[i]);
             this.orderedItems.splice(i, 1);
@@ -162,22 +174,16 @@
         })
       },
       minusItem(item) {
-        console.log(item.amount);
         if (item.amount > 1) {
           item.amount = item.amount - 1;
           this.changeTotalSum();
         }
-        console.log(item.amount);
       },
       plusItem(item) {
-        console.log(item.amount);
-
         if (item.amount < 15) {
           item.amount = item.amount + 1;
           this.changeTotalSum();
         }
-        console.log(item.amount);
-
       },
     }
   }
