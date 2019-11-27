@@ -20,6 +20,7 @@
 									label="Wybierz datę"
 									append-icon="event"
 									readonly
+									outlined
 									v-on="on"
 								></v-text-field>
 							</template>
@@ -109,12 +110,14 @@
 								<v-text-field
 									:rules="[rules.required, rules.emailRules]"
 									label="E-mail"
+									outlined
 									v-model="form.email">
 
 								</v-text-field>
 								<v-text-field
 									:rules="[rules.required, rules.phoneMax12]"
 									label="Numer telefonu"
+									outlined
 									v-model="form.phone">
 								</v-text-field>
 								<v-menu
@@ -134,6 +137,7 @@
 											label="Wybierz godzinę"
 											append-icon="access_time"
 											readonly
+											outlined
 											v-on="on"
 										></v-text-field>
 									</template>
