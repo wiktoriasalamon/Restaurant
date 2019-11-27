@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Interfaces\StatusTypesInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model
 {
@@ -20,21 +22,37 @@ class Order extends Model
         'comment'
     ];
 
+    /**
+     * @codeCoverageIgnore
+     * @return HasMany
+     */
     public function check()
     {
         return $this->hasMany(Check::class);
     }
 
+    /**
+     * @codeCoverageIgnore
+     * @return BelongsTo
+     */
     public function worker()
     {
         return $this->belongsTo(User::class,  'worker_id', 'id');
     }
 
+    /**
+     * @codeCoverageIgnore
+     * @return BelongsTo
+     */
     public function customer()
     {
         return $this->belongsTo(User::class,  'customer_id', 'id');
     }
 
+    /**
+     * @codeCoverageIgnore
+     * @return BelongsTo
+     */
     public function table()
     {
         return $this->belongsTo(Table::class);
