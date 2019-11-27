@@ -74,7 +74,7 @@
     methods: {
       handlePressLogin() {
         if (this.input.email === "" || this.input.password === "") {
-          notificationError()r(alertStrings.emptyField);
+          notificationError(alertStrings.emptyField);
         } else if (!isEmail(this.input.email)) {
           notificationError(alertStrings.invalidData);
         } else {
