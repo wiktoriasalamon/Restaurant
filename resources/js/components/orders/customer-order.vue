@@ -1,5 +1,10 @@
 <template>
   <v-stepper class="background" v-model="e1">
+     <v-card class="background">
+        <v-card-title>
+          <h1>Zamów online</h1>
+        </v-card-title>
+      </v-card>
     <v-stepper-header>
       <v-stepper-step :complete="e1 > 1" step="1">Wybierz dania</v-stepper-step>
       <v-divider></v-divider>
