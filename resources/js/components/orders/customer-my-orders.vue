@@ -1,6 +1,12 @@
 <template>
   <v-row class="justify-center align-center">
     <v-col cols="12" lg="6" ma-2 md="8" sm="12" xl="5">
+      <v-card class="transparent_form">
+        <v-card-title>
+          <h1>Moje zamówienia</h1>
+      </v-card-title>
+      
+      
       <v-data-table
           :expanded.sync="expanded"
           :headers="headers"
@@ -28,6 +34,7 @@
           </td>
         </template>
       </v-data-table>
+      </v-card>
     </v-col>
   </v-row>
 </template>
