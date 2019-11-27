@@ -8,8 +8,16 @@
 				</v-card-title>
         <v-card-text>
           <v-form ref="resetPasswordForm">
-            <v-text-field :rules="validation.password" label="Hasło" outlined v-model="form.password"></v-text-field>
-            <v-text-field :rules="validation.repeatPassword" label="Powtórz hasło" outlined
+            <v-text-field :rules="validation.password"
+													:append-icon="showPassword1 ? 'visibility' : 'visibility_off'"
+													:type="showPassword1 ? 'text' : 'password'"
+													@click:append="showPassword1 = !showPassword1"
+													label="Hasło" outlined v-model="form.password"></v-text-field>
+            <v-text-field :rules="validation.repeatPassword"
+													:append-icon="showPassword2 ? 'visibility' : 'visibility_off'"
+													:type="showPassword2 ? 'text' : 'password'"
+													@click:append="showPassword2 = !showPassword2"
+													label="Powtórz hasło" outlined
                           v-model="form.repeatPassword"></v-text-field>
           </v-form>
 					<v-card-actions>
@@ -45,7 +53,9 @@
             v => (v && v === this.form.password) || 'Hasła muszą być takie same'
           ]
         },
-				loading: false
+				loading: false,
+        showPassword1: false,
+        showPassword2: false,
       };
     },
     methods: {
