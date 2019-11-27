@@ -24,14 +24,14 @@
 									v-on="on"
 								></v-text-field>
 							</template>
-							<v-date-picker v-model="date" scrollable :min="minDate">
+							<v-date-picker v-model="date" scrollable first-day-of-week="1" locale="pl" :min="minDate">
 								<v-spacer></v-spacer>
-								<v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-								<v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
+								<v-btn text color="primary" @click="menu = false">Anuluj</v-btn>
+								<v-btn text color="primary" @click="$refs.menu.save(date)">Wybierz</v-btn>
 							</v-date-picker>
 						</v-menu>
 						<v-row class="justify-center">
-							<v-btn @click="getAvailableTables(date)" class="yellow_form_button" color="secondary">
+							<v-btn @click="getAvailableTables(date)" v-bind:loading="searchLoading" :disabled="date == null" class="yellow_form_button" color="secondary">
 								Wyszukaj
 							</v-btn>
 						</v-row>
@@ -83,7 +83,7 @@
 								<v-data-table
 									:headers="headers"
 									:items="choosenTables"
-									:items-per-page="-1"
+									:items-per-page="5"
 								>
 									<template slot="item" slot-scope="props">
 										<tr>
@@ -156,7 +156,7 @@
 									></v-time-picker>
 								</v-menu>
 								<v-row class="justify-center">
-									<v-btn @click="saveReservation" class="yellow_form_button" color="secondary">
+									<v-btn @click="saveReservation" v-bind:loading="reservationLoading" class="yellow_form_button" color="secondary">
 										Zarezerwuj
 									</v-btn>
 								</v-row>
@@ -198,7 +198,9 @@
           email: '',
 					phone: ''
 				},
-				tablesId:[]
+				tablesId:[],
+				searchLoading: false,
+				reservationLoading: false
       }
     },
     methods:{
@@ -213,12 +215,15 @@
 				}
       },
       getAvailableTables(date){
+        this.searchLoading = true
         axios.get(route('api.reservation.fetchTablesByDate', date))
           .then(response => {
 						this.availableTables = response.data.tables
           }).catch(error => {
           console.error(error)
-        })
+        }).finally(()=>{
+          this.searchLoading = false
+				})
       },
       makeReservation(id){
 				for(let i=0; i< this.availableTables.length ; i++){
@@ -243,6 +248,7 @@
         if(this.choosenTables === [] || this.time === null){
           Vue.toasted.error("Musisz wypełnić wszystkie dane!!!").goAway(7000);
         }else{
+          this.reservationLoading = true
           axios.post(route('api.reservation.storeAsWorker'),{
             date: this.date,
             startTime: this.time,
@@ -262,7 +268,9 @@
               }
 
             },
-          );
+          ).finally(()=>{
+            this.reservationLoading = false
+					})
         }
       }
     }
