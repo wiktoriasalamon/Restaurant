@@ -34,10 +34,10 @@
                   v-on="on"
               ></v-text-field>
             </template>
-            <v-date-picker :min="setMinDate()" scrollable v-model="date">
+            <v-date-picker :min="setMinDate()" first-day-of-week="1" locale="pl" scrollable v-model="date">
               <v-spacer></v-spacer>
-              <v-btn @click="menu = false" color="primary" text>Cancel</v-btn>
-              <v-btn @click="$refs.menu.save(date)" color="primary" text>OK</v-btn>
+              <v-btn @click="menu = false" color="primary" text>Anuluj</v-btn>
+              <v-btn @click="$refs.menu.save(date)" color="primary" text>Wybierz</v-btn>
             </v-date-picker>
           </v-menu>
           <v-menu

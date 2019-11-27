@@ -57,7 +57,7 @@ class ApiUserController extends Controller
             $user->setPassword($request->password);
             $user->assignRole($role);
             if($user->save()){
-                (new RegistrationMail($request->password, $request->email))->sendMail();
+                (new RegistrationMail($request->password, $request->email, $role))->sendMail();
             }
         } catch (\Exception $exception) {
             Log::notice("Error :" . $exception);
