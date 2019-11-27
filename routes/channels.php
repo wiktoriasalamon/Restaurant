@@ -20,3 +20,4 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
 
 Broadcast::channel('reservation');
 Broadcast::channel('order');
+Broadcast::channel('table');

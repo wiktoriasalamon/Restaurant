@@ -124,6 +124,7 @@ class ReservationService
 
     /**
      * @return array
+     * @codeCoverageIgnore
      */
     public function customerReservations(): array
     {
@@ -159,9 +160,9 @@ class ReservationService
     }
 
     /**
+     * @codeCoverageIgnore
      * @param WorkerReservationRequest $request
      */
-
     public function storeWorkerReservations(WorkerReservationRequest $request)
     {
         foreach ($request->tables as $tableId) {
@@ -178,6 +179,7 @@ class ReservationService
 
     /**
      * @param CustomerReservationRequest $request
+     * @codeCoverageIgnore
      * @return bool
      */
     public function storeCustomerReservation(CustomerReservationRequest $request): bool

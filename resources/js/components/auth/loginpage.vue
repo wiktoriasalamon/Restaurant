@@ -3,6 +3,9 @@
 		<v-col
 			cols="12" lg="4" ma-2 md="5" sm="8" xl="3">
 			<v-card class="transparent_form">
+        <v-card-title>
+          <h1>Logowanie</h1>
+        </v-card-title>
 				<v-text-field
 					:rules="[rules.required, rules.email]"
 					label="E-mail"
@@ -46,8 +49,9 @@
 <script>
   import {isEmail} from '../../validator/DataValidator.js';
   import alertStrings from '../../strings/AlertStrings.js';
+  import {notificationError} from "../../Notifications";
 
-  export default {
+	export default {
     name: "loginPage",
 
     data() {
@@ -73,9 +77,9 @@
     methods: {
       handlePressLogin() {
         if (this.input.email === "" || this.input.password === "") {
-          Vue.toasted.error(alertStrings.emptyField);
+          notificationError(alertStrings.emptyField);
         } else if (!isEmail(this.input.email)) {
-          Vue.toasted.error(alertStrings.invalidData);
+          notificationError(alertStrings.invalidData);
         } else {
           this.login()
         }
@@ -91,9 +95,9 @@
           })
           .catch(error => {
             if (error.response.status === 422) {
-              Vue.toasted.error("Podano niepoprawne dane, spróbuj jeszcze raz").goAway(3000);
+              notificationError("Podano niepoprawne dane, spróbuj jeszcze raz");
             } else {
-              Vue.toasted.error(error.response.data).goAway(3000);
+              notificationError(error.response.data);
             }
           })
           .finally(() => {

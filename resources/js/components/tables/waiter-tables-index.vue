@@ -1,5 +1,11 @@
 <template>
 	<v-row class="justify-center align-center">
+    <v-col>
+      <v-card class="transparent_form">
+        <v-card-title>
+          <h1>Stoliki</h1>
+        </v-card-title>
+      
 		<v-data-table
 			:headers="headers"
 			:items="tables"
@@ -33,6 +39,8 @@
 				</tr>
 			</template>
 		</v-data-table>
+    </v-card>
+    </v-col>
 	</v-row>
 </template>
 
@@ -57,13 +65,14 @@
     beforeMount() {
       this.getData()
     },
+		created() {
+			Echo.channel('table')
+				.listen('TableChanged', (e) => {
+					this.getData()
+				});
+		},
     methods: {
-			created() {
-				Echo.channel('order')
-					.listen('OrderChanged', (e) => {
-						this.getData()
-					});
-			},
+
       showItem(id) {
         window.location.href = route('table.showWaiter', [id])
       },

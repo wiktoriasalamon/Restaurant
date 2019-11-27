@@ -228,7 +228,7 @@ class ApiOrderController extends Controller
             (new OrderService())->addItems($order, $request->items);
             broadcast(new OrderChanged())->toOthers();
             (new OrderOnlineMail($order->email, $order->token))->sendMail();
-            return response()->json("Zamówienie złożone", 200);
+            return response()->json(["message" => "Zamówienie złożone", "token" => $order->token], 200);
         } catch (Exception $e) {
             Log::notice("Error :" . $e);
             Log::notice("Error :" . $e->getMessage());

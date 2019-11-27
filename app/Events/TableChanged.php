@@ -8,7 +8,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class OrderChanged implements ShouldBroadcast
+class TableChanged implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -19,6 +19,6 @@ class OrderChanged implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('order');
+        return new Channel('table');
     }
 }

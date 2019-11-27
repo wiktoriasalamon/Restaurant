@@ -18,6 +18,12 @@ class OrderOnlineMail extends Mailable
     public $link;
     private const SUBJECT="Zamówienie online w systemie restauracji \"W-17 wydział smaków\"";
 
+    /**
+     * OrderOnlineMail constructor.
+     * @param string $email
+     * @param string $token
+     * @codeCoverageIgnore
+     */
     public function __construct(string $email, string $token)
     {
         $this->sendToMail=$email;
@@ -26,7 +32,7 @@ class OrderOnlineMail extends Mailable
 
     /**
      * Build the message.
-     *
+     * @codeCoverageIgnore
      * @return $this
      */
     public function build()
@@ -36,6 +42,7 @@ class OrderOnlineMail extends Mailable
 
     /**
      * sends mail to customer
+     * @codeCoverageIgnore
      */
     public function sendMail()
     {

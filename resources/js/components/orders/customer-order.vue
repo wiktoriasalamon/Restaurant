@@ -1,5 +1,10 @@
 <template>
   <v-stepper class="background" v-model="e1">
+     <v-card class="background">
+        <v-card-title>
+          <h1>Zamów online</h1>
+        </v-card-title>
+      </v-card>
     <v-stepper-header>
       <v-stepper-step :complete="e1 > 1" step="1">Wybierz dania</v-stepper-step>
       <v-divider></v-divider>
@@ -11,34 +16,45 @@
       <v-stepper-content step="1">
         <v-card class="background">
           <v-row class="justify-space-between">
-            <v-col>
-              <v-simple-table>
-                <template v-slot:default>
-                  <thead>
-                  <tr>
-                    <th class="text-left">Kategorie</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr>
-                    <td @click="setMenuItems(-1)">Wszystkie</td>
-                  </tr>
-                  <tr :key="item.id" v-for="item in categoryItems">
-                    <td @click="setMenuItems(item.id)">{{ item.name }}</td>
-                  </tr>
-                  </tbody>
-                </template>
-              </v-simple-table>
-            </v-col>
+            <!--            <v-col>-->
+            <!--              <v-simple-table>-->
+            <!--                <template v-slot:default>-->
+            <!--                  <thead>-->
+            <!--                  <tr>-->
+            <!--                    <th class="text-left">Kategorie</th>-->
+            <!--                  </tr>-->
+            <!--                  </thead>-->
+            <!--                  <tbody>-->
+            <!--                  <tr>-->
+            <!--                    <td @click="setMenuItems(-1)">Wszystkie</td>-->
+            <!--                  </tr>-->
+            <!--                  <tr :key="item.id" v-for="item in categoryItems">-->
+            <!--                    <td @click="setMenuItems(item.id)">{{ item.name }}</td>-->
+            <!--                  </tr>-->
+            <!--                  </tbody>-->
+            <!--                </template>-->
+            <!--              </v-simple-table>-->
+            <!--            </v-col>-->
             <v-col>
               <v-card-title>
-                <v-text-field
-                    append-icon="search"
-                    hide-details
-                    label="Szukaj"
-                    single-line
-                    v-model="search"
-                ></v-text-field>
+                <v-col>
+                  <v-select
+                      :items="categoryItems"
+                      item-text="name"
+                      item-value="id"
+                      label="Wybierz kategorię"
+                      outlined
+                      v-model="selectedCategory"
+                      @change="setMenuItems"
+                  ></v-select>
+                  <v-text-field
+                      append-icon="search"
+                      hide-details
+                      label="Szukaj"
+                      single-line
+                      v-model="search"
+                  ></v-text-field>
+                </v-col>
               </v-card-title>
               <v-data-table
                   :headers="headers"
@@ -82,31 +98,32 @@
               <v-card-title>Dane do zamówienia</v-card-title>
               <v-card-text>
                 <v-form
-                  ref="form"
+                    ref="form"
                 >
                   <v-text-field
-                    :rules="[rules.required, rules.emailRules]"
-                    label="E-mail"
-                    outlined
-                    v-model="form.email"
-                    :disabled="mailDisabled"
+                      :disabled="mailDisabled"
+                      :rules="[rules.required, rules.emailRules]"
+                      label="E-mail"
+                      outlined
+                      v-model="form.email"
                   ></v-text-field>
-                  <v-text-field :rules="[rules.required]" label="Ulica" outlined v-model="form.address.street"></v-text-field>
-                  <v-text-field :rules="[rules.required]"  label="Numer domu " outlined
+                  <v-text-field :rules="[rules.required]" label="Ulica" outlined
+                                v-model="form.address.street"></v-text-field>
+                  <v-text-field :rules="[rules.required]" label="Numer domu " outlined
                                 v-model="form.address.houseNumber"></v-text-field>
                   <v-text-field label="Numer mieszkania" outlined
                                 v-model="form.address.apartmentNumber"></v-text-field>
                   <v-text-field
-                    :rules="[rules.required]"
-                    label="Miejscowość"
-                    outlined
-                    v-model="form.address.city"
+                      :rules="[rules.required]"
+                      label="Miejscowość"
+                      outlined
+                      v-model="form.address.city"
                   ></v-text-field>
                   <v-text-field
-                    :rules="[rules.required, rules.postCodeFormat]"
-                    label="Kod pocztowy"
-                    outlined
-                    v-model="form.address.postCode"
+                      :rules="[rules.required, rules.postCodeFormat]"
+                      label="Kod pocztowy"
+                      outlined
+                      v-model="form.address.postCode"
                   ></v-text-field>
                 </v-form>
               </v-card-text>
@@ -121,68 +138,67 @@
         </v-row>
       </v-stepper-content>
       <v-stepper-content step="3">
-          <v-row class="justify-space-around">
-            <v-col cols="12" sm="10" md="7" lg="4" xl="3">
-                <v-list two-line>
-                  <v-list-item>
-                    <v-list-item-icon>
-                      <v-icon color="primary">monetization_on</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-title>{{this.priceSum + ' zł'}}</v-list-item-title>
-                      <v-list-item-subtitle>Kwota całkowita</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-icon>
-                      <v-icon color="primary">mail</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-title>{{this.form.email}}</v-list-item-title>
-                      <v-list-item-subtitle>e-mail</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-icon>
-                      <v-icon color="primary">room</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-title v-if="this.form.address.apartmentNumber">
-                        {{this.form.address.street + " " + this.form.address.houseNumber+ "/" +
-                        this.form.address.apartmentNumber}}
-                      </v-list-item-title>
-                      <v-list-item-content v-else>
-                        {{ this.form.address.street + " " + this.form.address.houseNumber }}
-                      </v-list-item-content>
-                      <v-list-item-subtitle>Ulica i numer</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-icon></v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-title>
-                        {{this.form.address.postCode + " " + this.form.address.city}}
-                      </v-list-item-title>
-                      <v-list-item-subtitle>Miejscowość</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list>
-            </v-col>
-            <v-col cols="12" sm="10" md="7" lg="5" xl="4">
-              <v-data-table
-                  :headers="summaryOrderHeaders"
-                  :items="ordered"
-                  :items-per-page="5"
-                  class="elevation-1"
-              ></v-data-table>
-            </v-col>
-          </v-row>
+        <v-row class="justify-space-around">
+          <v-col cols="12" lg="4" md="7" sm="10" xl="3">
+            <v-list two-line>
+              <v-list-item>
+                <v-list-item-icon>
+                  <v-icon color="primary">monetization_on</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title>{{this.priceSum + ' zł'}}</v-list-item-title>
+                  <v-list-item-subtitle>Kwota całkowita</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-icon>
+                  <v-icon color="primary">mail</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title>{{this.form.email}}</v-list-item-title>
+                  <v-list-item-subtitle>e-mail</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-icon>
+                  <v-icon color="primary">room</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title v-if="this.form.address.apartmentNumber">
+                    {{this.form.address.street + " " + this.form.address.houseNumber+ "/" +
+                    this.form.address.apartmentNumber}}
+                  </v-list-item-title>
+                  <v-list-item-content v-else>
+                    {{ this.form.address.street + " " + this.form.address.houseNumber }}
+                  </v-list-item-content>
+                  <v-list-item-subtitle>Ulica i numer</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-icon></v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    {{this.form.address.postCode + " " + this.form.address.city}}
+                  </v-list-item-title>
+                  <v-list-item-subtitle>Miejscowość</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-col>
+          <v-col cols="12" lg="5" md="7" sm="10" xl="4">
+            <v-data-table
+                :headers="summaryOrderHeaders"
+                :items="ordered"
+                :items-per-page="5"
+                class="elevation-1"
+            ></v-data-table>
+          </v-col>
+        </v-row>
 
-            <v-row class="justify-space-between" style="margin: 0.5rem">
-              <v-btn @click="e1 = 2" text>Wróć</v-btn>
-              <v-btn @click="completeOrderOnline" color="secondary" v-bind:loading="loading">Zamów</v-btn>
-            </v-row>
-
+        <v-row class="justify-space-between" style="margin: 0.5rem">
+          <v-btn @click="e1 = 2" text>Wróć</v-btn>
+          <v-btn @click="completeOrderOnline" color="secondary" v-bind:loading="loading">Zamów</v-btn>
+        </v-row>
 
 
       </v-stepper-content>
@@ -199,6 +215,7 @@
     props: ["dishes", "categories"],
     data() {
       return {
+        selectedCategory: -1,
         loading: false,
         e1: 0,
         search: "",
@@ -308,7 +325,9 @@
         });
         this.priceSum = this.priceSum.toFixed(2);
       },
-      setMenuItems(id) {
+      setMenuItems() {
+        let id = this.selectedCategory;
+        console.log(id);
         if (id === -1) {
           this.menuItems = this.allMenuItems;
         } else {
@@ -359,15 +378,14 @@
           })
           .then(
             response => {
-              notification(response.data.message, 'error');
+              notification(response.data.message, 'success');
               this.orderArray = [];
-              window.location.href = route('order.create.online');
-
+              setTimeout(function () {
+                window.location.href = route('order.show', response.data.token);
+              }, 2000);
             }).catch(error => {
           if (error.response.status === 422) {
             notification("Podano niepoprawne dane, spróbuj jeszcze raz", 'error');
-          } else if (error.response.status === 500) {
-            notification("Nie udało się złożyć zamówienia. Wystąpił błąd na serwerze.", 'error');
           } else {
             notification(error.response.data, 'error');
           }
