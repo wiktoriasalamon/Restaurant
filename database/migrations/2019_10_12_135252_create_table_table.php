@@ -15,8 +15,9 @@ class CreateTableTable extends Migration
     {
         Schema::create('table', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('size');
-            $table->time('occupied_from')->nullable();
+            $table->integer('size')->index();
+            $table->time('occupied_since')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

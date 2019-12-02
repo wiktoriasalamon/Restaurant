@@ -1,15 +1,26 @@
 name: restaurant
 recipe: laravel
 config:
+  php: '7.3'
   webroot: public
+  via: nginx
   database: postgres
   xdebug: true
-  services:
-    node:
-      type: node
-      build:
-        - npm install
+services:
+  database:
+    portforward: 5433
 
-  tooling:
-    npm:
-      service: node
+  node:
+    type: node
+    build:
+      - npm install
+
+
+tooling:
+  npm:
+    service: node
+
+  phpunit:
+    service: appserver
+    description: "Run PHP Unit tests: lando phpunit"
+    cmd: /app/vendor/bin/phpunit

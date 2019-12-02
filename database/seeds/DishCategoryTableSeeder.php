@@ -12,10 +12,11 @@ class DishCategoryTableSeeder extends Seeder
     public function run()
     {
         $categories = [
-            'Kategoria 1',
-            'Kategoria 2',
-            'Kategoria 3',
-            'Kategoria 4'
+            'Dania dnia',
+            'Pizza',
+            'Pasta',
+            'Ravioli',
+            'Napoje bez alkoholowe'
         ];
 
         foreach ($categories as $category) {

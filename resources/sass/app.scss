@@ -1,1 +1,53 @@
-//
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+.v-application.v-application--is-ltr.theme--light{
+    background: url('/background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.main_content, main{
+    height: 100%;
+}
+.homepage_title{
+    height: 100%;
+}
+.homepage_title h1{
+    font-size: 10rem;
+    color: #724e40;
+}
+
+.yellow_form_button{
+    color: black !important;
+    box-shadow: none !important;
+    border-radius: 4px !important;
+    background-color: #EAD3B1 !important;
+}
+
+.menu_item button{
+    color: #78766F !important;
+}
+
+.transparent_form{
+    padding: 2rem;
+    background-color: rgba(255,255,255, 0.65) !important;
+    margin: 3rem 0;
+}
+#app > div > div.row.header.no-gutters > div > div.row.justify-space-between.no-gutters > div > div.row.menu > div > header > div{
+    justify-content: flex-end;
+}
+
+.theme--light.v-list{
+    background: rgba(227, 203, 177, 0.85) !important;
+}
+
+.component-header{
+    background: rgba(227, 203, 177, 0.85) !important;
+    margin: 1rem 0;
+}
